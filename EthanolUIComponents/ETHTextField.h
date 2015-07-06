@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <EthanolUIComponents/ETHExtendableTextField.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class ETHFormatter;
 @class ETHValidator;
 @class ETHTextField;
@@ -51,22 +53,22 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
  *  Set/Get the formatter, used whenever text is entered in the text field.
  *  Text programatically set is not formatted.
  */
-@property (nonatomic, strong) IBOutlet ETHFormatter * formatter;
+@property (nonatomic, strong, nullable) IBOutlet ETHFormatter * formatter;
 /**
  * Set/Get the validator, called whenever the text field the user tap the return key if no delegate is set.
  * If a delegate is set, this behavior can be changed by overriding the shouldValidateForReason: with
  * on lost focus or return tapped reasons.
  * In case validator is nil, the behavior is that of a normal UITextField.
  */
-@property (nonatomic, strong) IBOutlet ETHValidator * validator;
-@property (nonatomic, weak) IBOutlet id<ETHTextFieldDelegate> delegate;
+@property (nonatomic, strong, nullable) IBOutlet ETHValidator * validator;
+@property (nonatomic, weak, nullable) IBOutlet id<ETHTextFieldDelegate> delegate;
 
 /**
  *  Get/Set the current allowed character set (i.e. characters that the user can type).
  *  Setting this property while there is a text will remove the characters that should not be displayed.
  *  @note A nil value means that all characters are allowed.
  */
-@property (nonatomic, strong) NSCharacterSet * allowedCharacterSet;
+@property (nonatomic, strong, nullable) NSCharacterSet * allowedCharacterSet;
 
 /**
  *  Get/Set the maximum number of characters the user can type into this field.
@@ -94,3 +96,4 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
 - (BOOL)validateInput;
 
 @end
+NS_ASSUME_NONNULL_END

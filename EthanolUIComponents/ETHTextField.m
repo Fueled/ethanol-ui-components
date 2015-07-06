@@ -14,6 +14,8 @@
 
 @interface ETHTextField ()
 
+@property (nonatomic, copy, nonnull, readonly) NSString * nonNullableText;
+
 @end
 
 @implementation ETHTextField
@@ -63,14 +65,14 @@
   BOOL success = [self doValidate:&error];
   
   if([self shouldValidateForReason:ETHTextFieldValidationReasonProgramatically] && [self.delegate respondsToSelector:@selector(textField:didValidateText:withReason:withSuccess:error:)]) {
-    return [self.delegate textField:self didValidateText:self.text withReason:ETHTextFieldValidationReasonProgramatically withSuccess:success error:error];
+    return [self.delegate textField:self didValidateText:self.nonNullableText withReason:ETHTextFieldValidationReasonProgramatically withSuccess:success error:error];
   }
   
   return success;
 }
 
 - (BOOL)shouldFormat {
-  return ![self.delegate respondsToSelector:@selector(textField:shouldFormat:)] || ([self.delegate respondsToSelector:@selector(textField:shouldFormat:)] && [self.delegate textField:self shouldFormat:self.text]);
+  return ![self.delegate respondsToSelector:@selector(textField:shouldFormat:)] || ([self.delegate respondsToSelector:@selector(textField:shouldFormat:)] && [self.delegate textField:self shouldFormat:self.nonNullableText]);
 }
 
 - (BOOL)shouldValidateForReason:(ETHTextFieldValidationReason)reason {
@@ -89,7 +91,7 @@
       shouldValidate = YES;
       break;
   }
-  return (shouldValidate && ![self.delegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)]) || ([self.delegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)] && [self.delegate textField:self shouldValidateText:self.text forReason:reason]);
+  return (shouldValidate && ![self.delegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)]) || ([self.delegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)] && [self.delegate textField:self shouldValidateText:self.nonNullableText forReason:reason]);
 }
 
 - (void)setFormatter:(ETHFormatter *)formatter {
@@ -229,7 +231,7 @@
   BOOL success = [self doValidate:&error];
   
   if([self.delegate respondsToSelector:@selector(textField:didValidateText:withReason:withSuccess:error:)]) {
-    return [self.delegate textField:self didValidateText:self.text withReason:reason withSuccess:success error:error];
+    return [self.delegate textField:self didValidateText:self.nonNullableText withReason:reason withSuccess:success error:error];
   }
   return YES;
 }
@@ -239,7 +241,11 @@
     return YES;
   }
   
-  return [self.validator validateObject:self.text error:error];
+  return [self.validator validateObject:self.nonNullableText error:error];
+}
+
+- (NSString *)nonNullableText {
+  return self.text ?: @"";
 }
 
 @end

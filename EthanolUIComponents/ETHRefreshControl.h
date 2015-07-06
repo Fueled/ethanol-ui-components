@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSUInteger, ETHRefreshControlEvent) {
   kETHRefreshControlEventStandingBy,
   kETHRefreshControlEventPulling,
@@ -20,9 +22,9 @@ typedef NS_ENUM(NSUInteger, ETHRefreshControlEvent) {
 
 @interface ETHRefreshControl : UIControl
 
-@property (nonatomic, weak, readonly) UIScrollView * scrollView;
+@property (nonatomic, weak, readonly, nullable) UIScrollView * scrollView;
 @property (nonatomic, assign, getter=isRefreshing, readonly) BOOL refreshing;
-@property (nonatomic, assign, readonly) id<UIScrollViewDelegate> originalDelegate;
+@property (nonatomic, assign, readonly, nullable) id<UIScrollViewDelegate> originalDelegate;
 @property (nonatomic, assign) CGFloat actualHeight;
 @property (nonatomic, assign) CGFloat pullToRefreshHeight;
 
@@ -31,3 +33,5 @@ typedef NS_ENUM(NSUInteger, ETHRefreshControlEvent) {
 - (void)endRefreshing;
 
 @end
+
+NS_ASSUME_NONNULL_END

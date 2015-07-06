@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class ETHExtendableTextField;
 
 @protocol ETHExtendableTextFieldDelegate <UITextFieldDelegate>
@@ -42,6 +44,8 @@
  */
 @interface ETHExtendableTextField : UITextField
 
-@property (nonatomic, weak) id<ETHExtendableTextFieldDelegate> delegate;
+@property (nonatomic, weak, nullable) id<ETHExtendableTextFieldDelegate> delegate;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface ETHPageControl : UIView
 
 /**
@@ -33,12 +35,12 @@
 /**
  *  TintColor for inactive page indicators (dots). You can specify your alpha for the provided custom color if needed.
  */
-@property (nonatomic, strong) UIColor *pageIndicatorTintColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong, nullable) UIColor *pageIndicatorTintColor UI_APPEARANCE_SELECTOR;
 
 /**
  *  TintColor for active page indicator. You can specify your alpha for the provided custom color if needed.
  */
-@property (nonatomic, strong) UIColor *currentPageIndicatorTintColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong, nullable) UIColor *currentPageIndicatorTintColor UI_APPEARANCE_SELECTOR;
 
 /**
  *  Set the value of this property to true so that, when the user taps the control to go to a new page, the class defers updating the page control until it calls updateCurrentPageDisplay. 
@@ -51,36 +53,36 @@
  *  This image will be displayed when the state is active (current page is the first page).
  *  Default circle dot will be set if this property is set to nil.
  */
-@property (nonatomic, strong) UIImage *leftDotImageInactive;
+@property (nonatomic, strong, nullable) UIImage *leftDotImageInactive;
 
 /**
  *  Image for all the dots in the middle, that are neither the top left dot nor the top right dot, this whatever the number of middle dots is.
  *  This image will be displayed when the state is active (for the dot corresponding to the current page).
  *  Default circle dot will be set if this property is set to nil.
  */
-@property (nonatomic, strong) UIImage *middleDotImageInactive;
+@property (nonatomic, strong, nullable) UIImage *middleDotImageInactive;
 
 /**
  *  Image for the top left left (corresponding to the last page of the carousel).
  *  This image will be displayed when the state is active (current page is the last page).
  *  Default circle dot will be set if this property is set to nil.
  */
-@property (nonatomic, strong) UIImage *rightDotImageInactive;
+@property (nonatomic, strong, nullable) UIImage *rightDotImageInactive;
 
 /**
  *  Same for top left dot when its state its inactive (current page is not the first page).
  */
-@property (nonatomic, strong) UIImage *leftDotImageActive;
+@property (nonatomic, strong, nullable) UIImage *leftDotImageActive;
 
 /**
  *  Same for dots in the middle when they are in they state inactive.
  */
-@property (nonatomic, strong) UIImage *middleDotImageActive;
+@property (nonatomic, strong, nullable) UIImage *middleDotImageActive;
 
 /**
  *  Same for top right dot when its state its inactive (current page is not the last page).
  */
-@property (nonatomic, strong) UIImage *rightDotImageActive;
+@property (nonatomic, strong, nullable) UIImage *rightDotImageActive;
 
 /**
  *  Returns minimum size required to display dots for given page count. Can be used to size control if page count could change.
@@ -98,3 +100,5 @@
 - (void)updateCurrentPageDisplay;
 
 @end
+
+NS_ASSUME_NONNULL_END

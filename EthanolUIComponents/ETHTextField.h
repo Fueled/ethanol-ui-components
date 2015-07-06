@@ -27,17 +27,11 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
 
 @optional
 - (BOOL)textField:(ETHTextField *)textField shouldFormat:(NSString *)text;
-- (BOOL)textField:(ETHTextField *)textField shouldValidateOnLostFocus:(NSString *)text;
-- (BOOL)textField:(ETHTextField *)textField shouldValidateOnReturn:(NSString *)text;
-- (BOOL)textField:(ETHTextField *)textField shouldValidateOnKeyTapped:(NSString *)text;
+- (BOOL)textField:(ETHTextField *)textField shouldValidateText:(NSString *)text forReason:(ETHTextFieldValidationReason)reason;
 
 - (void)textField:(ETHTextField *)textField didFormat:(NSString *)text;
 
-// The below methods takes precedence over the validationFailedBlock/validationSucceededBlock, if they are defined.
-- (BOOL)textField:(ETHTextField *)textField didValidateOnLostFocus:(NSString *)text withSuccess:(BOOL)success;
-- (BOOL)textField:(ETHTextField *)textField didValidateOnReturn:(NSString *)text withSuccess:(BOOL)success;
-- (void)textField:(ETHTextField *)textField didValidateOnKeyTapped:(NSString *)text withSuccess:(BOOL)success;
-- (void)textField:(ETHTextField *)textField didValidateProgrammatically:(NSString *)text withSuccess:(BOOL)success;
+- (BOOL)textField:(ETHTextField *)textField didValidateText:(NSString *)text withReason:(ETHTextFieldValidationReason)reason withSuccess:(BOOL)success error:(NSError *)error;
 
 @end
 
@@ -46,7 +40,7 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
  *  Please see each individual property for more information.
  *  @note The following delegate methods should be called (Via super) when subclassing ETHTextField and overriding those methods
  *  (See ETHExtendableTextField documentation for more information):
- *  - (void)textFieldTextDidChange:(UITextField *)textField;
+ *  - (BOOL)textFieldTextShouldChange:(ETHExtendableTextField *)textField;
  *  - (BOOL)textFieldShouldEndEditing:(UITextField *)textField;
  *  - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
  *  - (BOOL)textFieldShouldReturn:(UITextField *)textField;
@@ -60,8 +54,8 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
 @property (nonatomic, strong) IBOutlet ETHFormatter * formatter;
 /**
  * Set/Get the validator, called whenever the text field the user tap the return key if no delegate is set.
- * If a delegate is set, this behavior can be changed by overriding the textFieldShouldValidateOnLostFocus: and
- * textFieldShouldValidateOnReturn: methods.
+ * If a delegate is set, this behavior can be changed by overriding the shouldValidateForReason: with
+ * on lost focus or return tapped reasons.
  * In case validator is nil, the behavior is that of a normal UITextField.
  */
 @property (nonatomic, strong) IBOutlet ETHValidator * validator;
@@ -81,19 +75,19 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
  */
 @property (nonatomic, assign) NSUInteger maximumLength;
 
-@property (nonatomic, assign) BOOL validateOnLostFocus;
-@property (nonatomic, assign) BOOL validateOnReturn;
-@property (nonatomic, assign) BOOL validateOnKeyTapped;
+@property (nonatomic, assign) BOOL validateOnLostFocus; // Defaults to NO
+@property (nonatomic, assign) BOOL validateOnReturn; // Defaults to YES
+@property (nonatomic, assign) BOOL validateOnKeyTapped; // Defaults to NO
 
 /**
- *  Validate the input of the text field.
+ *  Validate the input of the text field. Doesn't call the related validation delegate with the programatically reason.
  *
  *  @return The validation result
  */
 - (BOOL)validateInputSilently;
 
 /**
- *  Validate the input of the text field, and calls the validation failed block in case of validation failure
+ *  Validate the input of the text field.
  *
  *  @return The validation result
  */

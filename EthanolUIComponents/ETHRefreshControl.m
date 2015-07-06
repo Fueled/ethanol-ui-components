@@ -7,7 +7,7 @@
 //
 
 #import "ETHRefreshControl.h"
-#import "ETHRefreshControlSubclass.h"
+#import "ETHRefreshControl+Subclass.h"
 #import <EthanolUtilities/CADisplayLink+EthanolBlocks.h>
 
 #define kETHRefreshControlContentOffsetAnimationDuration 0.35f

@@ -1,14 +1,14 @@
 //
-//  ETHRefreshControlSubclass.m
+//  ETHRefreshControl+Subclass.m
 //  Ethanol
 //
 //  Created by Stephane Copin on 5/20/14.
 //  Copyright (c) 2014 Fueled. All rights reserved.
 //
 
-#import "ETHRefreshControlSubclass.h"
+#import "ETHRefreshControl+Subclass.h"
 
-@implementation ETHRefreshControl (ForSubclass)
+@implementation ETHRefreshControl (Subclass)
 
 #pragma mark - Method to be overriden in subclasses
 

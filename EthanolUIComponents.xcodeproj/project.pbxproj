@@ -22,8 +22,8 @@
 		F47358F81B4448F0007688EC /* ETHPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F47358E61B4448F0007688EC /* ETHPageControl.m */; };
 		F47358F91B4448F0007688EC /* ETHRefreshControl.h in Headers */ = {isa = PBXBuildFile; fileRef = F47358E71B4448F0007688EC /* ETHRefreshControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F47358FA1B4448F0007688EC /* ETHRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F47358E81B4448F0007688EC /* ETHRefreshControl.m */; };
-		F47358FB1B4448F0007688EC /* ETHRefreshControlSubclass.h in Headers */ = {isa = PBXBuildFile; fileRef = F47358E91B4448F0007688EC /* ETHRefreshControlSubclass.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		F47358FC1B4448F0007688EC /* ETHRefreshControlSubclass.m in Sources */ = {isa = PBXBuildFile; fileRef = F47358EA1B4448F0007688EC /* ETHRefreshControlSubclass.m */; };
+		F47358FB1B4448F0007688EC /* ETHRefreshControl+Subclass.h in Headers */ = {isa = PBXBuildFile; fileRef = F47358E91B4448F0007688EC /* ETHRefreshControl+Subclass.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		F47358FC1B4448F0007688EC /* ETHRefreshControl+Subclass.m in Sources */ = {isa = PBXBuildFile; fileRef = F47358EA1B4448F0007688EC /* ETHRefreshControl+Subclass.m */; };
 		F47358FD1B4448F0007688EC /* ETHSwitch.h in Headers */ = {isa = PBXBuildFile; fileRef = F47358EB1B4448F0007688EC /* ETHSwitch.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F47358FE1B4448F0007688EC /* ETHSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = F47358EC1B4448F0007688EC /* ETHSwitch.m */; };
 		F47358FF1B4448F0007688EC /* ETHTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = F47358ED1B4448F0007688EC /* ETHTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -122,8 +122,8 @@
 		F47358E61B4448F0007688EC /* ETHPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHPageControl.m; sourceTree = "<group>"; };
 		F47358E71B4448F0007688EC /* ETHRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHRefreshControl.h; sourceTree = "<group>"; };
 		F47358E81B4448F0007688EC /* ETHRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHRefreshControl.m; sourceTree = "<group>"; };
-		F47358E91B4448F0007688EC /* ETHRefreshControlSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHRefreshControlSubclass.h; sourceTree = "<group>"; };
-		F47358EA1B4448F0007688EC /* ETHRefreshControlSubclass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHRefreshControlSubclass.m; sourceTree = "<group>"; };
+		F47358E91B4448F0007688EC /* ETHRefreshControl+Subclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ETHRefreshControl+Subclass.h"; sourceTree = "<group>"; };
+		F47358EA1B4448F0007688EC /* ETHRefreshControl+Subclass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ETHRefreshControl+Subclass.m"; sourceTree = "<group>"; };
 		F47358EB1B4448F0007688EC /* ETHSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHSwitch.h; sourceTree = "<group>"; };
 		F47358EC1B4448F0007688EC /* ETHSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHSwitch.m; sourceTree = "<group>"; };
 		F47358ED1B4448F0007688EC /* ETHTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHTextField.h; sourceTree = "<group>"; };
@@ -224,8 +224,8 @@
 			children = (
 				F47358E71B4448F0007688EC /* ETHRefreshControl.h */,
 				F47358E81B4448F0007688EC /* ETHRefreshControl.m */,
-				F47358E91B4448F0007688EC /* ETHRefreshControlSubclass.h */,
-				F47358EA1B4448F0007688EC /* ETHRefreshControlSubclass.m */,
+				F47358E91B4448F0007688EC /* ETHRefreshControl+Subclass.h */,
+				F47358EA1B4448F0007688EC /* ETHRefreshControl+Subclass.m */,
 			);
 			name = RefreshControl;
 			sourceTree = "<group>";
@@ -285,7 +285,7 @@
 			files = (
 				F47358EF1B4448F0007688EC /* ETHExtendableTextField.h in Headers */,
 				F47358F71B4448F0007688EC /* ETHPageControl.h in Headers */,
-				F47358FB1B4448F0007688EC /* ETHRefreshControlSubclass.h in Headers */,
+				F47358FB1B4448F0007688EC /* ETHRefreshControl+Subclass.h in Headers */,
 				F47358F11B4448F0007688EC /* ETHExtendableTextField+Subclass.h in Headers */,
 				F47358FF1B4448F0007688EC /* ETHTextField.h in Headers */,
 				F47358F51B4448F0007688EC /* ETHExtendableTextFieldSingleCallDelegateForwarder.h in Headers */,
@@ -461,7 +461,7 @@
 				F47358F41B4448F0007688EC /* ETHExtendableTextFieldDelegateProxy.m in Sources */,
 				F47359001B4448F0007688EC /* ETHTextField.m in Sources */,
 				F47358F21B4448F0007688EC /* ETHExtendableTextField+Subclass.m in Sources */,
-				F47358FC1B4448F0007688EC /* ETHRefreshControlSubclass.m in Sources */,
+				F47358FC1B4448F0007688EC /* ETHRefreshControl+Subclass.m in Sources */,
 				F47358FA1B4448F0007688EC /* ETHRefreshControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

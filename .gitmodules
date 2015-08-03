@@ -1,6 +1,0 @@
-[submodule "Dependencies/EthanolValidationFormatting"]
-	path = Dependencies/EthanolValidationFormatting
-	url = https://github.com/Fueled/ethanol-validation-formatting.git
-[submodule "Dependencies/NSInvocationHelpers"]
-	path = Dependencies/NSInvocationHelpers
-	url = https://github.com/stephanecopin/NSInvocation-Helpers.git

@@ -28,6 +28,13 @@
 		F47358FE1B4448F0007688EC /* ETHSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = F47358EC1B4448F0007688EC /* ETHSwitch.m */; };
 		F47358FF1B4448F0007688EC /* ETHTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = F47358ED1B4448F0007688EC /* ETHTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F47359001B4448F0007688EC /* ETHTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = F47358EE1B4448F0007688EC /* ETHTextField.m */; };
+		F48636741B6FC412001A3549 /* ETHPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F48636721B6FC412001A3549 /* ETHPageViewController.h */; };
+		F48636751B6FC412001A3549 /* ETHPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48636731B6FC412001A3549 /* ETHPageViewController.m */; };
+		F486367A1B6FC93D001A3549 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636761B6FC93D001A3549 /* CocoaLumberjack.framework */; };
+		F486367B1B6FC93D001A3549 /* EthanolTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636771B6FC93D001A3549 /* EthanolTools.framework */; };
+		F486367C1B6FC93D001A3549 /* EthanolUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636781B6FC93D001A3549 /* EthanolUtilities.framework */; };
+		F486367D1B6FC93D001A3549 /* NSInvocationHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636791B6FC93D001A3549 /* NSInvocationHelpers.framework */; };
+		F48636851B6FDC55001A3549 /* EthanolValidationFormatting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,69 +44,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = F47358C21B444841007688EC;
 			remoteInfo = EthanolUIComponents;
-		};
-		F47359151B4449A6007688EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F473590F1B4449A6007688EC /* EthanolValidationFormatting.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F47358441B443D00007688EC;
-			remoteInfo = EthanolValidationFormatting;
-		};
-		F47359171B4449A6007688EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F473590F1B4449A6007688EC /* EthanolValidationFormatting.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F473584E1B443D00007688EC;
-			remoteInfo = EthanolValidationFormattingTests;
-		};
-		F47359271B444A37007688EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F47359221B444A37007688EC /* NSInvocationHelpers.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F49106D31B431D9B006C3DC4;
-			remoteInfo = NSInvocationHelpers;
-		};
-		F47359291B444A37007688EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F47359221B444A37007688EC /* NSInvocationHelpers.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F49106DE1B431D9C006C3DC4;
-			remoteInfo = NSInvocationHelpersTests;
-		};
-		F473592B1B444A70007688EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F473590F1B4449A6007688EC /* EthanolValidationFormatting.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F47358431B443D00007688EC;
-			remoteInfo = EthanolValidationFormatting;
-		};
-		F473592F1B444A70007688EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F47359221B444A37007688EC /* NSInvocationHelpers.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F49106D21B431D9B006C3DC4;
-			remoteInfo = NSInvocationHelpers;
-		};
-		F473593D1B44974B007688EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F47359381B44974B007688EC /* EthanolUtilities.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F4C14DF91B43294C003D1286;
-			remoteInfo = EthanolUtilities;
-		};
-		F473593F1B44974B007688EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F47359381B44974B007688EC /* EthanolUtilities.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F4C14E031B43294C003D1286;
-			remoteInfo = EthanolUtilitiesTests;
-		};
-		F47359411B449756007688EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F47359381B44974B007688EC /* EthanolUtilities.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F4C14DF81B43294C003D1286;
-			remoteInfo = EthanolUtilities;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -128,9 +72,13 @@
 		F47358EC1B4448F0007688EC /* ETHSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHSwitch.m; sourceTree = "<group>"; };
 		F47358ED1B4448F0007688EC /* ETHTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHTextField.h; sourceTree = "<group>"; };
 		F47358EE1B4448F0007688EC /* ETHTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHTextField.m; sourceTree = "<group>"; };
-		F473590F1B4449A6007688EC /* EthanolValidationFormatting.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = EthanolValidationFormatting.xcodeproj; path = Dependencies/EthanolValidationFormatting/EthanolValidationFormatting.xcodeproj; sourceTree = "<group>"; };
-		F47359221B444A37007688EC /* NSInvocationHelpers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = NSInvocationHelpers.xcodeproj; path = Dependencies/NSInvocationHelpers/NSInvocationHelpers.xcodeproj; sourceTree = "<group>"; };
-		F47359381B44974B007688EC /* EthanolUtilities.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = EthanolUtilities.xcodeproj; path = Dependencies/EthanolValidationFormatting/Dependencies/EthanolUtilities/EthanolUtilities.xcodeproj; sourceTree = "<group>"; };
+		F48636721B6FC412001A3549 /* ETHPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHPageViewController.h; sourceTree = "<group>"; };
+		F48636731B6FC412001A3549 /* ETHPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHPageViewController.m; sourceTree = "<group>"; };
+		F48636761B6FC93D001A3549 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/iOS/CocoaLumberjack.framework; sourceTree = SOURCE_ROOT; };
+		F48636771B6FC93D001A3549 /* EthanolTools.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EthanolTools.framework; path = Carthage/Build/iOS/EthanolTools.framework; sourceTree = SOURCE_ROOT; };
+		F48636781B6FC93D001A3549 /* EthanolUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EthanolUtilities.framework; path = Carthage/Build/iOS/EthanolUtilities.framework; sourceTree = SOURCE_ROOT; };
+		F48636791B6FC93D001A3549 /* NSInvocationHelpers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NSInvocationHelpers.framework; path = Carthage/Build/iOS/NSInvocationHelpers.framework; sourceTree = SOURCE_ROOT; };
+		F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EthanolValidationFormatting.framework; path = Carthage/Build/iOS/EthanolValidationFormatting.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +93,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F486367B1B6FC93D001A3549 /* EthanolTools.framework in Frameworks */,
+				F486367C1B6FC93D001A3549 /* EthanolUtilities.framework in Frameworks */,
+				F486367D1B6FC93D001A3549 /* NSInvocationHelpers.framework in Frameworks */,
+				F486367A1B6FC93D001A3549 /* CocoaLumberjack.framework in Frameworks */,
+				F48636851B6FDC55001A3549 /* EthanolValidationFormatting.framework in Frameworks */,
 				F47358CE1B444842007688EC /* EthanolUIComponents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -179,6 +132,7 @@
 				F47359021B44492C007688EC /* PageControl */,
 				F47359031B444935007688EC /* RefreshControl */,
 				F47359041B44493B007688EC /* Swift */,
+				F486366E1B6FC3CE001A3549 /* PageViewController */,
 				F47358C81B444841007688EC /* Info.plist */,
 			);
 			path = EthanolUIComponents;
@@ -242,38 +196,22 @@
 		F47359051B444998007688EC /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				F473590F1B4449A6007688EC /* EthanolValidationFormatting.xcodeproj */,
-				F47359381B44974B007688EC /* EthanolUtilities.xcodeproj */,
-				F47359221B444A37007688EC /* NSInvocationHelpers.xcodeproj */,
+				F48636761B6FC93D001A3549 /* CocoaLumberjack.framework */,
+				F48636771B6FC93D001A3549 /* EthanolTools.framework */,
+				F48636781B6FC93D001A3549 /* EthanolUtilities.framework */,
+				F48636791B6FC93D001A3549 /* NSInvocationHelpers.framework */,
+				F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */,
 			);
 			name = Dependencies;
 			sourceTree = "<group>";
 		};
-		F47359101B4449A6007688EC /* Products */ = {
+		F486366E1B6FC3CE001A3549 /* PageViewController */ = {
 			isa = PBXGroup;
 			children = (
-				F47359161B4449A6007688EC /* EthanolValidationFormatting.framework */,
-				F47359181B4449A6007688EC /* EthanolValidationFormattingTests.xctest */,
+				F48636721B6FC412001A3549 /* ETHPageViewController.h */,
+				F48636731B6FC412001A3549 /* ETHPageViewController.m */,
 			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		F47359231B444A37007688EC /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F47359281B444A37007688EC /* NSInvocationHelpers.framework */,
-				F473592A1B444A37007688EC /* NSInvocationHelpersTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		F47359391B44974B007688EC /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F473593E1B44974B007688EC /* EthanolUtilities.framework */,
-				F47359401B44974B007688EC /* EthanolUtilitiesTests.xctest */,
-			);
-			name = Products;
+			name = PageViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -291,6 +229,7 @@
 				F47358F51B4448F0007688EC /* ETHExtendableTextFieldSingleCallDelegateForwarder.h in Headers */,
 				F47358FD1B4448F0007688EC /* ETHSwitch.h in Headers */,
 				F47358F91B4448F0007688EC /* ETHRefreshControl.h in Headers */,
+				F48636741B6FC412001A3549 /* ETHPageViewController.h in Headers */,
 				F47358F31B4448F0007688EC /* ETHExtendableTextFieldDelegateProxy.h in Headers */,
 				F47358C71B444841007688EC /* EthanolUIComponents.h in Headers */,
 			);
@@ -311,9 +250,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				F47359421B449756007688EC /* PBXTargetDependency */,
-				F473592C1B444A70007688EC /* PBXTargetDependency */,
-				F47359301B444A70007688EC /* PBXTargetDependency */,
 			);
 			name = EthanolUIComponents;
 			productName = EthanolUIComponents;
@@ -365,20 +301,6 @@
 			mainGroup = F47358B91B444841007688EC;
 			productRefGroup = F47358C41B444841007688EC /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = F47359391B44974B007688EC /* Products */;
-					ProjectRef = F47359381B44974B007688EC /* EthanolUtilities.xcodeproj */;
-				},
-				{
-					ProductGroup = F47359101B4449A6007688EC /* Products */;
-					ProjectRef = F473590F1B4449A6007688EC /* EthanolValidationFormatting.xcodeproj */;
-				},
-				{
-					ProductGroup = F47359231B444A37007688EC /* Products */;
-					ProjectRef = F47359221B444A37007688EC /* NSInvocationHelpers.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				F47358C21B444841007688EC /* EthanolUIComponents */,
@@ -386,51 +308,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		F47359161B4449A6007688EC /* EthanolValidationFormatting.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = EthanolValidationFormatting.framework;
-			remoteRef = F47359151B4449A6007688EC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F47359181B4449A6007688EC /* EthanolValidationFormattingTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = EthanolValidationFormattingTests.xctest;
-			remoteRef = F47359171B4449A6007688EC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F47359281B444A37007688EC /* NSInvocationHelpers.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = NSInvocationHelpers.framework;
-			remoteRef = F47359271B444A37007688EC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F473592A1B444A37007688EC /* NSInvocationHelpersTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = NSInvocationHelpersTests.xctest;
-			remoteRef = F47359291B444A37007688EC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F473593E1B44974B007688EC /* EthanolUtilities.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = EthanolUtilities.framework;
-			remoteRef = F473593D1B44974B007688EC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F47359401B44974B007688EC /* EthanolUtilitiesTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = EthanolUtilitiesTests.xctest;
-			remoteRef = F473593F1B44974B007688EC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F47358C11B444841007688EC /* Resources */ = {
@@ -459,6 +336,7 @@
 				F47358F81B4448F0007688EC /* ETHPageControl.m in Sources */,
 				F47358F61B4448F0007688EC /* ETHExtendableTextFieldSingleCallDelegateForwarder.m in Sources */,
 				F47358F41B4448F0007688EC /* ETHExtendableTextFieldDelegateProxy.m in Sources */,
+				F48636751B6FC412001A3549 /* ETHPageViewController.m in Sources */,
 				F47359001B4448F0007688EC /* ETHTextField.m in Sources */,
 				F47358F21B4448F0007688EC /* ETHExtendableTextField+Subclass.m in Sources */,
 				F47358FC1B4448F0007688EC /* ETHRefreshControl+Subclass.m in Sources */,
@@ -481,21 +359,6 @@
 			isa = PBXTargetDependency;
 			target = F47358C21B444841007688EC /* EthanolUIComponents */;
 			targetProxy = F47358CF1B444842007688EC /* PBXContainerItemProxy */;
-		};
-		F473592C1B444A70007688EC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = EthanolValidationFormatting;
-			targetProxy = F473592B1B444A70007688EC /* PBXContainerItemProxy */;
-		};
-		F47359301B444A70007688EC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = NSInvocationHelpers;
-			targetProxy = F473592F1B444A70007688EC /* PBXContainerItemProxy */;
-		};
-		F47359421B449756007688EC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = EthanolUtilities;
-			targetProxy = F47359411B449756007688EC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -597,6 +460,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/iOS";
 				INFOPLIST_FILE = EthanolUIComponents/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -613,6 +477,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/iOS";
 				INFOPLIST_FILE = EthanolUIComponents/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -625,6 +490,10 @@
 		F47358DB1B444842007688EC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = EthanolUIComponentsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fueled.EthanolUIComponentsTests;
@@ -635,6 +504,10 @@
 		F47358DC1B444842007688EC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = EthanolUIComponentsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fueled.EthanolUIComponentsTests;

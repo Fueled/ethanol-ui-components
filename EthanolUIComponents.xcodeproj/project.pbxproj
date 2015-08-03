@@ -33,7 +33,7 @@
 		F474514B1B7006F400902BCB /* EthanolUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636781B6FC93D001A3549 /* EthanolUtilities.framework */; };
 		F474514C1B7006F400902BCB /* NSInvocationHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636791B6FC93D001A3549 /* NSInvocationHelpers.framework */; };
 		F474514D1B7006F400902BCB /* EthanolValidationFormatting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */; };
-		F48636741B6FC412001A3549 /* ETHPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F48636721B6FC412001A3549 /* ETHPageViewController.h */; };
+		F48636741B6FC412001A3549 /* ETHPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F48636721B6FC412001A3549 /* ETHPageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F48636751B6FC412001A3549 /* ETHPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48636731B6FC412001A3549 /* ETHPageViewController.m */; };
 		F486367A1B6FC93D001A3549 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636761B6FC93D001A3549 /* CocoaLumberjack.framework */; };
 		F486367B1B6FC93D001A3549 /* EthanolTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636771B6FC93D001A3549 /* EthanolTools.framework */; };

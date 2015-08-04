@@ -65,6 +65,8 @@
 	[super setDelegate:self];
 	
 	_cachedViewControllers = [NSMutableDictionary dictionary];
+	
+	_minimumTitleAlpha = kTitleViewMinimumAlpha;
 }
 
 - (void)viewDidLoad
@@ -122,16 +124,46 @@
 	return 0;
 }
 
+- (NSInteger)currentPage {
+	return self.pageControl.currentPage;
+}
+
+- (void)setTitleViewInset:(UIEdgeInsets)titleViewInset {
+	_titleViewInset = titleViewInset;
+	
+	[self invalidateTitleView];
+}
+
+- (void)setTitleInset:(UIEdgeInsets)titleInset {
+	_titleInset = titleInset;
+	
+	[self invalidateTitleView];
+}
+
+- (void)setPageControlInset:(UIEdgeInsets)pageControlInset {
+	_pageControlInset = pageControlInset;
+	
+	[self invalidateTitleView];
+}
+
+- (void)setMinimumTitleAlpha:(CGFloat)minimumTitleAlpha {
+	_minimumTitleAlpha = minimumTitleAlpha;
+	
+	[self updateTitleViewPosition];
+}
+
+- (void)invalidateTitleView {
+	_titleView = nil;
+	
+	self.navigationItem.titleView = self.titleView;
+}
+
 - (void)willChangeToPage:(NSInteger)page {
 	
 }
 
 - (void)didChangeToPage:(NSInteger)page {
 	
-}
-
-- (NSInteger)currentPage {
-	return self.pageControl.currentPage;
 }
 
 - (void)setCurrentPage:(NSInteger)page {
@@ -207,10 +239,13 @@
 		for(NSInteger i = 0;i < self.numberOfPages;++i) {
 			UILabel * label = [[UILabel alloc] init];
 			label.font = [[UINavigationBar appearance] titleTextAttributes][NSFontAttributeName];
-			label.text = [self titleForViewControllerForPage:i];
 			label.attributedText = [self attributedTitleForViewControllerForPage:i];
+			label.text = [self titleForViewControllerForPage:i];
 			label.textAlignment = NSTextAlignmentCenter;
-			label.textColor = [[UINavigationBar appearance] titleTextAttributes][NSForegroundColorAttributeName];
+			UIColor * textColor = [[UINavigationBar appearance] titleTextAttributes][NSForegroundColorAttributeName];
+			if(textColor != nil) {
+				label.textColor = [UIColor whiteColor];
+			}
 			label.frame = CGRectMake(size.width * i, 0.0f, size.width, size.height);
 			
 			[titleScrollView addSubview:label];
@@ -232,19 +267,29 @@
 	if(_titleView == nil) {
 		UIView * titleView = [[UIView alloc] initWithFrame:self.titleScrollView.frame];
 		
-		titleView.frame = CGRectMake(0.0f,
-																 0.0f,
-																 self.titleScrollView.frame.size.width,
-																 self.titleScrollView.frame.size.height + kPageControlTopMargin + kPageControlHeight);
+		CGRect titleViewFrame = CGRectMake(0.0f,
+																			 0.0f,
+																			 self.titleScrollView.frame.size.width,
+																			 self.titleScrollView.frame.size.height + kPageControlTopMargin + kPageControlHeight);
 		
-		self.pageControl.frame = CGRectMake(0.0f,
-																				self.titleScrollView.frame.size.height + kPageControlTopMargin,
-																				titleView.frame.size.width,
-																				kPageControlHeight);
+		CGRect pageControlFrame = CGRectMake(0.0f,
+																				 self.titleScrollView.frame.size.height + kPageControlTopMargin,
+																				 titleView.frame.size.width,
+																				 kPageControlHeight);
+		
+		titleViewFrame = UIEdgeInsetsInsetRect(titleViewFrame, self.titleInset);
+		pageControlFrame = UIEdgeInsetsInsetRect(pageControlFrame, self.pageControlInset);
+		
+		titleViewFrame = UIEdgeInsetsInsetRect(titleViewFrame, self.titleViewInset);
+		pageControlFrame = UIEdgeInsetsInsetRect(pageControlFrame, self.titleViewInset);
+		
+		titleView.frame = titleViewFrame;
+		self.pageControl.frame = pageControlFrame;
 		
 		[titleView addSubview:_titleScrollView];
 		[titleView addSubview:self.pageControl];
 		
+		titleView.clipsToBounds = NO;
 		titleView.userInteractionEnabled = NO;
 		_titleView = titleView;
 	}
@@ -275,11 +320,11 @@
 		offset -= origin;
 		offset  = (CGFloat)fabs(offset);
 		// Linear function
-		CGFloat a = (1.0f - kTitleViewMinimumAlpha) / (0.0f - 0.5f);
+		CGFloat a = (1.0f - self.minimumTitleAlpha) / (0.0f - 0.5f);
 		CGFloat b = 1.0f - a * 0.0f;
 		offset = a * offset + b;
-		if(offset < kTitleViewMinimumAlpha) {
-			return kTitleViewMinimumAlpha;
+		if(offset < self.minimumTitleAlpha) {
+			return self.minimumTitleAlpha;
 		} else if(offset > 1.0f) {
 			return 1.0f;
 		}

@@ -88,6 +88,23 @@
 	}];
 	NSRunLoop *runner = [NSRunLoop currentRunLoop];
 	[self.displayLink addToRunLoop:runner forMode:NSRunLoopCommonModes];
+	
+	UIScrollView * innerScrollView = (UIScrollView *)[[self class] searchForViewOfType:[UIScrollView class] inView:self.view];
+	innerScrollView.scrollsToTop = false;
+}
+
++ (UIView *)searchForViewOfType:(Class)class inView:(UIView *)baseView {
+	if([baseView isKindOfClass:[UIScrollView class]]) {
+		return baseView;
+	}
+	
+	for(UIView * subview in baseView.subviews) {
+		UIView * foundView = [self searchForViewOfType:class inView:subview];
+		if(foundView != nil) {
+			return foundView;
+		}
+	}
+	return nil;
 }
 
 - (void)dealloc {
@@ -258,6 +275,7 @@
 		titleScrollView.pagingEnabled = YES;
 		titleScrollView.frame = CGRectMake(0.0f, 0.0f, size.width, size.height);
 		titleScrollView.contentSize = CGSizeMake(size.width * 2.0f, size.height);
+		titleScrollView.scrollsToTop = false;
 		_titleScrollView = titleScrollView;
 	}
 	return _titleScrollView;

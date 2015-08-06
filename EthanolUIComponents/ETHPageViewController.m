@@ -232,24 +232,31 @@
 		NSMutableArray * views = [NSMutableArray array];
 		for(NSInteger i = 0;i < self.cachedPageViewControllers.count;++i) {
 			UIViewController * viewController = self.cachedPageViewControllers[i];
+			
 			UIView * view;
 			if(viewController.navigationItem.titleView != nil) {
 				view = viewController.navigationItem.titleView;
 			} else {
 				UILabel * label = [[UILabel alloc] init];
 				label.font = [[UINavigationBar appearance] titleTextAttributes][NSFontAttributeName];
-				label.text = viewController.title;
+				label.text = viewController.title ?: viewController.navigationItem.title;
 				label.textAlignment = NSTextAlignmentCenter;
 				UIColor * textColor = [[UINavigationBar appearance] titleTextAttributes][NSForegroundColorAttributeName];
 				if(textColor != nil) {
 					label.textColor = [UIColor whiteColor];
 				}
-				label.frame = CGRectMake(size.width * i, 0.0f, size.width, size.height);
+				
+				label.frame = CGRectMake(0.0, 0.0f, size.width, size.height);
 				
 				view = label;
 			}
 			
-			[titleScrollView addSubview:view];
+			UIView * containerView = [[UIView alloc] init];
+			containerView.clipsToBounds = false;
+			containerView.frame = CGRectMake(size.width * i, 0.0f, size.width, size.height);
+			view.center = CGPointMake(CGRectGetWidth(containerView.frame) / 2.0, CGRectGetHeight(containerView.frame) / 2.0);
+			[containerView addSubview:view];
+			[titleScrollView addSubview:containerView];
 			[views addObject:view];
 		}
 		

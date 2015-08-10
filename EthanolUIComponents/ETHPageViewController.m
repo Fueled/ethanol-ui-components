@@ -273,22 +273,34 @@
 	return _regularPageControl;
 }
 
-- (UIView *)titleViewForViewController:(UIViewController *)viewController {
+- (UIView *)titleViewForViewController:(UIViewController *)viewController forCenterPosition:(CGPoint)centerPosition {
 	if(viewController.navigationItem.titleView != nil) {
 		return viewController.navigationItem.titleView;
 	} else {
-		UILabel * label = [[UILabel alloc] init];
-		label.font = [[UINavigationBar appearance] titleTextAttributes][NSFontAttributeName];
-		label.text = viewController.title ?: viewController.navigationItem.title;
-		label.textAlignment = NSTextAlignmentCenter;
-		UIColor * textColor = [[UINavigationBar appearance] titleTextAttributes][NSForegroundColorAttributeName];
-		if(textColor != nil) {
-			label.textColor = [UIColor whiteColor];
-		}
+		UILabel * (^ createLabelWithSize)(CGSize size) = ^(CGSize size) {
+			UILabel * label = [[UILabel alloc] initWithFrame:CGSizeEqualToSize(size, CGSizeZero) ? CGRectZero : CGRectMake(centerPosition.x - size.width / 2.0,
+																																																										 centerPosition.y - size.height / 2.0,
+																																																										 size.width,
+																																																										 size.height)];
+			label.font = [[UINavigationBar appearance] titleTextAttributes][NSFontAttributeName];
+			label.text = viewController.title ?: viewController.navigationItem.title;
+			label.textAlignment = NSTextAlignmentCenter;
+			UIColor * textColor = [[UINavigationBar appearance] titleTextAttributes][NSForegroundColorAttributeName];
+			if(textColor != nil) {
+				label.textColor = [UIColor whiteColor];
+			}
+			
+			if(CGSizeEqualToSize(size, CGSizeZero)) {
+				[label sizeToFit];
+			}
+			
+			return label;
+		};
 		
-		[label sizeToFit];
-		
-		return label;
+		// It hurts me a lot having to do that, but it's the fastest workaround.
+		// If I don't do this, the sizeToFit will be animated because this method might be called from an animation block...
+		// +[UIView performWithoutAnimation] doesn't do it
+		return createLabelWithSize(createLabelWithSize(CGSizeZero).bounds.size);
 	}
 }
 
@@ -303,12 +315,11 @@
 	for(NSInteger i = 0;i < self.cachedPageViewControllers.count;++i) {
 		UIViewController * viewController = self.cachedPageViewControllers[i];
 		
-		UIView * view = [self titleViewForViewController:viewController];
-		
-		UIView * containerView = [[UIView alloc] init];
+		UIView * containerView = [[UIView alloc] initWithFrame:CGRectMake(size.width * i, 0.0f, size.width, size.height)];
 		containerView.clipsToBounds = false;
-		containerView.frame = CGRectMake(size.width * i, 0.0f, size.width, size.height);
-		view.center = CGPointMake(CGRectGetWidth(containerView.frame) / 2.0, CGRectGetHeight(containerView.frame) / 2.0);
+		
+		UIView * view = [self titleViewForViewController:viewController forCenterPosition:CGPointMake(CGRectGetWidth(containerView.frame) / 2.0, CGRectGetHeight(containerView.frame) / 2.0)];
+		
 		[containerView addSubview:view];
 		[compactTitleScrollView addSubview:containerView];
 		[views addObject:view];
@@ -360,24 +371,22 @@
 - (UIView *)generateRegularTitleViewWithInitialFrame:(CGRect)frame finalSize:(CGSize *)finalSize {
 	UIView * regularTitleView = [[UIView alloc] initWithFrame:frame];
 	
-	NSMutableArray * views = [NSMutableArray array];
 	CGSize maxSize;
 	for(UIViewController * viewController in self.cachedPageViewControllers) {
-		UIView * viewControllerTitleView = [self titleViewForViewController:viewController];
-		[views addObject:viewControllerTitleView];
-		[regularTitleView addSubview:viewControllerTitleView];
-		
+		UIView * viewControllerTitleView = [self titleViewForViewController:viewController forCenterPosition:CGPointZero];
+
 		maxSize.width = MAX(maxSize.width, viewControllerTitleView.bounds.size.width);
 		maxSize.height = MAX(maxSize.height, viewControllerTitleView.bounds.size.height);
 	}
 	
-	CGSize titleViewSize = CGSizeMake(maxSize.width * views.count + self.regularTitleViewSpacing * (views.count - 1),
+	CGSize titleViewSize = CGSizeMake(maxSize.width * self.cachedPageViewControllers.count + self.regularTitleViewSpacing * (self.cachedPageViewControllers.count - 1),
 																		maxSize.height);
 	
 	CGFloat currentCenterX = 0.0;
-	for(UIView * view in views) {
+	for(UIViewController * viewController in self.cachedPageViewControllers) {
 		currentCenterX += maxSize.width / 2.0;
-		view.center = CGPointMake(currentCenterX, maxSize.height / 2.0);
+		UIView * viewControllerTitleView = [self titleViewForViewController:viewController forCenterPosition:CGPointMake(currentCenterX, maxSize.height / 2.0)];
+		[regularTitleView addSubview:viewControllerTitleView];
 		currentCenterX += maxSize.width / 2.0 + self.regularTitleViewSpacing;
 	}
 	
@@ -385,7 +394,7 @@
 	
 	[regularTitleView addSubview:self.regularPageControl];
 	
-	self.regularPageControl.frame = CGRectMake(0.0,
+	self.regularPageControl.frame = CGRectMake([self regularPageControlPositionFromPagePosition:[self currentPosition]],
 																						 titleViewSize.height + kPageControlTopMargin,
 																						 titleViewSize.width,
 																						 kPageControlHeight);
@@ -428,6 +437,12 @@
 	
 	CGPoint center = CGPointMake(CGRectGetMidX(self.titleViewContainer.bounds), CGRectGetMidY(self.titleViewContainer.bounds));
 	self.titleView.frame = CGRectMake(center.x - finalSize.width / 2.0, center.y - finalSize.height / 2.0, finalSize.width, finalSize.height);
+	if(!regular) {
+		self.compactPageControl.frame = CGRectMake(0.0,
+																							 self.compactPageControl.frame.origin.y,
+																							 finalSize.width,
+																							 self.compactPageControl.frame.size.height);
+	}
 	self.placeholderImageTitleView.center = center;
 }
 
@@ -435,10 +450,18 @@
 
 - (void)updateTitleViewPosition {
 	CGFloat position = [self currentPosition];
-	[self.compactTitleScrollView setContentOffset:CGPointMake(position * self.titleView.frame.size.width, 0.0f)];
+	self.compactTitleScrollView.contentOffset = [self compactTitleScrollViewContentOffsetFromPagePosition:position];
 	self.regularPageControl.center = CGPointMake(position * CGRectGetWidth(self.titleViews.firstObject.bounds) + CGRectGetMidX(self.titleViews.firstObject.bounds), self.regularPageControl.center.y);
 	
 	[self updateTitleViewAlphaWithPosition:position];
+}
+
+- (CGPoint)compactTitleScrollViewContentOffsetFromPagePosition:(CGFloat)pagePosition {
+	return CGPointMake(pagePosition * self.titleView.frame.size.width, 0.0f);
+}
+
+- (CGFloat)regularPageControlPositionFromPagePosition:(CGFloat)pagePosition {
+	return pagePosition * CGRectGetWidth(self.titleViews.firstObject.bounds) + CGRectGetMidX(self.titleViews.firstObject.bounds);
 }
 
 - (void)updateTitleViewAlphaWithPosition:(CGFloat)position {
@@ -517,7 +540,7 @@
 }
 
 - (UIImage *)snapshotOfView:(UIView *)view {
-	UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0);
+	UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, 0.0);
 	[view.layer renderInContext:UIGraphicsGetCurrentContext()];
 	
 	UIImage * image = UIGraphicsGetImageFromCurrentImageContext();

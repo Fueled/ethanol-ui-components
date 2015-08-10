@@ -14,12 +14,14 @@ typedef UIViewController * __nonnull (^ ETHPageViewControllerFactoryBlock)(void)
 
 @interface ETHPageViewController : UIPageViewController
 
-@property (nonatomic, strong, readonly) UIPageControl * pageControl;
+@property (nonatomic, strong, readonly) UIPageControl * regularPageControl;
+@property (nonatomic, strong, readonly) UIPageControl * compactPageControl;
 @property (nonatomic, strong, readonly) NSArray<UIViewController *> * pageViewControllers; // Should be overriden in subclasses
 
 @property (nonatomic, strong, readonly) UIViewController * currentViewController;
 @property (nonatomic, assign) NSInteger currentPage;
 @property (nonatomic, assign) UIEdgeInsets titleViewInset;
+@property (nonatomic, assign) CGFloat regularTitleViewSpacing; // Defaults to 20.0
 @property (nonatomic, assign) UIEdgeInsets titleInset;
 @property (nonatomic, assign) UIEdgeInsets pageControlInset;
 @property (nonatomic, assign) CGFloat minimumTitleAlpha;

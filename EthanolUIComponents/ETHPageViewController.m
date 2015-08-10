@@ -23,18 +23,23 @@
 @interface ETHPageViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong, readonly) NSArray<UIViewController *> * cachedPageViewControllers;
-@property (nonatomic, strong, readonly) UIScrollView * titleScrollView;
-@property (nonatomic, strong, readonly) UIView * titleView;
+@property (nonatomic, strong, readonly) UIView * titleViewContainer;
+@property (nonatomic, strong) UIScrollView * compactTitleScrollView;
+@property (nonatomic, strong) UIView * titleView;
 @property (nonatomic, strong) UIPanGestureRecognizer * panGestureRecognizer;
 @property (nonatomic, strong) CADisplayLink * displayLink;
 @property (nonatomic, strong) NSArray<UIView *> * titleViews;
+@property (nonatomic, strong) UIImageView * placeholderImageTitleView;
+@property (nonatomic, assign) UITraitCollection * targetTraitCollection;
+@property (nonatomic, assign) CGSize targetSize;
+@property (nonatomic, strong) id<UIViewControllerTransitionCoordinator> targetCoordinator;
 
 @end
 
 @implementation ETHPageViewController
-@synthesize pageControl     = _pageControl;
-@synthesize titleScrollView = _titleScrollView;
-@synthesize titleView       = _titleView;
+@synthesize compactPageControl = _compactPageControl;
+@synthesize regularPageControl = _regularPageControl;
+@synthesize titleViewContainer = _titleViewContainer;
 @synthesize cachedPageViewControllers = _cachedPageViewControllers;
 
 - (id)init {
@@ -72,14 +77,16 @@
 {
 	[super viewDidLoad];
 	
-	self.navigationItem.titleView = self.titleView;
+	[self generateTitleViewForRegularSizeClass:[self isRegularSizeClass] size:self.view.bounds.size];
+	self.navigationItem.titleView = self.titleViewContainer;
+	
+	self.placeholderImageTitleView = [[UIImageView alloc] init];
+	[self.titleViewContainer addSubview:self.placeholderImageTitleView];
 	
 	[self setViewControllers:@[self.cachedPageViewControllers.firstObject]
 								 direction:UIPageViewControllerNavigationDirectionForward
 									animated:NO
 								completion:nil];
-	
-	self.pageControl.currentPage = 0;
 	
 	__weak ETHPageViewController * weakSelf = self;
 	self.displayLink = [CADisplayLink eth_displayLinkWithBlock:^(CADisplayLink *displayLink) {
@@ -112,25 +119,25 @@
 }
 
 - (NSInteger)currentPage {
-	return self.pageControl.currentPage;
+	return self.compactPageControl.currentPage;
 }
 
 - (void)setTitleViewInset:(UIEdgeInsets)titleViewInset {
 	_titleViewInset = titleViewInset;
 	
-	[self invalidateTitleView];
+	[self regenerateTitleView];
 }
 
 - (void)setTitleInset:(UIEdgeInsets)titleInset {
 	_titleInset = titleInset;
 	
-	[self invalidateTitleView];
+	[self regenerateTitleView];
 }
 
 - (void)setPageControlInset:(UIEdgeInsets)pageControlInset {
 	_pageControlInset = pageControlInset;
 	
-	[self invalidateTitleView];
+	[self regenerateTitleView];
 }
 
 - (void)setMinimumTitleAlpha:(CGFloat)minimumTitleAlpha {
@@ -139,10 +146,44 @@
 	[self updateTitleViewPosition];
 }
 
-- (void)invalidateTitleView {
-	_titleView = nil;
+- (void)setRegularTitleViewSpacing:(CGFloat)regularTitleViewSpacing {
+	_regularTitleViewSpacing = regularTitleViewSpacing;
 	
-	self.navigationItem.titleView = self.titleView;
+	[self regenerateTitleView];
+}
+
+- (void)regenerateTitleView {
+	[self generateTitleViewForRegularSizeClass:[self isRegularSizeClass] size:self.view.bounds.size];
+}
+
+- (void)willTransitionToTraitCollection:(nonnull UITraitCollection *)newCollection withTransitionCoordinator:(nonnull id<UIViewControllerTransitionCoordinator>)coordinator {
+	[super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
+	
+	self.targetTraitCollection = newCollection;
+	self.targetCoordinator = coordinator;
+	
+	[self tryToUpdateTitle];
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(nonnull id<UIViewControllerTransitionCoordinator>)coordinator {
+	self.targetSize = size;
+	self.targetCoordinator = coordinator;
+	
+	[self tryToUpdateTitle];
+}
+
+- (void)tryToUpdateTitle {
+	if(self.targetSize.width >= 0.0 && self.targetTraitCollection != nil && self.targetCoordinator != nil) {
+		BOOL isRegularSizeClass = self.targetTraitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
+		[self.targetCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+			[self animationBlockForSwitchingRegularTitleView:isRegularSizeClass size:self.targetSize]();
+		} completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+			[self animationCompletionBlockForSwitchingRegularTitleView:isRegularSizeClass](true);
+		}];
+		self.targetSize = CGSizeMake(-1.0, -1.0);
+		self.targetTraitCollection = nil;
+		self.targetCoordinator = nil;
+	}
 }
 
 - (void)willChangeToPage:(NSInteger)page {
@@ -160,7 +201,7 @@
 								completion:nil];
 	
 	[self updateTitleViewPosition];
-	self.pageControl.currentPage = page;
+	self.compactPageControl.currentPage = page;
 }
 
 - (UIViewController *)currentViewController {
@@ -200,7 +241,7 @@
 	 previousViewControllers:(NSArray *)previousViewControllers
 			 transitionCompleted:(BOOL)completed {
 	NSInteger page = [self.cachedPageViewControllers indexOfObject:pageViewController.viewControllers.firstObject];
-	self.pageControl.currentPage = page;
+	self.compactPageControl.currentPage = page;
 	
 	[self didChangeToPage:page];
 }
@@ -214,107 +255,200 @@
 	return _cachedPageViewControllers;
 }
 
-- (UIPageControl *)pageControl {
-	if(_pageControl == nil) {
-		_pageControl = [[ETHInjector defaultInjector] instanceForClass:[UIPageControl class]];
-		_pageControl.numberOfPages = self.cachedPageViewControllers.count;
-		_pageControl.currentPage = 0;
+- (UIPageControl *)compactPageControl {
+	if(_compactPageControl == nil) {
+		_compactPageControl = [[ETHInjector defaultInjector] instanceForClass:[UIPageControl class]];
+		_compactPageControl.numberOfPages = self.cachedPageViewControllers.count;
+		_compactPageControl.currentPage = 0;
 	}
-	return _pageControl;
+	return _compactPageControl;
 }
 
-- (UIScrollView *)titleScrollView {
-	if(_titleScrollView == nil) {
-		UIScrollView * titleScrollView = [[UIScrollView alloc] init];
-		
-		CGSize size = CGSizeMake(self.view.frame.size.width - kTitleViewHorizontalMargin * 2.0f, kTitleViewMaxHeight);
-		
-		NSMutableArray * views = [NSMutableArray array];
-		for(NSInteger i = 0;i < self.cachedPageViewControllers.count;++i) {
-			UIViewController * viewController = self.cachedPageViewControllers[i];
-			
-			UIView * view;
-			if(viewController.navigationItem.titleView != nil) {
-				view = viewController.navigationItem.titleView;
-			} else {
-				UILabel * label = [[UILabel alloc] init];
-				label.font = [[UINavigationBar appearance] titleTextAttributes][NSFontAttributeName];
-				label.text = viewController.title ?: viewController.navigationItem.title;
-				label.textAlignment = NSTextAlignmentCenter;
-				UIColor * textColor = [[UINavigationBar appearance] titleTextAttributes][NSForegroundColorAttributeName];
-				if(textColor != nil) {
-					label.textColor = [UIColor whiteColor];
-				}
-				
-				label.frame = CGRectMake(0.0, 0.0f, size.width, size.height);
-				
-				view = label;
-			}
-			
-			UIView * containerView = [[UIView alloc] init];
-			containerView.clipsToBounds = false;
-			containerView.frame = CGRectMake(size.width * i, 0.0f, size.width, size.height);
-			view.center = CGPointMake(CGRectGetWidth(containerView.frame) / 2.0, CGRectGetHeight(containerView.frame) / 2.0);
-			[containerView addSubview:view];
-			[titleScrollView addSubview:containerView];
-			[views addObject:view];
+- (UIPageControl *)regularPageControl {
+	if(_regularPageControl == nil) {
+		_regularPageControl = [[ETHInjector defaultInjector] instanceForClass:[UIPageControl class]];
+		_regularPageControl.numberOfPages = 1;
+		_regularPageControl.currentPage = 0;
+	}
+	return _regularPageControl;
+}
+
+- (UIView *)titleViewForViewController:(UIViewController *)viewController {
+	if(viewController.navigationItem.titleView != nil) {
+		return viewController.navigationItem.titleView;
+	} else {
+		UILabel * label = [[UILabel alloc] init];
+		label.font = [[UINavigationBar appearance] titleTextAttributes][NSFontAttributeName];
+		label.text = viewController.title ?: viewController.navigationItem.title;
+		label.textAlignment = NSTextAlignmentCenter;
+		UIColor * textColor = [[UINavigationBar appearance] titleTextAttributes][NSForegroundColorAttributeName];
+		if(textColor != nil) {
+			label.textColor = [UIColor whiteColor];
 		}
 		
-		self.titleViews = views;
+		[label sizeToFit];
 		
-		titleScrollView.showsHorizontalScrollIndicator = NO;
-		titleScrollView.pagingEnabled = YES;
-		titleScrollView.frame = CGRectMake(0.0f, 0.0f, size.width, size.height);
-		titleScrollView.contentSize = CGSizeMake(size.width * 2.0f, size.height);
-		titleScrollView.scrollsToTop = false;
-		_titleScrollView = titleScrollView;
+		return label;
 	}
-	return _titleScrollView;
 }
 
-- (UIView *)titleView {
-	if(_titleView == nil) {
-		UIView * titleView = [[UIView alloc] initWithFrame:self.titleScrollView.frame];
+- (UIScrollView *)generateCompactTitleScrollView {
+	UIScrollView * compactTitleScrollView;
+	compactTitleScrollView = [[UIScrollView alloc] init];
+	
+	CGFloat sizeToUse = self.view.frame.size.width > self.view.frame.size.height ? self.view.frame.size.height : self.view.frame.size.width;
+	CGSize size = CGSizeMake(sizeToUse - 2.0 * kTitleViewHorizontalMargin, kTitleViewMaxHeight);
+	
+	NSMutableArray * views = [NSMutableArray array];
+	for(NSInteger i = 0;i < self.cachedPageViewControllers.count;++i) {
+		UIViewController * viewController = self.cachedPageViewControllers[i];
 		
-		CGRect titleViewFrame = CGRectMake(0.0f,
-																			 0.0f,
-																			 self.titleScrollView.frame.size.width,
-																			 self.titleScrollView.frame.size.height + kPageControlTopMargin + kPageControlHeight);
+		UIView * view = [self titleViewForViewController:viewController];
 		
-		CGRect pageControlFrame = CGRectMake(0.0f,
-																				 self.titleScrollView.frame.size.height + kPageControlTopMargin,
-																				 titleView.frame.size.width,
-																				 kPageControlHeight);
-		
-		titleViewFrame = UIEdgeInsetsInsetRect(titleViewFrame, self.titleInset);
-		pageControlFrame = UIEdgeInsetsInsetRect(pageControlFrame, self.pageControlInset);
-		
-		titleViewFrame = UIEdgeInsetsInsetRect(titleViewFrame, self.titleViewInset);
-		pageControlFrame = UIEdgeInsetsInsetRect(pageControlFrame, self.titleViewInset);
-		
-		titleView.frame = titleViewFrame;
-		self.pageControl.frame = pageControlFrame;
-		
-		[titleView addSubview:_titleScrollView];
-		[titleView addSubview:self.pageControl];
-		
-		titleView.clipsToBounds = NO;
-		titleView.userInteractionEnabled = NO;
-		_titleView = titleView;
+		UIView * containerView = [[UIView alloc] init];
+		containerView.clipsToBounds = false;
+		containerView.frame = CGRectMake(size.width * i, 0.0f, size.width, size.height);
+		view.center = CGPointMake(CGRectGetWidth(containerView.frame) / 2.0, CGRectGetHeight(containerView.frame) / 2.0);
+		[containerView addSubview:view];
+		[compactTitleScrollView addSubview:containerView];
+		[views addObject:view];
 	}
-	return _titleView;
+	
+	self.titleViews = views;
+	
+	compactTitleScrollView.showsHorizontalScrollIndicator = NO;
+	compactTitleScrollView.pagingEnabled = YES;
+	compactTitleScrollView.frame = CGRectMake(0.0f, 0.0f, size.width, size.height);
+	compactTitleScrollView.contentSize = CGSizeMake(size.width * 2.0f, size.height);
+	compactTitleScrollView.scrollsToTop = false;
+	
+	return compactTitleScrollView;
+}
+
+- (UIView *)generateCompactTitleViewWithInitialFrame:(CGRect)frame finalSize:(CGSize *)finalSize {
+	UIView * compactTitleView = [[UIView alloc] initWithFrame:frame];
+	
+	UIScrollView * scrollView = [self generateCompactTitleScrollView];
+	
+	CGRect titleViewFrame = CGRectMake(0.0f,
+																		 0.0f,
+																		 scrollView.frame.size.width,
+																		 scrollView.frame.size.height + kPageControlTopMargin + kPageControlHeight);
+	
+	CGRect pageControlFrame = CGRectMake(0.0f,
+																			 scrollView.frame.size.height + kPageControlTopMargin,
+																			 scrollView.frame.size.width,
+																			 kPageControlHeight);
+	
+	titleViewFrame = UIEdgeInsetsInsetRect(titleViewFrame, self.titleInset);
+	pageControlFrame = UIEdgeInsetsInsetRect(pageControlFrame, self.pageControlInset);
+	
+	titleViewFrame = UIEdgeInsetsInsetRect(titleViewFrame, self.titleViewInset);
+	pageControlFrame = UIEdgeInsetsInsetRect(pageControlFrame, self.titleViewInset);
+	
+	[compactTitleView addSubview:scrollView];
+	[compactTitleView addSubview:self.compactPageControl];
+	
+	*finalSize = titleViewFrame.size;
+	self.compactPageControl.frame = pageControlFrame;
+	
+	self.compactTitleScrollView = scrollView;
+	
+	return compactTitleView;
+}
+
+- (UIView *)generateRegularTitleViewWithInitialFrame:(CGRect)frame finalSize:(CGSize *)finalSize {
+	UIView * regularTitleView = [[UIView alloc] initWithFrame:frame];
+	
+	NSMutableArray * views = [NSMutableArray array];
+	CGSize maxSize;
+	for(UIViewController * viewController in self.cachedPageViewControllers) {
+		UIView * viewControllerTitleView = [self titleViewForViewController:viewController];
+		[views addObject:viewControllerTitleView];
+		[regularTitleView addSubview:viewControllerTitleView];
+		
+		maxSize.width = MAX(maxSize.width, viewControllerTitleView.bounds.size.width);
+		maxSize.height = MAX(maxSize.height, viewControllerTitleView.bounds.size.height);
+	}
+	
+	CGSize titleViewSize = CGSizeMake(maxSize.width * views.count + self.regularTitleViewSpacing * (views.count - 1),
+																		maxSize.height);
+	
+	CGFloat currentCenterX = 0.0;
+	for(UIView * view in views) {
+		currentCenterX += maxSize.width / 2.0;
+		view.center = CGPointMake(currentCenterX, maxSize.height / 2.0);
+		currentCenterX += maxSize.width / 2.0 + self.regularTitleViewSpacing;
+	}
+	
+	*finalSize = CGSizeMake(titleViewSize.width, titleViewSize.height + kPageControlTopMargin + kPageControlHeight);
+	
+	[regularTitleView addSubview:self.regularPageControl];
+	
+	self.regularPageControl.frame = CGRectMake(0.0,
+																						 titleViewSize.height + kPageControlTopMargin,
+																						 titleViewSize.width,
+																						 kPageControlHeight);
+	
+	return regularTitleView;
+}
+
+- (UIView *)titleViewContainer {
+	if(_titleViewContainer == nil) {
+		_titleViewContainer = [[UIView alloc] init];
+	}
+	return _titleViewContainer;
+}
+
+- (void)generateTitleViewForRegularSizeClass:(BOOL)regular size:(CGSize)size {
+	if(self.titleView != nil) {
+		[self.placeholderImageTitleView removeFromSuperview];
+		self.placeholderImageTitleView = [[UIImageView alloc] initWithFrame:self.titleView.frame];
+		self.placeholderImageTitleView.image = [self snapshotOfView:self.titleView];
+		[self.titleView.superview addSubview:self.placeholderImageTitleView];
+		self.placeholderImageTitleView.alpha = 0.0;
+	}
+	
+	CGRect initialFrame = self.titleView.frame;
+	CGSize finalSize = CGSizeZero;
+	
+	[self.titleView removeFromSuperview];
+	if(regular) {
+		self.titleView = [self generateRegularTitleViewWithInitialFrame:initialFrame finalSize:&finalSize];
+	} else {
+		self.titleView = [self generateCompactTitleViewWithInitialFrame:initialFrame finalSize:&finalSize];
+	}
+	
+	[self.titleViewContainer addSubview:self.titleView];
+	
+	self.titleViewContainer.frame = CGRectMake(self.titleViewContainer.frame.origin.x,
+																						 self.titleViewContainer.frame.origin.y,
+																						 size.width - 2.0 * kTitleViewHorizontalMargin,
+																						 size.height);
+	
+	CGPoint center = CGPointMake(CGRectGetMidX(self.titleViewContainer.bounds), CGRectGetMidY(self.titleViewContainer.bounds));
+	self.titleView.frame = CGRectMake(center.x - finalSize.width / 2.0, center.y - finalSize.height / 2.0, finalSize.width, finalSize.height);
+	self.placeholderImageTitleView.center = center;
 }
 
 #pragma mark - Helper method
 
 - (void)updateTitleViewPosition {
 	CGFloat position = [self currentPosition];
-	[self.titleScrollView setContentOffset:CGPointMake(position * self.titleView.frame.size.width, 0.0f)];
+	[self.compactTitleScrollView setContentOffset:CGPointMake(position * self.titleView.frame.size.width, 0.0f)];
+	self.regularPageControl.center = CGPointMake(position * CGRectGetWidth(self.titleViews.firstObject.bounds) + CGRectGetMidX(self.titleViews.firstObject.bounds), self.regularPageControl.center.y);
 	
 	[self updateTitleViewAlphaWithPosition:position];
 }
 
 - (void)updateTitleViewAlphaWithPosition:(CGFloat)position {
+	if([self isRegularSizeClass]) {
+		for(UIView * view in self.titleViews) {
+			view.alpha = 1.0;
+		}
+		return;
+	}
+	
 	CGFloat (^ calculateProgress)(CGFloat, CGFloat) = ^CGFloat(CGFloat origin, CGFloat offset) {
 		offset -= origin;
 		offset  = (CGFloat)fabs(offset);
@@ -348,12 +482,48 @@
 	return rect.origin.x;
 }
 
+- (void(^)(void))animationBlockForSwitchingRegularTitleView:(BOOL)doSwitch size:(CGSize)size {
+	[self generateTitleViewForRegularSizeClass:doSwitch size:size];
+	self.titleView.alpha = 0.0;
+	self.placeholderImageTitleView.alpha = 1.0;
+	
+	return ^{
+		self.titleView.alpha = 1.0;
+		self.placeholderImageTitleView.alpha = 0.0;
+	};
+}
+
+- (void(^)(BOOL))animationCompletionBlockForSwitchingRegularTitleView:(BOOL)doSwitch {
+	if([self isRegularSizeClass] == doSwitch) {
+		return ^(BOOL finished) {};
+	}
+	
+	return ^(BOOL finished) {
+		[self.placeholderImageTitleView removeFromSuperview];
+		self.placeholderImageTitleView = nil;
+	};
+}
+
+- (BOOL)isRegularSizeClass {
+	return self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
+}
+
 - (void)setDelegate:(id<UIPageViewControllerDelegate> _Nullable)delegate {
 	ETHLogWarning(@"Warning: Cannot set delegate on a ETHPageViewController (Instance is %@)", self);
 }
 
 - (void)setDataSource:(id<UIPageViewControllerDataSource> _Nullable)dataSource {
 	ETHLogWarning(@"Warning: Cannot set dataSource on a ETHPageViewController (Instance is %@)", self);
+}
+
+- (UIImage *)snapshotOfView:(UIView *)view {
+	UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0);
+	[view.layer renderInContext:UIGraphicsGetCurrentContext()];
+	
+	UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
+	
+	UIGraphicsEndImageContext();
+	return image;
 }
 
 @end

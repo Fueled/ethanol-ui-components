@@ -33,6 +33,7 @@
 @property (nonatomic, assign) UITraitCollection * targetTraitCollection;
 @property (nonatomic, assign) CGSize targetSize;
 @property (nonatomic, strong) id<UIViewControllerTransitionCoordinator> targetCoordinator;
+@property (nonatomic, strong) UIScrollView * internalScrollView;
 
 @end
 
@@ -95,8 +96,8 @@
 	NSRunLoop *runner = [NSRunLoop currentRunLoop];
 	[self.displayLink addToRunLoop:runner forMode:NSRunLoopCommonModes];
 	
-	UIScrollView * innerScrollView = (UIScrollView *)[[self class] searchForViewOfType:[UIScrollView class] inView:self.view];
-	innerScrollView.scrollsToTop = false;
+	self.internalScrollView = (UIScrollView *)[[self class] searchForViewOfType:[UIScrollView class] inView:self.view];
+	self.internalScrollView.scrollsToTop = false;
 }
 
 + (UIView *)searchForViewOfType:(Class)class inView:(UIView *)baseView {
@@ -305,8 +306,7 @@
 }
 
 - (UIScrollView *)generateCompactTitleScrollView {
-	UIScrollView * compactTitleScrollView;
-	compactTitleScrollView = [[UIScrollView alloc] init];
+	UIScrollView * compactTitleScrollView = [[UIScrollView alloc] init];
 	
 	CGFloat sizeToUse = self.view.frame.size.width > self.view.frame.size.height ? self.view.frame.size.height : self.view.frame.size.width;
 	CGSize size = CGSizeMake(sizeToUse - 2.0 * kTitleViewHorizontalMargin, kTitleViewMaxHeight);
@@ -331,7 +331,7 @@
 	compactTitleScrollView.pagingEnabled = YES;
 	compactTitleScrollView.frame = CGRectMake(0.0f, 0.0f, size.width, size.height);
 	compactTitleScrollView.contentSize = CGSizeMake(size.width * 2.0f, size.height);
-	compactTitleScrollView.scrollsToTop = false;
+	compactTitleScrollView.scrollsToTop = NO;
 	
 	return compactTitleScrollView;
 }
@@ -383,18 +383,22 @@
 																		maxSize.height);
 	
 	CGFloat currentCenterX = 0.0;
+	NSMutableArray * views = [NSMutableArray array];
 	for(UIViewController * viewController in self.cachedPageViewControllers) {
 		currentCenterX += maxSize.width / 2.0;
 		UIView * viewControllerTitleView = [self titleViewForViewController:viewController forCenterPosition:CGPointMake(currentCenterX, maxSize.height / 2.0)];
 		[regularTitleView addSubview:viewControllerTitleView];
+		[views addObject:viewControllerTitleView];
 		currentCenterX += maxSize.width / 2.0 + self.regularTitleViewSpacing;
 	}
+	
+	self.titleViews = views;
 	
 	*finalSize = CGSizeMake(titleViewSize.width, titleViewSize.height + kPageControlTopMargin + kPageControlHeight);
 	
 	[regularTitleView addSubview:self.regularPageControl];
 	
-	self.regularPageControl.frame = CGRectMake([self regularPageControlPositionFromPagePosition:[self currentPosition]],
+	self.regularPageControl.frame = CGRectMake([self regularPageControlPositionFromPagePosition:[self currentPosition]] - titleViewSize.width / 2.0,
 																						 titleViewSize.height + kPageControlTopMargin,
 																						 titleViewSize.width,
 																						 kPageControlHeight);
@@ -451,7 +455,7 @@
 - (void)updateTitleViewPosition {
 	CGFloat position = [self currentPosition];
 	self.compactTitleScrollView.contentOffset = [self compactTitleScrollViewContentOffsetFromPagePosition:position];
-	self.regularPageControl.center = CGPointMake(position * CGRectGetWidth(self.titleViews.firstObject.bounds) + CGRectGetMidX(self.titleViews.firstObject.bounds), self.regularPageControl.center.y);
+	self.regularPageControl.center = CGPointMake([self regularPageControlPositionFromPagePosition:position], self.regularPageControl.center.y);
 	
 	[self updateTitleViewAlphaWithPosition:position];
 }
@@ -496,9 +500,16 @@
 - (CGFloat)currentPosition {
 	NSUInteger offset = 0;
 	UIViewController * firstVisibleViewController;
-	while((firstVisibleViewController = self.cachedPageViewControllers[offset]).view.superview == nil) {
+	while(offset < self.cachedPageViewControllers.count && (firstVisibleViewController = self.cachedPageViewControllers[offset]).view.superview == nil) {
 		++offset;
 	}
+	
+	if(offset >= self.cachedPageViewControllers.count) {
+		CGFloat offset = self.internalScrollView.contentOffset.x;
+		offset /= self.view.frame.size.width;
+		return offset;
+	}
+	
 	CGRect rect = [[firstVisibleViewController.view superview] convertRect:firstVisibleViewController.view.frame fromView:self.view];
 	rect.origin.x /= self.view.frame.size.width;
 	rect.origin.x += (CGFloat)offset;

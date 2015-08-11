@@ -179,6 +179,9 @@
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(nonnull id<UIViewControllerTransitionCoordinator>)coordinator {
+	if(self.targetTraitCollection == nil) {
+		self.targetTraitCollection = self.traitCollection;
+	}
 	self.targetSize = size;
 	self.targetCoordinator = coordinator;
 	
@@ -190,10 +193,10 @@
 		BOOL isRegularHorizontalSizeClass = self.targetTraitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
 		[self.targetCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
 			[self animationBlockForSwitchingRegularTitleView:isRegularHorizontalSizeClass size:self.targetSize]();
+			self.targetSize = CGSizeMake(-1.0, -1.0);
 		} completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
 			[self animationCompletionBlockForSwitchingRegularTitleView:isRegularHorizontalSizeClass](true);
 		}];
-		self.targetSize = CGSizeMake(-1.0, -1.0);
 		self.targetTraitCollection = nil;
 		self.targetCoordinator = nil;
 	}
@@ -383,7 +386,7 @@
 - (UIView *)generateRegularTitleViewWithInitialFrame:(CGRect)frame finalSize:(CGSize *)finalSize {
 	UIView * regularTitleView = [[UIView alloc] initWithFrame:frame];
 	
-	CGSize maxSize;
+	CGSize maxSize = CGSizeZero;
 	for(UIViewController * viewController in self.cachedPageViewControllers) {
 		UIView * viewControllerTitleView = [self titleViewForViewController:viewController forCenterPosition:CGPointZero];
 
@@ -449,7 +452,7 @@
 	self.titleViewContainer.frame = CGRectMake(self.titleViewContainer.frame.origin.x,
 																						 self.titleViewContainer.frame.origin.y,
 																						 size.width - 2.0 * kTitleViewHorizontalMargin,
-																						 size.height);
+																						 self.titleView.bounds.size.height);
 	
 	CGPoint center = CGPointMake(CGRectGetMidX(self.titleViewContainer.bounds), CGRectGetMidY(self.titleViewContainer.bounds));
 	self.titleView.frame = CGRectMake(center.x - finalSize.width / 2.0, center.y - finalSize.height / 2.0, finalSize.width, finalSize.height);
@@ -481,13 +484,6 @@
 }
 
 - (void)updateTitleViewAlphaWithPosition:(CGFloat)position {
-	if([self isRegularHorizontalSizeClass]) {
-		for(UIView * view in self.titleViews) {
-			view.alpha = 1.0;
-		}
-		return;
-	}
-	
 	CGFloat minimumTitleAlpha = [self isRegularHorizontalSizeClass] ? self.regularMinimumTitleAlpha : self.compactMinimumTitleAlpha;
 	CGFloat (^ calculateProgress)(CGFloat, CGFloat) = ^CGFloat(CGFloat origin, CGFloat offset) {
 		offset -= origin;

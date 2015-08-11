@@ -18,7 +18,8 @@
 
 #define kPageControlTopMargin 2.0f
 
-#define kTitleViewMinimumAlpha 0.45f
+#define kTitleViewCompactMinimumAlpha 0.45f
+#define kTitleViewRegularMinimumAlpha 0.45f
 
 @interface ETHPageViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIGestureRecognizerDelegate>
 
@@ -71,14 +72,15 @@
 	[super setDataSource:self];
 	[super setDelegate:self];
 	
-	_minimumTitleAlpha = kTitleViewMinimumAlpha;
+	_compactMinimumTitleAlpha = kTitleViewCompactMinimumAlpha;
+	_regularMinimumTitleAlpha = kTitleViewRegularMinimumAlpha;
 }
 
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
 	
-	[self generateTitleViewForRegularSizeClass:[self isRegularSizeClass] size:self.view.bounds.size];
+	[self generateTitleViewForRegularSizeClass:[self isRegularHorizontalSizeClass] size:self.view.bounds.size];
 	self.navigationItem.titleView = self.titleViewContainer;
 	
 	self.placeholderImageTitleView = [[UIImageView alloc] init];
@@ -141,10 +143,20 @@
 	[self regenerateTitleView];
 }
 
-- (void)setMinimumTitleAlpha:(CGFloat)minimumTitleAlpha {
-	_minimumTitleAlpha = minimumTitleAlpha;
+- (void)setCompactMinimumTitleAlpha:(CGFloat)compactMinimumTitleAlpha {
+	_compactMinimumTitleAlpha = compactMinimumTitleAlpha;
 	
-	[self updateTitleViewPosition];
+	if(![self isRegularHorizontalSizeClass]) {
+		[self updateTitleViewPosition];
+	}
+}
+
+- (void)setRegularMinimumTitleAlpha:(CGFloat)regularMinimumTitleAlpha {
+	_regularMinimumTitleAlpha = regularMinimumTitleAlpha;
+	
+	if([self isRegularHorizontalSizeClass]) {
+		[self updateTitleViewPosition];
+	}
 }
 
 - (void)setRegularTitleViewSpacing:(CGFloat)regularTitleViewSpacing {
@@ -154,7 +166,7 @@
 }
 
 - (void)regenerateTitleView {
-	[self generateTitleViewForRegularSizeClass:[self isRegularSizeClass] size:self.view.bounds.size];
+	[self generateTitleViewForRegularSizeClass:[self isRegularHorizontalSizeClass] size:self.view.bounds.size];
 }
 
 - (void)willTransitionToTraitCollection:(nonnull UITraitCollection *)newCollection withTransitionCoordinator:(nonnull id<UIViewControllerTransitionCoordinator>)coordinator {
@@ -175,11 +187,11 @@
 
 - (void)tryToUpdateTitle {
 	if(self.targetSize.width >= 0.0 && self.targetTraitCollection != nil && self.targetCoordinator != nil) {
-		BOOL isRegularSizeClass = self.targetTraitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
+		BOOL isRegularHorizontalSizeClass = self.targetTraitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
 		[self.targetCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-			[self animationBlockForSwitchingRegularTitleView:isRegularSizeClass size:self.targetSize]();
+			[self animationBlockForSwitchingRegularTitleView:isRegularHorizontalSizeClass size:self.targetSize]();
 		} completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-			[self animationCompletionBlockForSwitchingRegularTitleView:isRegularSizeClass](true);
+			[self animationCompletionBlockForSwitchingRegularTitleView:isRegularHorizontalSizeClass](true);
 		}];
 		self.targetSize = CGSizeMake(-1.0, -1.0);
 		self.targetTraitCollection = nil;
@@ -469,22 +481,23 @@
 }
 
 - (void)updateTitleViewAlphaWithPosition:(CGFloat)position {
-	if([self isRegularSizeClass]) {
+	if([self isRegularHorizontalSizeClass]) {
 		for(UIView * view in self.titleViews) {
 			view.alpha = 1.0;
 		}
 		return;
 	}
 	
+	CGFloat minimumTitleAlpha = [self isRegularHorizontalSizeClass] ? self.regularMinimumTitleAlpha : self.compactMinimumTitleAlpha;
 	CGFloat (^ calculateProgress)(CGFloat, CGFloat) = ^CGFloat(CGFloat origin, CGFloat offset) {
 		offset -= origin;
 		offset  = (CGFloat)fabs(offset);
 		// Linear function
-		CGFloat a = (1.0f - self.minimumTitleAlpha) / (0.0f - 0.5f);
+		CGFloat a = (1.0f - minimumTitleAlpha) / (0.0f - 0.5f);
 		CGFloat b = 1.0f - a * 0.0f;
 		offset = a * offset + b;
-		if(offset < self.minimumTitleAlpha) {
-			return self.minimumTitleAlpha;
+		if(offset < minimumTitleAlpha) {
+			return minimumTitleAlpha;
 		} else if(offset > 1.0f) {
 			return 1.0f;
 		}
@@ -528,7 +541,7 @@
 }
 
 - (void(^)(BOOL))animationCompletionBlockForSwitchingRegularTitleView:(BOOL)doSwitch {
-	if([self isRegularSizeClass] == doSwitch) {
+	if([self isRegularHorizontalSizeClass] == doSwitch) {
 		return ^(BOOL finished) {};
 	}
 	
@@ -538,7 +551,7 @@
 	};
 }
 
-- (BOOL)isRegularSizeClass {
+- (BOOL)isRegularHorizontalSizeClass {
 	return self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
 }
 

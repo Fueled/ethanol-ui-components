@@ -24,7 +24,8 @@ typedef UIViewController * __nonnull (^ ETHPageViewControllerFactoryBlock)(void)
 @property (nonatomic, assign) CGFloat regularTitleViewSpacing; // Defaults to 20.0
 @property (nonatomic, assign) UIEdgeInsets titleInset;
 @property (nonatomic, assign) UIEdgeInsets pageControlInset;
-@property (nonatomic, assign) CGFloat minimumTitleAlpha;
+@property (nonatomic, assign) CGFloat compactMinimumTitleAlpha;
+@property (nonatomic, assign) CGFloat regularMinimumTitleAlpha;
 
 - (void)willChangeToPage:(NSInteger)page; // This method can be overriden in subclass.
 - (void)didChangeToPage:(NSInteger)page; // This method can be overriden in subclass.

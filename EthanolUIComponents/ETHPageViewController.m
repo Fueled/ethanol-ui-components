@@ -97,8 +97,6 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 	__weak ETHPageViewController * weakSelf = self;
 	self.displayLink = [CADisplayLink eth_displayLinkWithBlock:^(CADisplayLink *displayLink) {
 		weakSelf.titleView.currentPosition = [self currentPosition];
-		CGPoint position = weakSelf.titleView.titleViews.lastObject.layer.position;
-		ETHLogDebug(@"position = (%g, %g)", position.x, position.y);
 	}];
 	NSRunLoop *runner = [NSRunLoop currentRunLoop];
 	[self.displayLink addToRunLoop:runner forMode:NSRunLoopCommonModes];
@@ -133,11 +131,13 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
 	[super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
 	
-	[self.titleView animateTitleToRegularHorizontalSizeClass:newCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular usingCoordinator:coordinator];
+	[self.titleView animateTitleToHorizontalSizeClass:newCollection.horizontalSizeClass usingCoordinator:coordinator];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(nonnull id<UIViewControllerTransitionCoordinator>)coordinator {
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+	
+	[self.titleView animateTitleToSize:size usingCoordinator:coordinator];
 	
 	[self.navigationItem.titleView layoutIfNeeded];
 	CGFloat width =  size.width - 2.0 * kTitleViewHorizontalMargin;

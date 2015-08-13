@@ -12,7 +12,7 @@
 
 @property (nonatomic, assign) CGFloat currentPosition;
 
-- (void)animateTitleToRegularHorizontalSizeClass:(BOOL)regular usingCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator;
+- (void)animateTitleToHorizontalSizeClass:(UIUserInterfaceSizeClass)horizontalSizeClass usingCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator;
 - (void)animateTitleToSize:(CGSize)size usingCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator;
 
 @end

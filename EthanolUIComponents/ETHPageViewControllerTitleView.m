@@ -22,7 +22,7 @@
 @property (nonatomic, strong) CADisplayLink * displayLink;
 @property (nonatomic, weak) UIView * regularMaxWidthTitleView;
 @property (nonatomic, weak) NSLayoutConstraint *regularPageControlContainerCenterXConstraint;
-@property (nonatomic, assign, getter=isCurrentTitleViewSizeClassRegular) BOOL currentTitleViewSizeClassRegular;
+@property (nonatomic, assign, getter=isCurrentTitleViewSizeClass) UIUserInterfaceSizeClass currentTitleViewSizeClass;
 
 @end
 
@@ -32,28 +32,30 @@
 	[super awakeFromNib];
 	
 	self.regularTitleViewSpacing = 20.0;
-	[self generateTitleViewForRegularSizeClass:[self isRegularHorizontalSizeClass]];
+	
+	self.currentTitleViewSizeClass = UIUserInterfaceSizeClassUnspecified;
+	[self generateTitleViewForSizeClass:self.traitCollection.horizontalSizeClass];
 }
 
 - (void)layoutSubviews {
-	[self generateTitleViewForRegularSizeClass:[self isRegularHorizontalSizeClass]];
+	[self generateTitleViewForSizeClass:self.traitCollection.horizontalSizeClass];
 }
 
-- (void)generateTitleViewForRegularSizeClass:(BOOL)regularSizeClass {
-	if(self.currentTitleViewSizeClassRegular != regularSizeClass) {
-		if(regularSizeClass) {
+- (void)generateTitleViewForSizeClass:(UIUserInterfaceSizeClass)sizeClass {
+	if(self.currentTitleViewSizeClass != sizeClass) {
+		if(sizeClass) {
 			[self generateRegularTitleViews];
 		} else {
 			[self generateCompactTitleViews];
 		}
-		self.currentTitleViewSizeClassRegular = regularSizeClass;
+		self.currentTitleViewSizeClass = sizeClass;
 	}
 }
 
 - (void)setTitleViews:(NSArray<UIView *> *)titleViews {
 	_titleViews = [titleViews copy];
 	
-	[self generateTitleViewForRegularSizeClass:[self isRegularHorizontalSizeClass]];
+	[self generateTitleViewForSizeClass:self.traitCollection.horizontalSizeClass];
 }
 
 - (void)updateTitleViewPosition {
@@ -70,7 +72,7 @@
 }
 
 - (void)updateTitleViewAlphaWithPosition:(CGFloat)position {
-	CGFloat minimumTitleAlpha = [self isRegularHorizontalSizeClass] ? self.regularMinimumTitleAlpha : self.compactMinimumTitleAlpha;
+	CGFloat minimumTitleAlpha = self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular ? self.regularMinimumTitleAlpha : self.compactMinimumTitleAlpha;
 	CGFloat (^ calculateProgress)(CGFloat, CGFloat) = ^CGFloat(CGFloat origin, CGFloat offset) {
 		offset -= origin;
 		offset  = (CGFloat)fabs(offset);
@@ -92,21 +94,17 @@
 	}
 }
 
-- (BOOL)isRegularHorizontalSizeClass {
-	return self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
-}
-
 - (void)setCurrentPosition:(CGFloat)currentPosition {
 	_currentPosition = currentPosition;
 	
 	[self updateTitleViewPosition];
 }
 
-- (void)animateTitleToRegularHorizontalSizeClass:(BOOL)regular usingCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+- (void)animateTitleToHorizontalSizeClass:(UIUserInterfaceSizeClass)horizontalSizeClass usingCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
 	self.placeholderImageView.image = [self snapshotOfView:self.titleView];
 	self.titleView.alpha = 0.0;
 	
-	[self generateTitleViewForRegularSizeClass:[self isRegularHorizontalSizeClass]];
+	[self generateTitleViewForSizeClass:horizontalSizeClass];
 	
 	[coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
 		self.titleView.alpha = 1.0;

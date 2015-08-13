@@ -84,6 +84,12 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 	if(self.navigationController.navigationBar != nil) {
 		[self.navigationController.navigationBar removeObserver:self forKeyPath:@"titleTextAttributes" context:NULL];
 	}
+	
+	for(UIViewController * viewController in self.cachedPageViewControllers) {
+		[viewController removeObserver:self forKeyPath:@"title" context:NULL];
+		[viewController removeObserver:self forKeyPath:@"navigationItem.title" context:NULL];
+		[viewController removeObserver:self forKeyPath:@"navigationItem.titleView" context:NULL];
+	}
 }
 
 - (void)viewDidLoad
@@ -92,7 +98,7 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 	
 	[self addObserver:self forKeyPath:@"navigationController" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:NULL];
 	if(self.navigationController.navigationBar != nil) {
-		[self.navigationController.navigationBar addObserver:self forKeyPath:@"titleTextAttributes" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:NULL];
+		[self.navigationController.navigationBar addObserver:self forKeyPath:@"titleTextAttributes" options:0 context:NULL];
 	}
 	
 	self.titleView = [[ETHPageViewControllerTitleView alloc] init];
@@ -126,7 +132,7 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
 	if([keyPath isEqualToString:@"navigationController"]) {
 		if(self.navigationController.navigationBar != nil) {
-			[self.navigationController.navigationBar addObserver:self forKeyPath:@"titleTextAttributes" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:NULL];
+			[self.navigationController.navigationBar addObserver:self forKeyPath:@"titleTextAttributes" options:0 context:NULL];
 		} else {
 			[self.navigationController.navigationBar removeObserver:self forKeyPath:@"titleTextAttributes" context:NULL];
 		}
@@ -135,6 +141,16 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 			label.font = [self.navigationController.navigationBar titleTextAttributes][NSFontAttributeName];
 			label.textColor = [self.navigationController.navigationBar titleTextAttributes][NSForegroundColorAttributeName];
 		}
+	} else if([keyPath isEqualToString:@"title"] || [keyPath isEqualToString:@"navigationItem.title"] || [keyPath isEqualToString:@"navigationItem.titleView"]) {
+		UIViewController * viewController = object;
+		NSInteger index = [self.cachedPageViewControllers indexOfObject:viewController];
+		if(index == NSNotFound || index >= self.titleView.titleViews.count) {
+			return;
+		}
+		
+		[self.titleView replaceTitleViewsAtIndexes:[NSIndexSet indexSetWithIndex:index]
+																withTitleViews:@[[self titleViewForViewController:viewController]]
+																			animated:YES];
 	}
 }
 
@@ -244,6 +260,11 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 - (NSArray<UIViewController *> *)cachedPageViewControllers {
 	if(_cachedPageViewControllers == nil) {
 		_cachedPageViewControllers = self.pageViewControllers;
+		for(UIViewController * viewController in _cachedPageViewControllers) {
+			[viewController addObserver:self forKeyPath:@"title" options:0 context:NULL];
+			[viewController addObserver:self forKeyPath:@"navigationItem.title" options:0 context:NULL];
+			[viewController addObserver:self forKeyPath:@"navigationItem.titleView" options:0 context:NULL];
+		}
 	}
 	return _cachedPageViewControllers;
 }

@@ -17,6 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) IBOutlet UIPageControl *compactPageControl;
 @property (nonatomic, copy, nullable) NSArray<UIView *> * titleViews;
 
+- (void)replaceTitleViewsAtIndexes:(NSIndexSet *)indexes withTitleViews:(NSArray *)array;
+
+// if animated, indexes.count must be equal to array.count
+- (void)replaceTitleViewsAtIndexes:(NSIndexSet *)indexes withTitleViews:(NSArray *)array animated:(BOOL)animated;
+
 @property (nonatomic, assign) UIEdgeInsets titleViewInset;
 @property (nonatomic, assign) CGFloat regularTitleViewSpacing; // Defaults to 20.0
 @property (nonatomic, assign) UIEdgeInsets titleInset;

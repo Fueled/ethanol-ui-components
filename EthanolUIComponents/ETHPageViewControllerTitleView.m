@@ -42,7 +42,11 @@
 }
 
 - (void)generateTitleViewForSizeClass:(UIUserInterfaceSizeClass)sizeClass {
-	if(self.currentTitleViewSizeClass != sizeClass) {
+	return [self generateTitleViewForSizeClass:sizeClass force:YES];
+}
+
+- (void)generateTitleViewForSizeClass:(UIUserInterfaceSizeClass)sizeClass force:(BOOL)force {
+	if(force || self.currentTitleViewSizeClass != sizeClass) {
 		if(sizeClass == UIUserInterfaceSizeClassRegular) {
 			[self generateRegularTitleViews];
 		} else {
@@ -55,7 +59,39 @@
 - (void)setTitleViews:(NSArray<UIView *> *)titleViews {
 	_titleViews = [titleViews copy];
 	
-	[self generateTitleViewForSizeClass:self.traitCollection.horizontalSizeClass];
+	[self generateTitleViewForSizeClass:self.traitCollection.horizontalSizeClass force:YES];
+}
+
+- (void)replaceTitleViewsAtIndexes:(NSIndexSet *)indexes withTitleViews:(NSArray *)array {
+	NSMutableArray * titleViews = [self.titleViews mutableCopy];
+	[titleViews replaceObjectsAtIndexes:indexes withObjects:array];
+	self.titleViews = titleViews;
+}
+
+- (void)replaceTitleViewsAtIndexes:(NSIndexSet *)indexes withTitleViews:(NSArray<UIView *> *)array animated:(BOOL)animated {
+	if(!animated) {
+		[self replaceTitleViewsAtIndexes:indexes withTitleViews:array];
+		return;
+	}
+	
+	NSAssert(indexes.count == array.count, @"-[ETHPageViewControllerTitleView replaceTitleViewsAtIndexes:withTitleViews:animated: doesn't support remove/inserting title views while replacing existing title views. Please provide the same number of items on both sides.");
+	NSMutableArray<UIView *> * previousTitleViews = [NSMutableArray arrayWithCapacity:indexes.count];
+	[indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
+		[previousTitleViews addObject:self.titleViews[idx]];
+	}];
+	
+	for(UIView * newTitleView in array) {
+		newTitleView.alpha = 0.0;
+	}
+	
+	[UIView animateWithDuration:0.35 animations:^{
+		[array enumerateObjectsUsingBlock:^(UIView *  _Nonnull newTitleView, NSUInteger idx, BOOL * _Nonnull stop) {
+			UIView * previousTitleView = previousTitleViews[idx];
+			newTitleView.alpha = previousTitleView.alpha;
+			previousTitleView.alpha = 0.0;
+		}];
+		[self replaceTitleViewsAtIndexes:indexes withTitleViews:array];
+	}];
 }
 
 - (void)updateTitleViewPosition {

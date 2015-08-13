@@ -32,7 +32,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mKz-Fo-GU5" userLabel="Compact Title View">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
                             <subviews>
-                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AN6-vo-MJL" userLabel="Titles Scroll View">
+                                <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AN6-vo-MJL" userLabel="Titles Scroll View">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="34"/>
                                 </scrollView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XJa-uv-2FI" userLabel="Page Control Container">

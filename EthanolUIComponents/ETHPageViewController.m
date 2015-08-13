@@ -26,13 +26,6 @@
 
 #define kTitleViewDefaultFontSize 17.0
 
-void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
-	NSLayoutConstraint * widthConstraint = [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:width];
-	NSLayoutConstraint * heightConstraint = [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:height];
-	
-	[view.superview addConstraints:@[widthConstraint, heightConstraint]];
-}
-
 static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintColorDidChangeNotification";
 
 @interface UIView (TintColorDidChangeNotification)
@@ -310,7 +303,17 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
 
 - (UIView *)titleViewForViewController:(UIViewController *)viewController {
 	if(viewController.navigationItem.titleView != nil) {
-		return viewController.navigationItem.titleView;
+		UIView * titleView = viewController.navigationItem.titleView;
+		if(titleView.translatesAutoresizingMaskIntoConstraints) {
+			// Add true width & height constraints instead
+			NSLayoutConstraint * widthConstraint = [NSLayoutConstraint constraintWithItem:titleView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:titleView.bounds.size.width];
+			NSLayoutConstraint * heightConstraint = [NSLayoutConstraint constraintWithItem:titleView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:titleView.bounds.size.height];
+			
+			titleView.translatesAutoresizingMaskIntoConstraints = NO;
+			
+			[titleView addConstraints:@[widthConstraint, heightConstraint]];
+		}
+		return titleView;
 	} else {
 		UILabel * label = [[UILabel alloc] init];
 		label.translatesAutoresizingMaskIntoConstraints = NO;

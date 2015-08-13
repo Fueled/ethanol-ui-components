@@ -23,6 +23,8 @@
 #define kTitleViewCompactMinimumAlpha 0.45f
 #define kTitleViewRegularMinimumAlpha 0.45f
 
+#define kTitleViewDefaultFontSize 17.0
+
 void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 	NSLayoutConstraint * widthConstraint = [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:width];
 	NSLayoutConstraint * heightConstraint = [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:height];
@@ -37,11 +39,13 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 @property (nonatomic, strong) CADisplayLink * displayLink;
 @property (nonatomic, strong) UIScrollView * internalScrollView;
 @property (nonatomic, strong) ETHPageViewControllerTitleView * titleView;
+@property (nonatomic, strong, readonly) NSMutableArray<UILabel *> * generatedTitleLabels;
 
 @end
 
 @implementation ETHPageViewController
 @synthesize cachedPageViewControllers = _cachedPageViewControllers;
+@synthesize generatedTitleLabels = _generatedTitleLabels;
 
 - (id)init {
 	return [self initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
@@ -72,9 +76,24 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 	[super setDelegate:self];
 }
 
+- (void)dealloc {
+	[self.displayLink invalidate];
+	self.displayLink = nil;
+	
+	[self removeObserver:self forKeyPath:@"navigationController" context:NULL];
+	if(self.navigationController.navigationBar != nil) {
+		[self.navigationController.navigationBar removeObserver:self forKeyPath:@"titleTextAttributes" context:NULL];
+	}
+}
+
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+	
+	[self addObserver:self forKeyPath:@"navigationController" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:NULL];
+	if(self.navigationController.navigationBar != nil) {
+		[self.navigationController.navigationBar addObserver:self forKeyPath:@"titleTextAttributes" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:NULL];
+	}
 	
 	self.titleView = [[ETHPageViewControllerTitleView alloc] init];
 	
@@ -87,7 +106,6 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 	self.navigationItem.titleView = self.titleView;
 	self.navigationItem.titleView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width - 2.0 * kTitleViewHorizontalMargin, self.navigationController.navigationBar.bounds.size.height);
 	[self.navigationItem.titleView layoutIfNeeded];
-	
 	
 	[self setViewControllers:@[self.cachedPageViewControllers.firstObject]
 								 direction:UIPageViewControllerNavigationDirectionForward
@@ -105,6 +123,21 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 	self.internalScrollView.scrollsToTop = false;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+	if([keyPath isEqualToString:@"navigationController"]) {
+		if(self.navigationController.navigationBar != nil) {
+			[self.navigationController.navigationBar addObserver:self forKeyPath:@"titleTextAttributes" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:NULL];
+		} else {
+			[self.navigationController.navigationBar removeObserver:self forKeyPath:@"titleTextAttributes" context:NULL];
+		}
+	} else if([keyPath isEqualToString:@"titleTextAttributes"]) {
+		for(UILabel * label in self.generatedTitleLabels) {
+			label.font = [self.navigationController.navigationBar titleTextAttributes][NSFontAttributeName];
+			label.textColor = [self.navigationController.navigationBar titleTextAttributes][NSForegroundColorAttributeName];
+		}
+	}
+}
+
 + (UIView *)searchForViewOfType:(Class)class inView:(UIView *)baseView {
 	if([baseView isKindOfClass:[UIScrollView class]]) {
 		return baseView;
@@ -117,11 +150,6 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 		}
 	}
 	return nil;
-}
-
-- (void)dealloc {
-	[self.displayLink invalidate];
-	self.displayLink = nil;
 }
 
 - (NSInteger)currentPage {
@@ -164,6 +192,13 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 
 - (UIViewController *)currentViewController {
 	return self.cachedPageViewControllers[self.currentPage];
+}
+
+- (NSMutableArray *)generatedTitleLabels {
+	if(_generatedTitleLabels == nil) {
+		_generatedTitleLabels = [NSMutableArray array];
+	}
+	return _generatedTitleLabels;
 }
 
 #pragma mark - UIPageViewController delegate methods
@@ -219,15 +254,19 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 	} else {
 		UILabel * label = [[UILabel alloc] init];
 		label.translatesAutoresizingMaskIntoConstraints = NO;
-		label.font = [[UINavigationBar appearance] titleTextAttributes][NSFontAttributeName] ?: [self.navigationController.navigationBar titleTextAttributes][NSFontAttributeName];
-		label.text = viewController.title ?: viewController.navigationItem.title;
+		label.font = [self.navigationController.navigationBar titleTextAttributes][NSFontAttributeName] ?: [UIFont boldSystemFontOfSize:kTitleViewDefaultFontSize];
+		label.text = viewController.navigationItem.title ?: viewController.title;
 		label.textAlignment = NSTextAlignmentCenter;
-		UIColor * textColor = [[UINavigationBar appearance] titleTextAttributes][NSForegroundColorAttributeName] ?: [self.navigationController.navigationBar titleTextAttributes][NSForegroundColorAttributeName];
-		if(textColor != nil) {
-			label.textColor = [UIColor whiteColor];
+		label.textColor = [self.navigationController.navigationBar titleTextAttributes][NSForegroundColorAttributeName];
+		NSShadow * shadow = [self.navigationController.navigationBar titleTextAttributes][NSShadowAttributeName];
+		if(shadow != nil) {
+			label.shadowOffset = shadow.shadowOffset;
+			label.shadowColor = shadow.shadowColor;
 		}
 		
 		[label sizeToFit];
+		
+		[self.generatedTitleLabels addObject:label];
 		
 		return label;
 	}

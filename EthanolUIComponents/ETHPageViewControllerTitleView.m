@@ -43,7 +43,7 @@
 
 - (void)generateTitleViewForSizeClass:(UIUserInterfaceSizeClass)sizeClass {
 	if(self.currentTitleViewSizeClass != sizeClass) {
-		if(sizeClass) {
+		if(sizeClass == UIUserInterfaceSizeClassRegular) {
 			[self generateRegularTitleViews];
 		} else {
 			[self generateCompactTitleViews];

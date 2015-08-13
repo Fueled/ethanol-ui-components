@@ -9,6 +9,7 @@
 #import "ETHPageViewControllerTitleView.h"
 #import "ETHPageViewControllerTitleView+Private.h"
 #import <EthanolUtilities/EthanolUtilities.h>
+#import <EthanolTools/EthanolTools.h>
 
 @interface ETHPageViewControllerTitleView ()
 
@@ -21,6 +22,7 @@
 @property (nonatomic, strong) CADisplayLink * displayLink;
 @property (nonatomic, weak) UIView * regularMaxWidthTitleView;
 @property (nonatomic, weak) NSLayoutConstraint *regularPageControlContainerCenterXConstraint;
+@property (nonatomic, assign, getter=isCurrentTitleViewSizeClassRegular) BOOL currentTitleViewSizeClassRegular;
 
 @end
 
@@ -30,29 +32,28 @@
 	[super awakeFromNib];
 	
 	self.regularTitleViewSpacing = 20.0;
-	if([self isRegularHorizontalSizeClass]) {
-		[self generateRegularTitleViews];
-	} else {
-		[self generateCompactTitleViews];
-	}
+	[self generateTitleViewForRegularSizeClass:[self isRegularHorizontalSizeClass]];
 }
 
 - (void)layoutSubviews {
-	if([self isRegularHorizontalSizeClass]) {
-		[self generateRegularTitleViews];
-	} else {
-		[self generateCompactTitleViews];
+	[self generateTitleViewForRegularSizeClass:[self isRegularHorizontalSizeClass]];
+}
+
+- (void)generateTitleViewForRegularSizeClass:(BOOL)regularSizeClass {
+	if(self.currentTitleViewSizeClassRegular != regularSizeClass) {
+		if(regularSizeClass) {
+			[self generateRegularTitleViews];
+		} else {
+			[self generateCompactTitleViews];
+		}
+		self.currentTitleViewSizeClassRegular = regularSizeClass;
 	}
 }
 
 - (void)setTitleViews:(NSArray<UIView *> *)titleViews {
 	_titleViews = [titleViews copy];
 	
-	if([self isRegularHorizontalSizeClass]) {
-		[self generateRegularTitleViews];
-	} else {
-		[self generateCompactTitleViews];
-	}
+	[self generateTitleViewForRegularSizeClass:[self isRegularHorizontalSizeClass]];
 }
 
 - (void)updateTitleViewPosition {
@@ -103,12 +104,9 @@
 
 - (void)animateTitleToRegularHorizontalSizeClass:(BOOL)regular usingCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
 	self.placeholderImageView.image = [self snapshotOfView:self.titleView];
+	self.titleView.alpha = 0.0;
 	
-	if(regular) {
-		[self generateRegularTitleViews];
-	} else {
-		[self generateCompactTitleViews];
-	}
+	[self generateTitleViewForRegularSizeClass:[self isRegularHorizontalSizeClass]];
 	
 	[coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
 		self.titleView.alpha = 1.0;
@@ -117,6 +115,10 @@
 		self.placeholderImageView.image = nil;
 		self.placeholderImageView.alpha = 1.0;
 	}];
+}
+
+- (void)animateTitleToSize:(CGSize)size usingCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+	self.compactTitlesScrollView.contentOffset = CGPointMake(0.0f, 0.0f);
 }
 
 - (void)generateCompactTitleViews {

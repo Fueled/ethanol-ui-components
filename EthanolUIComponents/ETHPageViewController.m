@@ -97,6 +97,8 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 	__weak ETHPageViewController * weakSelf = self;
 	self.displayLink = [CADisplayLink eth_displayLinkWithBlock:^(CADisplayLink *displayLink) {
 		weakSelf.titleView.currentPosition = [self currentPosition];
+		CGPoint position = weakSelf.titleView.titleViews.lastObject.layer.position;
+		ETHLogDebug(@"position = (%g, %g)", position.x, position.y);
 	}];
 	NSRunLoop *runner = [NSRunLoop currentRunLoop];
 	[self.displayLink addToRunLoop:runner forMode:NSRunLoopCommonModes];

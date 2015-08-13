@@ -219,10 +219,10 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 	} else {
 		UILabel * label = [[UILabel alloc] init];
 		label.translatesAutoresizingMaskIntoConstraints = NO;
-		label.font = [[UINavigationBar appearance] titleTextAttributes][NSFontAttributeName];
+		label.font = [[UINavigationBar appearance] titleTextAttributes][NSFontAttributeName] ?: [self.navigationController.navigationBar titleTextAttributes][NSFontAttributeName];
 		label.text = viewController.title ?: viewController.navigationItem.title;
 		label.textAlignment = NSTextAlignmentCenter;
-		UIColor * textColor = [[UINavigationBar appearance] titleTextAttributes][NSForegroundColorAttributeName];
+		UIColor * textColor = [[UINavigationBar appearance] titleTextAttributes][NSForegroundColorAttributeName] ?: [self.navigationController.navigationBar titleTextAttributes][NSForegroundColorAttributeName];
 		if(textColor != nil) {
 			label.textColor = [UIColor whiteColor];
 		}

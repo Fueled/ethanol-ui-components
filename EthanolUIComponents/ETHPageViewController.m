@@ -9,6 +9,7 @@
 #import "ETHPageViewController.h"
 #import "ETHPageViewControllerTitleView.h"
 #import "ETHPageViewControllerTitleView+Private.h"
+#import <EthanolUtilities/EthanolUtilities.h>
 
 @import EthanolUtilities;
 @import EthanolTools;
@@ -31,6 +32,28 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 	
 	[view.superview addConstraints:@[widthConstraint, heightConstraint]];
 }
+
+static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintColorDidChangeNotification";
+
+@interface UIView (TintColorDidChangeNotification)
+
+- (void)ethanol_tintColorDidChange;
+
+@end
+
+@implementation UIView (TintColorDidChangeNotification)
+
++ (void)load {
+	[self eth_swizzleSelector:@selector(tintColorDidChange) withSelector:@selector(ethanol_tintColorDidChange)];
+}
+
+- (void)ethanol_tintColorDidChange {
+	[self ethanol_tintColorDidChange];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:ETHViewTintColorDidChangeNotification object:self];
+}
+
+@end
 
 @interface ETHPageViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIGestureRecognizerDelegate>
 
@@ -83,6 +106,8 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 	[self removeObserver:self forKeyPath:@"navigationController" context:NULL];
 	if(self.navigationController.navigationBar != nil) {
 		[self.navigationController.navigationBar removeObserver:self forKeyPath:@"titleTextAttributes" context:NULL];
+		
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:ETHViewTintColorDidChangeNotification object:self.navigationController.navigationBar];
 	}
 	
 	for(UIViewController * viewController in self.cachedPageViewControllers) {
@@ -99,6 +124,10 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 	[self addObserver:self forKeyPath:@"navigationController" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:NULL];
 	if(self.navigationController.navigationBar != nil) {
 		[self.navigationController.navigationBar addObserver:self forKeyPath:@"titleTextAttributes" options:0 context:NULL];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewTintColorDidChangeNotificationHandler:) name:ETHViewTintColorDidChangeNotification object:self.navigationController.navigationBar];
+		
+		[self updatePageControlsTintColor];
 	}
 	
 	self.titleView = [[ETHPageViewControllerTitleView alloc] init];
@@ -152,6 +181,16 @@ void addSizeConstraintsToView(UIView * view, CGFloat width, CGFloat height) {
 																withTitleViews:@[[self titleViewForViewController:viewController]]
 																			animated:YES];
 	}
+}
+
+- (void)viewTintColorDidChangeNotificationHandler:(NSNotification *)notification {
+	[self updatePageControlsTintColor];
+}
+
+- (void)updatePageControlsTintColor {
+	self.titleView.compactPageControl.currentPageIndicatorTintColor = self.navigationController.navigationBar.tintColor;
+	self.titleView.compactPageControl.pageIndicatorTintColor = [self.navigationController.navigationBar.tintColor colorWithAlphaComponent:0.25];
+	self.titleView.regularPageControl.currentPageIndicatorTintColor = self.navigationController.navigationBar.tintColor;
 }
 
 + (UIView *)searchForViewOfType:(Class)class inView:(UIView *)baseView {

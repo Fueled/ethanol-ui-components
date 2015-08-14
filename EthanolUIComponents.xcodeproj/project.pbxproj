@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F41455061B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h in Headers */ = {isa = PBXBuildFile; fileRef = F41455041B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F41455071B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F41455051B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m */; };
+		F41455091B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F41455081B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib */; };
+		F414550C1B7BAE53007F63F8 /* ETHNibView.h in Headers */ = {isa = PBXBuildFile; fileRef = F414550A1B7BAE53007F63F8 /* ETHNibView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F414550D1B7BAE53007F63F8 /* ETHNibView.m in Sources */ = {isa = PBXBuildFile; fileRef = F414550B1B7BAE53007F63F8 /* ETHNibView.m */; };
+		F41455101B7BC5CD007F63F8 /* ETHPageViewControllerTitleView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F414550F1B7BC5C5007F63F8 /* ETHPageViewControllerTitleView+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		F47358C71B444841007688EC /* EthanolUIComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = F47358C61B444841007688EC /* EthanolUIComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F47358CE1B444842007688EC /* EthanolUIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F47358C31B444841007688EC /* EthanolUIComponents.framework */; };
 		F47358D31B444842007688EC /* EthanolUIComponentsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F47358D21B444842007688EC /* EthanolUIComponentsTests.m */; };
@@ -53,6 +59,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F41455041B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHPageViewControllerTitleView.h; sourceTree = "<group>"; };
+		F41455051B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHPageViewControllerTitleView.m; sourceTree = "<group>"; };
+		F41455081B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ETHPageViewControllerTitleView.xib; sourceTree = "<group>"; };
+		F414550A1B7BAE53007F63F8 /* ETHNibView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHNibView.h; sourceTree = "<group>"; };
+		F414550B1B7BAE53007F63F8 /* ETHNibView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHNibView.m; sourceTree = "<group>"; };
+		F414550F1B7BC5C5007F63F8 /* ETHPageViewControllerTitleView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ETHPageViewControllerTitleView+Private.h"; sourceTree = "<group>"; };
 		F47358C31B444841007688EC /* EthanolUIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EthanolUIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F47358C61B444841007688EC /* EthanolUIComponents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EthanolUIComponents.h; sourceTree = "<group>"; };
 		F47358C81B444841007688EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -115,6 +127,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F414550E1B7BAE5A007F63F8 /* ETHNibView */ = {
+			isa = PBXGroup;
+			children = (
+				F414550A1B7BAE53007F63F8 /* ETHNibView.h */,
+				F414550B1B7BAE53007F63F8 /* ETHNibView.m */,
+			);
+			name = ETHNibView;
+			sourceTree = "<group>";
+		};
 		F47358B91B444841007688EC = {
 			isa = PBXGroup;
 			children = (
@@ -143,6 +164,7 @@
 				F47359031B444935007688EC /* RefreshControl */,
 				F47359041B44493B007688EC /* Swift */,
 				F486366E1B6FC3CE001A3549 /* PageViewController */,
+				F414550E1B7BAE5A007F63F8 /* ETHNibView */,
 				F47358C81B444841007688EC /* Info.plist */,
 			);
 			path = EthanolUIComponents;
@@ -218,6 +240,10 @@
 		F486366E1B6FC3CE001A3549 /* PageViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F41455041B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h */,
+				F414550F1B7BC5C5007F63F8 /* ETHPageViewControllerTitleView+Private.h */,
+				F41455051B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m */,
+				F41455081B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib */,
 				F48636721B6FC412001A3549 /* ETHPageViewController.h */,
 				F48636731B6FC412001A3549 /* ETHPageViewController.m */,
 			);
@@ -231,10 +257,13 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F41455101B7BC5CD007F63F8 /* ETHPageViewControllerTitleView+Private.h in Headers */,
 				F47358EF1B4448F0007688EC /* ETHExtendableTextField.h in Headers */,
 				F47358F71B4448F0007688EC /* ETHPageControl.h in Headers */,
+				F414550C1B7BAE53007F63F8 /* ETHNibView.h in Headers */,
 				F47358FB1B4448F0007688EC /* ETHRefreshControl+Subclass.h in Headers */,
 				F47358F11B4448F0007688EC /* ETHExtendableTextField+Subclass.h in Headers */,
+				F41455061B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h in Headers */,
 				F47358FF1B4448F0007688EC /* ETHTextField.h in Headers */,
 				F47358F51B4448F0007688EC /* ETHExtendableTextFieldSingleCallDelegateForwarder.h in Headers */,
 				F47358FD1B4448F0007688EC /* ETHSwitch.h in Headers */,
@@ -324,6 +353,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F41455091B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +371,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F414550D1B7BAE53007F63F8 /* ETHNibView.m in Sources */,
 				F47358F01B4448F0007688EC /* ETHExtendableTextField.m in Sources */,
 				F47358FE1B4448F0007688EC /* ETHSwitch.m in Sources */,
 				F47358F81B4448F0007688EC /* ETHPageControl.m in Sources */,
@@ -348,6 +379,7 @@
 				F47358F41B4448F0007688EC /* ETHExtendableTextFieldDelegateProxy.m in Sources */,
 				F48636751B6FC412001A3549 /* ETHPageViewController.m in Sources */,
 				F47359001B4448F0007688EC /* ETHTextField.m in Sources */,
+				F41455071B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m in Sources */,
 				F47358F21B4448F0007688EC /* ETHExtendableTextField+Subclass.m in Sources */,
 				F47358FC1B4448F0007688EC /* ETHRefreshControl+Subclass.m in Sources */,
 				F47358FA1B4448F0007688EC /* ETHRefreshControl.m in Sources */,

@@ -126,7 +126,7 @@
 }
 
 - (void)updateTitleViewAlphaWithPosition:(CGFloat)position {
-	CGFloat minimumTitleAlpha = self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular ? self.regularMinimumTitleAlpha : self.compactMinimumTitleAlpha;
+	CGFloat minimumTitleAlpha = self.currentEffectiveSizeClass == UIUserInterfaceSizeClassRegular ? self.regularMinimumTitleAlpha : self.compactMinimumTitleAlpha;
 	CGFloat (^ calculateProgress)(CGFloat, CGFloat) = ^CGFloat(CGFloat origin, CGFloat offset) {
 		offset -= origin;
 		offset  = (CGFloat)fabs(offset);
@@ -155,6 +155,10 @@
 }
 
 - (void)animateTitleToHorizontalSizeClass:(UIUserInterfaceSizeClass)horizontalSizeClass usingCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+	if(self.currentEffectiveSizeClass == horizontalSizeClass) {
+		return;
+	}
+	
 	self.placeholderImageView.image = [self snapshotOfView:self.titleView];
 	self.titleView.alpha = 0.0;
 	

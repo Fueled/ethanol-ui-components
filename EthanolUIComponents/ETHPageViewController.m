@@ -216,8 +216,13 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
 	[self.titleView animateTitleToSize:size usingCoordinator:coordinator];
 	
 	[self.navigationItem.titleView layoutIfNeeded];
-	CGFloat width =  size.width - 2.0 * kTitleViewHorizontalMargin;
-	self.navigationItem.titleView.frame = CGRectMake((size.width - width) / 2.0, 0.0, size.width - 2.0 * kTitleViewHorizontalMargin, self.navigationController.navigationBar.bounds.size.height);
+	CGFloat width = size.width - 2.0 * kTitleViewHorizontalMargin;
+	self.navigationItem.titleView.frame = CGRectMake((size.width - width) / 2.0, 0.0, width, self.navigationController.navigationBar.bounds.size.height);
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+	CGFloat width = self.view.bounds.size.width - 2.0 * kTitleViewHorizontalMargin;
+	self.navigationItem.titleView.frame = CGRectMake(self.navigationItem.titleView.frame.origin.x, self.navigationItem.titleView.frame.origin.y, width, self.navigationController.navigationBar.bounds.size.height);
 }
 
 - (void)willChangeToPage:(NSInteger)page {

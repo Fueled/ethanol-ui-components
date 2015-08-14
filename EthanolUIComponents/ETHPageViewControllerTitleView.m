@@ -18,11 +18,13 @@
 @property (nonatomic, strong) IBOutlet UIView *regularTitlesContainer;
 @property (nonatomic, strong) IBOutlet UIImageView *placeholderImageView;
 @property (nonatomic, strong) IBOutlet UIView *regularPageControlContainer;
-@property (strong, nonatomic) IBOutlet UIView *regularTitleView;
+@property (nonatomic, strong) IBOutlet UIView *compactTitleView;
+@property (nonatomic, strong) IBOutlet UIView *regularTitleView;
 @property (nonatomic, strong) CADisplayLink * displayLink;
 @property (nonatomic, weak) UIView * regularMaxWidthTitleView;
 @property (nonatomic, weak) NSLayoutConstraint *regularPageControlContainerCenterXConstraint;
-@property (nonatomic, assign, getter=isCurrentTitleViewSizeClass) UIUserInterfaceSizeClass currentTitleViewSizeClass;
+@property (nonatomic, assign) UIUserInterfaceSizeClass currentTitleViewSizeClass;
+@property (nonatomic, assign) UIUserInterfaceSizeClass currentEffectiveSizeClass;
 
 @end
 
@@ -35,10 +37,16 @@
 	
 	self.currentTitleViewSizeClass = UIUserInterfaceSizeClassUnspecified;
 	[self generateTitleViewForSizeClass:self.traitCollection.horizontalSizeClass];
+	[self updateTitleViewSizeClassAnimated:NO];
 }
 
 - (void)layoutSubviews {
-	[self generateTitleViewForSizeClass:self.traitCollection.horizontalSizeClass];
+	if(self.currentEffectiveSizeClass == UIUserInterfaceSizeClassUnspecified) {
+		self.currentEffectiveSizeClass = self.traitCollection.horizontalSizeClass;
+	}
+	
+	[self generateTitleViewForSizeClass:self.currentEffectiveSizeClass];
+	[self updateTitleViewSizeClassAnimated:NO];
 }
 
 - (void)generateTitleViewForSizeClass:(UIUserInterfaceSizeClass)sizeClass {
@@ -46,13 +54,22 @@
 }
 
 - (void)generateTitleViewForSizeClass:(UIUserInterfaceSizeClass)sizeClass force:(BOOL)force {
+	if(sizeClass == UIUserInterfaceSizeClassUnspecified) {
+		return;
+	}
+	
+	if(sizeClass == UIUserInterfaceSizeClassRegular && [self isRegularTitleViewTooLarge]) {
+		sizeClass = UIUserInterfaceSizeClassCompact;
+	}
+	
 	if(force || self.currentTitleViewSizeClass != sizeClass) {
+		self.currentEffectiveSizeClass = sizeClass;
+		self.currentTitleViewSizeClass = sizeClass;
 		if(sizeClass == UIUserInterfaceSizeClassRegular) {
 			[self generateRegularTitleViews];
 		} else {
 			[self generateCompactTitleViews];
 		}
-		self.currentTitleViewSizeClass = sizeClass;
 	}
 }
 
@@ -60,6 +77,7 @@
 	_titleViews = [titleViews copy];
 	
 	[self generateTitleViewForSizeClass:self.traitCollection.horizontalSizeClass force:YES];
+	[self updateTitleViewSizeClassAnimated:YES];
 }
 
 - (void)replaceTitleViewsAtIndexes:(NSIndexSet *)indexes withTitleViews:(NSArray *)array {
@@ -142,13 +160,33 @@
 	
 	[self generateTitleViewForSizeClass:horizontalSizeClass];
 	
+	CGFloat compactTargetAlpha = self.currentEffectiveSizeClass == UIUserInterfaceSizeClassCompact ? 1.0 : 0.0;
+	CGFloat regularTargetAlpha = 1.0 - compactTargetAlpha;
 	[coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
 		self.titleView.alpha = 1.0;
 		self.placeholderImageView.alpha = 0.0;
+		self.compactTitleView.alpha = compactTargetAlpha;
+		self.regularTitleView.alpha = regularTargetAlpha;
 	} completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
 		self.placeholderImageView.image = nil;
 		self.placeholderImageView.alpha = 1.0;
 	}];
+}
+
+- (void)updateTitleViewSizeClassAnimated:(BOOL)animated {
+	CGFloat compactTargetAlpha = self.currentEffectiveSizeClass == UIUserInterfaceSizeClassCompact ? 1.0 : 0.0;
+	CGFloat regularTargetAlpha = 1.0 - compactTargetAlpha;
+	
+	void (^ animationBlock)(void) = ^{
+		self.compactTitleView.alpha = compactTargetAlpha;
+		self.regularTitleView.alpha = regularTargetAlpha;
+	};
+	
+	if(animated) {
+		[UIView animateWithDuration:0.35 animations:animationBlock];
+	} else {
+		animationBlock();
+	}
 }
 
 - (void)animateTitleToSize:(CGSize)size usingCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
@@ -202,7 +240,35 @@
 	}
 }
 
+- (void)maxWidthView:(UIView **)maxWidthView andMaxHeightViewForRegularTitleView:(UIView **)maxHeightView {
+	*maxWidthView = nil;
+	*maxHeightView = nil;
+	for(UIView * titleView in self.titleViews) {
+		[titleView sizeToFit];
+		
+		if(titleView.bounds.size.width > (*maxWidthView).bounds.size.width) {
+			*maxWidthView = titleView;
+		}
+		if(titleView.bounds.size.height > (*maxHeightView).bounds.size.height) {
+			*maxHeightView = titleView;
+		}
+	}
+}
+
+- (BOOL)isRegularTitleViewTooLarge {
+	UIView * maxWidthView = nil;
+	UIView * maxHeightView = nil;
+	[self maxWidthView:&maxWidthView andMaxHeightViewForRegularTitleView:&maxHeightView];
+	
+	CGFloat totalWidth = maxWidthView.bounds.size.width * self.titleViews.count + self.regularTitleViewSpacing * (self.titleViews.count - 1);
+	return totalWidth > self.bounds.size.width;
+}
+
 - (void)generateRegularTitleViews {
+	UIView * maxWidthView = nil;
+	UIView * maxHeightView = nil;
+	[self maxWidthView:&maxWidthView andMaxHeightViewForRegularTitleView:&maxHeightView];
+	
 	for(UIView * subview in self.compactTitlesScrollView.subviews) {
 		[subview removeFromSuperview];
 	}
@@ -212,19 +278,6 @@
 	
 	UIView * allTitlesView = [[UIView alloc] init];
 	allTitlesView.translatesAutoresizingMaskIntoConstraints = NO;
-	
-	UIView * maxWidthView = nil;
-	UIView * maxHeightView = nil;
-	for(UIView * titleView in self.titleViews) {
-		[titleView sizeToFit];
-		
-		if(titleView.bounds.size.width > maxWidthView.bounds.size.width) {
-			maxWidthView = titleView;
-		}
-		if(titleView.bounds.size.height > maxHeightView.bounds.size.height) {
-			maxHeightView = titleView;
-		}
-	}
 	
 	NSMutableArray * constraints = [NSMutableArray array];
 	UIView * previousContainerView = nil;

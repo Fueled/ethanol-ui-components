@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ETHPageViewControllerTitleView">
             <connections>
                 <outlet property="compactPageControl" destination="4cd-9P-eHX" id="tVM-Im-mds"/>
+                <outlet property="compactTitleView" destination="mKz-Fo-GU5" id="fuV-Rk-XvM"/>
                 <outlet property="compactTitlesScrollView" destination="AN6-vo-MJL" id="wwl-U9-4Tz"/>
                 <outlet property="contentView" destination="iN0-l3-epB" id="83m-9X-1Ix"/>
                 <outlet property="placeholderImageView" destination="RjR-bT-H3O" id="tja-y6-0zE"/>
@@ -29,7 +30,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KUC-mq-Kyz" userLabel="Title View">
                     <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mKz-Fo-GU5" userLabel="Compact Title View">
+                        <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mKz-Fo-GU5" userLabel="Compact Title View">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
                             <subviews>
                                 <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AN6-vo-MJL" userLabel="Titles Scroll View">
@@ -62,7 +63,7 @@
                                 <constraint firstItem="XJa-uv-2FI" firstAttribute="centerX" secondItem="mKz-Fo-GU5" secondAttribute="centerX" id="zwT-h6-lXt"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UAd-2T-4L9" userLabel="Regular Title View">
+                        <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UAd-2T-4L9" userLabel="Regular Title View">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="COw-Ic-gXk" userLabel="Titles Container">
@@ -88,6 +89,7 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstItem="0xW-Jf-Zoh" firstAttribute="centerX" secondItem="UAd-2T-4L9" secondAttribute="centerX" placeholder="YES" id="13n-W5-6pF" userLabel="Placeholder Constraint (Added in code)"/>
                                 <constraint firstItem="COw-Ic-gXk" firstAttribute="top" secondItem="UAd-2T-4L9" secondAttribute="top" id="50f-VD-9EC"/>
                                 <constraint firstAttribute="bottom" secondItem="0xW-Jf-Zoh" secondAttribute="bottom" id="DFb-TN-vHV"/>
                                 <constraint firstItem="COw-Ic-gXk" firstAttribute="leading" secondItem="UAd-2T-4L9" secondAttribute="leading" id="I3D-p0-YY4"/>
@@ -107,22 +109,6 @@
                         <constraint firstItem="UAd-2T-4L9" firstAttribute="top" secondItem="KUC-mq-Kyz" secondAttribute="top" id="WJa-3P-ICZ"/>
                         <constraint firstAttribute="bottom" secondItem="UAd-2T-4L9" secondAttribute="bottom" id="fsJ-Yj-WlF"/>
                     </constraints>
-                    <variation key="default">
-                        <mask key="subviews">
-                            <exclude reference="mKz-Fo-GU5"/>
-                            <exclude reference="UAd-2T-4L9"/>
-                        </mask>
-                    </variation>
-                    <variation key="widthClass=compact">
-                        <mask key="subviews">
-                            <include reference="mKz-Fo-GU5"/>
-                        </mask>
-                    </variation>
-                    <variation key="widthClass=regular">
-                        <mask key="subviews">
-                            <include reference="UAd-2T-4L9"/>
-                        </mask>
-                    </variation>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

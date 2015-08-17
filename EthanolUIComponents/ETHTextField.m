@@ -104,7 +104,7 @@
     
     _formatter = formatter;
     
-    self.text = [formatter formatObject:text preserveCursor:&startCursor changeInCharacterOffset:0] ?: text;
+    [super setText:[formatter formatObject:text preserveCursor:&startCursor changeInCharacterOffset:0] ?: text];
     [formatter formatObject:text preserveCursor:&endCursor changeInCharacterOffset:0];
     
     UITextPosition * startCursorPosition = [self positionFromPosition:[self beginningOfDocument] offset:MAX(0, MIN(((NSInteger)self.text.length), startCursor))];
@@ -125,7 +125,17 @@
   return [self tryToValidateWithDelegateForReason:ETHTextFieldValidationReasonLostFocus];
 }
 
+- (void)setText:(NSString *)text {
+  if([self tryToChangeCharactersInRange:NSMakeRange(0, self.text.length) withString:text callDependentMethods:NO]) {
+    [super setText:text];
+  }
+}
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+  return [self tryToChangeCharactersInRange:range withString:string callDependentMethods:YES];
+}
+
+- (BOOL)tryToChangeCharactersInRange:(NSRange)range withString:(NSString *)string callDependentMethods:(BOOL)callDependentMethods {
   BOOL hasDisallowedCharacters = NO;
   if(self.allowedCharacterSet != nil) {
     NSUInteger originalLength = string.length;
@@ -136,16 +146,18 @@
     }
   }
   
-  if(![super textField:textField shouldChangeCharactersInRange:range replacementString:string]) {
-    return NO;
-  }
-  
-  if([self.delegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)] && ![self.delegate textField:self shouldChangeCharactersInRange:range replacementString:string]) {
-    return NO;
-  }
-  
-  if(hasDisallowedCharacters && string.length == 0) {
-    return NO;
+  if(callDependentMethods) {
+    if(![super textField:self shouldChangeCharactersInRange:range replacementString:string]) {
+      return NO;
+    }
+    
+    if([self.delegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)] && ![self.delegate textField:self shouldChangeCharactersInRange:range replacementString:string]) {
+      return NO;
+    }
+    
+    if(hasDisallowedCharacters && string.length == 0) {
+      return NO;
+    }
   }
   
   NSInteger cursorOffset = 0;
@@ -189,7 +201,7 @@
   }
   
   if(shouldFormat || hasDisallowedCharacters || hasReachedLimitOfCharacters) {
-    self.text = newText;
+    [super setText:newText];
     
     if(cursor != NSIntegerMin) {
       UITextPosition * cursorPosition = [self positionFromPosition:[self beginningOfDocument] offset:MAX(0, MIN(((NSInteger)self.text.length), cursor))];
@@ -202,7 +214,9 @@
       }
     }
     
-    [self sendActionsForControlEvents:UIControlEventEditingChanged];
+    if(callDependentMethods) {
+      [self sendActionsForControlEvents:UIControlEventEditingChanged];
+    }
     return NO;
   }
   

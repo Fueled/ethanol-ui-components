@@ -23,11 +23,17 @@
  */
 @property (nonatomic, assign) CGSize sizeForDotSection;
 
+/**
+ *  Array of dots sorted from left to right
+ */
+@property (nonatomic, strong) NSMutableArray *dotsArray;
+
 @end
 
 @implementation ETHPageControl
 
 - (void)awakeFromNib {
+  self.dotsArray = [[NSMutableArray alloc] init];
   self.dotsSpace = kPageControlDotsOriginalSpace;
   self.pageIndicatorTintColor = kDefaultPageTintColor;
   self.currentPageIndicatorTintColor = kDefaultCurrentPageTintColor;
@@ -51,9 +57,10 @@
   }
   
   // Remove previous subviews.
-  for (UIView *subView in self.subviews) {
+  for (UIView *subView in self.dotsArray) {
     [subView removeFromSuperview];
   }
+  [self.dotsArray removeAllObjects];
   
   [self updateSizeForDotSection];
   for (NSInteger i = 0; i < [self numberOfDotsToDisplay]; i++) {
@@ -110,15 +117,20 @@
         }
       }
       [self addSubview:view];
+      [self.dotsArray addObject:view];
+      [self setupGestureRecognizerForView:view];
     } else {
       UIView *view = [[UIView alloc] initWithFrame:CGRectMake([self xOriginForDotAtIndex:i], (self.frame.size.height - kDefaultPageControlSize.height) / 2.0f, kPageControlDotsOriginalWidth, kPageControlDotsOriginalHeight)];
       view.backgroundColor = i == self.currentPage ? self.currentPageIndicatorTintColor : self.pageIndicatorTintColor;
       view.layer.cornerRadius = MIN(view.bounds.size.width, view.bounds.size.height) / 2.0f;
       view.layer.masksToBounds = YES;
-
+      
       [self addSubview:view];
+      [self.dotsArray addObject:view];
+      [self setupGestureRecognizerForView:view];
     }
   }
+  [self invalidateIntrinsicContentSize];
 }
 
 - (void)updateSizeForDotSection {
@@ -133,6 +145,18 @@
   return CGSizeMake([self totalWidthForNumberOfPages:pageCount], [self maxHeightForNumberOfPages:pageCount]);
 }
 
+- (void)didTapDot:(id)sender {
+  if (![sender isKindOfClass:[UITapGestureRecognizer class]]) {
+    return;
+  }
+  
+  NSInteger dotIndex = [self.dotsArray indexOfObject:[(UITapGestureRecognizer *)sender view]];
+  if (dotIndex != self.currentPage) {
+    self.currentPage = dotIndex;
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
+  }
+}
+
 #pragma mark - Helper Methods
 
 - (NSInteger)numberOfDotsToDisplay {
@@ -141,6 +165,11 @@
   }
   
   return self.numberOfPages;
+}
+
+- (void)setupGestureRecognizerForView:(UIView *)view {
+  UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapDot:)];
+  [view addGestureRecognizer:tapGestureRecognizer];
 }
 
 #pragma mark - Calculate Sizes
@@ -222,7 +251,7 @@
     return [self leftDotSize].width + self.dotsSpace + [self middleDotsSectionWidthForNumberOfPages:numberOfPages] + self.dotsSpace + [self rightDotSize].width;
   }
 }
-                    
+
 - (CGFloat)maxHeight {
   return [self maxHeightForNumberOfPages:self.numberOfPages];
 }
@@ -264,6 +293,16 @@
   
   sectionWidth += self.dotsSpace * dotIndex;
   return sectionWidth;
+}
+
+#pragma mark - UIView overriden methods
+
+- (void)sizeToFit {
+  self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, [self sizeForNumberOfPages:self.numberOfPages].width, [self sizeForNumberOfPages:self.numberOfPages].height);
+}
+
+- (CGSize)intrinsicContentSize {
+  return [self sizeForNumberOfPages:self.numberOfPages];
 }
 
 #pragma mark - Custom setters

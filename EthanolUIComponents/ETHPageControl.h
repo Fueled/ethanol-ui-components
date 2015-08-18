@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 IB_DESIGNABLE
 
-@interface ETHPageControl : UIView
+@interface ETHPageControl : UIControl
 
 /**
  *  Number of pages of the carousel, will define the number of dots.

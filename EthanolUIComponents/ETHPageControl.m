@@ -119,6 +119,7 @@
       [self addSubview:view];
     }
   }
+  [self invalidateIntrinsicContentSize];
 }
 
 - (void)updateSizeForDotSection {
@@ -264,6 +265,16 @@
   
   sectionWidth += self.dotsSpace * dotIndex;
   return sectionWidth;
+}
+
+#pragma mark - UIView overriden methods
+
+- (void)sizeToFit {
+  self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, [self sizeForNumberOfPages:self.numberOfPages].width, [self sizeForNumberOfPages:self.numberOfPages].height);
+}
+
+- (CGSize)intrinsicContentSize {
+  return [self sizeForNumberOfPages:self.numberOfPages];
 }
 
 #pragma mark - Custom setters

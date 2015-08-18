@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
+IB_DESIGNABLE
 
 /**
  *  This UISwitch subclass defines or redifines useful UI properties for your switches:
@@ -25,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Background color when the switch is turned off.
  */
-@property (nonatomic, strong, nullable) UIColor* offTintColor;
+@property (nonatomic, strong, nullable) IBInspectable UIColor* offTintColor;
 
 @end
 

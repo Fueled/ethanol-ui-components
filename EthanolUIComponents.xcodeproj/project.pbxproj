@@ -91,11 +91,11 @@
 		F47358EE1B4448F0007688EC /* ETHTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHTextField.m; sourceTree = "<group>"; };
 		F48636721B6FC412001A3549 /* ETHPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHPageViewController.h; sourceTree = "<group>"; };
 		F48636731B6FC412001A3549 /* ETHPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHPageViewController.m; sourceTree = "<group>"; };
-		F48636761B6FC93D001A3549 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/iOS/CocoaLumberjack.framework; sourceTree = SOURCE_ROOT; };
-		F48636771B6FC93D001A3549 /* EthanolTools.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EthanolTools.framework; path = Carthage/Build/iOS/EthanolTools.framework; sourceTree = SOURCE_ROOT; };
-		F48636781B6FC93D001A3549 /* EthanolUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EthanolUtilities.framework; path = Carthage/Build/iOS/EthanolUtilities.framework; sourceTree = SOURCE_ROOT; };
-		F48636791B6FC93D001A3549 /* NSInvocationHelpers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NSInvocationHelpers.framework; path = Carthage/Build/iOS/NSInvocationHelpers.framework; sourceTree = SOURCE_ROOT; };
-		F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EthanolValidationFormatting.framework; path = Carthage/Build/iOS/EthanolValidationFormatting.framework; sourceTree = "<group>"; };
+		F48636761B6FC93D001A3549 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F48636771B6FC93D001A3549 /* EthanolTools.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EthanolTools.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F48636781B6FC93D001A3549 /* EthanolUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EthanolUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F48636791B6FC93D001A3549 /* NSInvocationHelpers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NSInvocationHelpers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EthanolValidationFormatting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -502,10 +502,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
 				INFOPLIST_FILE = EthanolUIComponents/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -522,10 +518,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
 				INFOPLIST_FILE = EthanolUIComponents/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

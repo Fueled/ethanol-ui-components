@@ -27,15 +27,20 @@
 @property (nonatomic, strong) UIImage* onImage;
 @property (nonatomic, strong) UIImage* offImage;
 
-@property (nonatomic, strong) UIColor* defaultOnTintColor;
-@property (nonatomic, strong) UIColor* defaultTintColor;
-@property (nonatomic, strong) UIColor* defaultBackgroundColor;
-
 @end
 
 @implementation ETHSwitch
 @synthesize onImage = _onImage;
 @synthesize offImage = _offImage;
+@synthesize onTintColor = _onTintColor;
+
+- (instancetype)init {
+  self = [super init];
+  if (self) {
+    [self commonInit];
+  }
+  return self;
+}
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
   self = [super initWithCoder:coder];
@@ -58,10 +63,10 @@
   self.onTintColorSaved = self.onTintColor;
   self.backgroundColorSaved = self.backgroundColor;
   
-  UISwitch *defaultSwitch = [[UISwitch alloc] init];
-  self.defaultOnTintColor = defaultSwitch.onTintColor;
-  self.defaultTintColor = defaultSwitch.tintColor;
-  self.defaultBackgroundColor = defaultSwitch.backgroundColor;
+  // Trick: a Radius will be applied to the background in that case so it matches exactly the shape of the switch.
+  // Allows to apply a background color when the switch is turned off (impossible otherwise).
+  self.layer.cornerRadius = kSwitchCurveRadius;
+  self.layer.masksToBounds = YES;
 }
 
 - (void)commonInit {
@@ -129,51 +134,29 @@
   [self updateDesign];
 }
 
-#pragma mark - Update colors methods 
+#pragma mark - Update colors methods
 
 - (void)updateColorsOn {
-  self.backgroundColor = [UIColor clearColor];
-  self.layer.cornerRadius = 0.0f;
+  self.backgroundColor = self.onTintColor;
 }
 
 - (void)updateColorsOff {
-  // Trick: a Radius will be applied to the background in that case so it matches exactly the shape of the switch. Allows to apply a background color when the switch is turned off (impossible otherwise).
-  self.backgroundColor = self.offTintColor != nil ? self.offTintColor : self.defaultBackgroundColor;
-  self.tintColor = self.offTintColor != nil ? self.offTintColor : self.defaultTintColor;
-  self.layer.cornerRadius = kSwitchCurveRadius;
+  self.backgroundColor = self.offTintColor;
+  self.tintColor = self.offTintColor;
 }
 
-- (void)hideColors {
-  self.backgroundColor = [UIColor clearColor];
-  self.tintColor = [UIColor clearColor];
-  self.onTintColor = [UIColor clearColor];
-  self.offTintColor = [UIColor clearColor];
-}
-
-#pragma mark - Helpers 
+#pragma mark - Helpers
 
 - (void)restoreOnTintColor {
-  if (self.onTintColorSaved != nil) {
-    self.onTintColor = self.onTintColorSaved;
-  } else {
-    self.onTintColor = self.defaultOnTintColor;
-  }
+  self.onTintColor = self.onTintColorSaved;
 }
 
 - (void)restoreTintColor {
-  if (self.tintColorSaved != nil) {
-    self.tintColor = self.tintColorSaved;
-  } else {
-    self.tintColor = self.defaultTintColor;
-  }
+  self.tintColor = self.tintColorSaved;
 }
 
 - (void)restoreBackgroundColor {
-  if (self.backgroundColorSaved != nil) {
-    self.backgroundColor = self.backgroundColorSaved;
-  } else {
-    self.backgroundColor = self.defaultBackgroundColor;
-  }
+  self.backgroundColor = self.backgroundColorSaved;
 }
 
 - (void)saveAndClearOnTintColor {
@@ -195,10 +178,10 @@
 
 - (void)setOnImage:(UIImage *)onImage {
   _onImage = onImage;
-
+  
   if (self.isOn) {
     self.backgroundImage.image = onImage;
-
+    
     if (onImage == nil) {
       [self restoreOnTintColor];
       
@@ -230,7 +213,7 @@
   
   if (!self.isOn) {
     self.backgroundImage.image = offImage;
-
+    
     // If deleting the offImage, make tintColor and backgroundColor appear. Save and clear them otherwise.
     if (offImage == nil) {
       [self restoreTintColor];
@@ -247,6 +230,9 @@
 }
 
 - (void)setOnTintColor:(UIColor *)onTintColor {
+  // Save this onTintColor right away. Might be use if user requests getOnTintColor or backgroundColor.
+  _onTintColor = onTintColor;
+  
   // Don't udate onTintColor but save it instead if onImage is already displayed (would be overlapped by onTintColor otherwise). However, it is not necessary to prevent this update if onTintColor is clear (won't impact the way the onImage is displayed, it is even mandatory to accept updates with a clear color for a few cases).
   if (self.onImage != nil && self.isOn && onTintColor != [UIColor clearColor]) {
     self.onTintColorSaved = onTintColor;
@@ -257,7 +243,7 @@
   if (onTintColor != nil) {
     [super setOnTintColor:onTintColor];
   } else {
-    [super setOnTintColor:self.defaultOnTintColor];
+    [super setOnTintColor:nil];
   }
   
   if (self.isOn) {
@@ -281,5 +267,14 @@
   }
 }
 
-@end
+#pragma mark - Overriden getters
 
+- (UIColor *)backgroundColor {
+  if (self.on) {
+    return self.onTintColor;
+  } else {
+    return [super backgroundColor];
+  }
+}
+
+@end

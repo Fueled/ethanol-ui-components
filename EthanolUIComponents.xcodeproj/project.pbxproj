@@ -10,6 +10,8 @@
 		0C42AEBC1B852FD7000F0307 /* Tests.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C42AEBB1B852FD7000F0307 /* Tests.xcassets */; };
 		0C640EB71B8506CC003A157A /* SwitchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C640EB61B8506CC003A157A /* SwitchTests.m */; };
 		0C898C551B879A5D002D7E35 /* Tests.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C898C541B879A5D002D7E35 /* Tests.storyboard */; };
+		0C7369961B86745F00AD3DF4 /* PageControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7369951B86745F00AD3DF4 /* PageControlTests.m */; };
+		0C7369981B86811600AD3DF4 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C7369971B86811600AD3DF4 /* Media.xcassets */; };
 		F41455061B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h in Headers */ = {isa = PBXBuildFile; fileRef = F41455041B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F41455071B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F41455051B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m */; };
 		F41455091B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F41455081B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib */; };
@@ -59,6 +61,8 @@
 		0C42AEBB1B852FD7000F0307 /* Tests.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Tests.xcassets; sourceTree = "<group>"; };
 		0C640EB61B8506CC003A157A /* SwitchTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchTests.m; sourceTree = "<group>"; };
 		0C898C541B879A5D002D7E35 /* Tests.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tests.storyboard; sourceTree = "<group>"; };
+		0C7369951B86745F00AD3DF4 /* PageControlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageControlTests.m; sourceTree = "<group>"; };
+		0C7369971B86811600AD3DF4 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		F41455041B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHPageViewControllerTitleView.h; sourceTree = "<group>"; };
 		F41455051B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHPageViewControllerTitleView.m; sourceTree = "<group>"; };
 		F41455081B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ETHPageViewControllerTitleView.xib; sourceTree = "<group>"; };
@@ -171,6 +175,9 @@
 				F47358D41B444842007688EC /* Info.plist */,
 				0C898C541B879A5D002D7E35 /* Tests.storyboard */,
 				0C42AEBB1B852FD7000F0307 /* Tests.xcassets */,
+				F47358D41B444842007688EC /* Info.plist */,
+				0C7369951B86745F00AD3DF4 /* PageControlTests.m */,
+				0C7369971B86811600AD3DF4 /* Media.xcassets */,
 			);
 			path = EthanolUIComponentsTests;
 			sourceTree = "<group>";
@@ -359,6 +366,7 @@
 			files = (
 				0C898C551B879A5D002D7E35 /* Tests.storyboard in Resources */,
 				0C42AEBC1B852FD7000F0307 /* Tests.xcassets in Resources */,
+				0C7369981B86811600AD3DF4 /* Media.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,6 +397,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C640EB71B8506CC003A157A /* SwitchTests.m in Sources */,
+				0C7369961B86745F00AD3DF4 /* PageControlTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

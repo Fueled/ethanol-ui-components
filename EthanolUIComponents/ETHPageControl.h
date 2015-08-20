@@ -9,80 +9,81 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
+IB_DESIGNABLE
 
-@interface ETHPageControl : UIView
+@interface ETHPageControl : UIControl
 
 /**
  *  Number of pages of the carousel, will define the number of dots.
  */
-@property (nonatomic, assign) NSInteger numberOfPages;
+@property (nonatomic, assign) IBInspectable NSInteger numberOfPages;
 
 /**
  *  Carousel page currently displayed. The corresponding dot will be displayed as active (all the other dots will be inactive).
  */
-@property (nonatomic, assign) NSInteger currentPage;
+@property (nonatomic, assign) IBInspectable NSInteger currentPage;
 
 /**
  *  Distance between two dots (whether they are custom images or build-in ones).
  */
-@property (nonatomic, assign) CGFloat dotsSpace;
+@property (nonatomic, assign) IBInspectable CGFloat dotsSpace;
 
 /**
  *  Hide the the indicator if there is only one page. Default is NO.
  */
-@property (nonatomic, assign) BOOL hidesForSinglePage;
+@property (nonatomic, assign) IBInspectable BOOL hidesForSinglePage;
 
 /**
  *  TintColor for inactive page indicators (dots). You can specify your alpha for the provided custom color if needed.
  */
-@property (nonatomic, strong, nullable) UIColor *pageIndicatorTintColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong, nullable) IBInspectable UIColor *pageIndicatorTintColor UI_APPEARANCE_SELECTOR;
 
 /**
  *  TintColor for active page indicator. You can specify your alpha for the provided custom color if needed.
  */
-@property (nonatomic, strong, nullable) UIColor *currentPageIndicatorTintColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong, nullable) IBInspectable UIColor *currentPageIndicatorTintColor UI_APPEARANCE_SELECTOR;
 
 /**
  *  Set the value of this property to true so that, when the user taps the control to go to a new page, the class defers updating the page control until it calls updateCurrentPageDisplay. 
  *  Set the value to false (the default) to have the page control updated immediately.
  */
-@property (nonatomic, assign) BOOL defersCurrentPageDisplay;
+@property (nonatomic, assign) IBInspectable BOOL defersCurrentPageDisplay;
 
 /**
  *  Image for the top left dot (corresponding to the first page of the carousel).
  *  This image will be displayed when the state is active (current page is the first page).
  *  Default circle dot will be set if this property is set to nil.
  */
-@property (nonatomic, strong, nullable) UIImage *leftDotImageInactive;
+@property (nonatomic, strong, nullable) IBInspectable UIImage *leftDotImageInactive;
 
 /**
  *  Image for all the dots in the middle, that are neither the top left dot nor the top right dot, this whatever the number of middle dots is.
  *  This image will be displayed when the state is active (for the dot corresponding to the current page).
  *  Default circle dot will be set if this property is set to nil.
  */
-@property (nonatomic, strong, nullable) UIImage *middleDotImageInactive;
+@property (nonatomic, strong, nullable) IBInspectable UIImage *middleDotImageInactive;
 
 /**
  *  Image for the top left left (corresponding to the last page of the carousel).
  *  This image will be displayed when the state is active (current page is the last page).
  *  Default circle dot will be set if this property is set to nil.
  */
-@property (nonatomic, strong, nullable) UIImage *rightDotImageInactive;
+@property (nonatomic, strong, nullable) IBInspectable UIImage *rightDotImageInactive;
 
 /**
  *  Same for top left dot when its state its inactive (current page is not the first page).
  */
-@property (nonatomic, strong, nullable) UIImage *leftDotImageActive;
+@property (nonatomic, strong, nullable) IBInspectable UIImage *leftDotImageActive;
 
 /**
  *  Same for dots in the middle when they are in they state inactive.
  */
-@property (nonatomic, strong, nullable) UIImage *middleDotImageActive;
+@property (nonatomic, strong, nullable) IBInspectable UIImage *middleDotImageActive;
 
 /**
  *  Same for top right dot when its state its inactive (current page is not the last page).
  */
-@property (nonatomic, strong, nullable) UIImage *rightDotImageActive;
+@property (nonatomic, strong, nullable) IBInspectable UIImage *rightDotImageActive;
 
 /**
  *  Returns minimum size required to display dots for given page count. Can be used to size control if page count could change.

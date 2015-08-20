@@ -18,7 +18,7 @@
 
 @interface ETHSwitch ()
 
-@property (nonatomic, retain, readwrite) UIImageView* backgroundImage;
+@property (nonatomic, retain, readwrite) UIImageView* backgroundImageView;
 
 @property (nonatomic, strong) UIColor *onTintColorSaved;
 @property (nonatomic, strong) UIColor *tintColorSaved;
@@ -88,10 +88,10 @@
 - (void)setupUserInterface {
   UIImageView *background = [[UIImageView alloc] initWithFrame:RECT_FOR_ON];
   background.contentMode = UIViewContentModeScaleAspectFit;
-  self.backgroundImage = background;
+  self.backgroundImageView = background;
   
-  [self addSubview:self.backgroundImage];
-  [self sendSubviewToBack:self.backgroundImage];
+  [self addSubview:self.backgroundImageView];
+  [self sendSubviewToBack:self.backgroundImageView];
   
   [self updateDesign];
 }
@@ -100,26 +100,26 @@
   if (self.on) {
     if (self.onImage != nil) {
       self.onTintColor = [UIColor clearColor];
-      [UIView transitionWithView:self.backgroundImage
+      [UIView transitionWithView:self.backgroundImageView
                         duration:kSwitchAnimationDuration
                          options:UIViewAnimationOptionTransitionCrossDissolve
                       animations:^{
-                        self.backgroundImage.image = self.onImage;
+                        self.backgroundImageView.image = self.onImage;
                       } completion:nil];
     } else {
-      self.backgroundImage.image = nil;
+      self.backgroundImageView.image = nil;
       [self updateColorsOn];
     }
   } else {
     if (self.offImage != nil) {
-      [UIView transitionWithView:self.backgroundImage
+      [UIView transitionWithView:self.backgroundImageView
                         duration:kSwitchAnimationDuration
                          options:UIViewAnimationOptionTransitionCrossDissolve
                       animations:^{
-                        self.backgroundImage.image = self.offImage;
+                        self.backgroundImageView.image = self.offImage;
                       } completion:nil];
     } else {
-      self.backgroundImage.image = nil;
+      self.backgroundImageView.image = nil;
       [self updateColorsOff];
     }
   }
@@ -141,13 +141,6 @@
   self.backgroundColor = self.offTintColor != nil ? self.offTintColor : self.defaultBackgroundColor;
   self.tintColor = self.offTintColor != nil ? self.offTintColor : self.defaultTintColor;
   self.layer.cornerRadius = kSwitchCurveRadius;
-}
-
-- (void)hideColors {
-  self.backgroundColor = [UIColor clearColor];
-  self.tintColor = [UIColor clearColor];
-  self.onTintColor = [UIColor clearColor];
-  self.offTintColor = [UIColor clearColor];
 }
 
 #pragma mark - Helpers 
@@ -197,7 +190,7 @@
   _onImage = onImage;
 
   if (self.isOn) {
-    self.backgroundImage.image = onImage;
+    self.backgroundImageView.image = onImage;
 
     if (onImage == nil) {
       [self restoreOnTintColor];
@@ -229,7 +222,7 @@
   _offImage = offImage;
   
   if (!self.isOn) {
-    self.backgroundImage.image = offImage;
+    self.backgroundImageView.image = offImage;
 
     // If deleting the offImage, make tintColor and backgroundColor appear. Save and clear them otherwise.
     if (offImage == nil) {

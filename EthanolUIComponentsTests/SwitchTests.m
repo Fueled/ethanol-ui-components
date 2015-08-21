@@ -42,38 +42,34 @@
 
 - (void)testTurnSwitchOnColorOnSwitch {
   ETHSwitch *theSwitch = [[ETHSwitch alloc] init];
-  UIColor *color = [UIColor redColor];
-  theSwitch.onTintColor = color;
+  theSwitch.onTintColor = [UIColor redColor];
   theSwitch.on = YES;
   
-  XCTAssertEqualObjects(theSwitch.onTintColor, color);
+  XCTAssertEqualObjects(theSwitch.backgroundColor, [UIColor redColor]);
 }
 
 - (void)testTurnSwitchOffColorOffSwitch {
   ETHSwitch *theSwitch = [[ETHSwitch alloc] init];
-  UIColor *color = [UIColor redColor];
-  theSwitch.offTintColor = color;
+  theSwitch.offTintColor = [UIColor redColor];
   theSwitch.on = NO;
   
-  XCTAssertEqualObjects(theSwitch.backgroundColor, color);
+  XCTAssertEqualObjects(theSwitch.backgroundColor, [UIColor redColor]);
 }
 
 - (void)testTurnSwitchOnColorOffSwitch {
   ETHSwitch *theSwitch = [[ETHSwitch alloc] init];
-  UIColor *color = [UIColor redColor];
-  theSwitch.onTintColor = color;
+  theSwitch.onTintColor = [UIColor redColor];
   theSwitch.on = NO;
   
-  XCTAssertNotEqualObjects(theSwitch.backgroundColor, color);
+  XCTAssertNotEqualObjects(theSwitch.backgroundColor, [UIColor redColor]);
 }
 
 - (void)testTurnSwitchOffColorOnSwitch {
   ETHSwitch *theSwitch = [[ETHSwitch alloc] init];
-  UIColor *color = [UIColor redColor];
-  theSwitch.offTintColor = color;
+  theSwitch.offTintColor = [UIColor redColor];
   theSwitch.on = YES;
   
-  XCTAssertNotEqualObjects(theSwitch.backgroundColor, color);
+  XCTAssertNotEqualObjects(theSwitch.backgroundColor, [UIColor redColor]);
 }
 
 - (void)testOnBackgroundPicture {
@@ -90,6 +86,22 @@
   theSwitch.on = NO;
   
   XCTAssertEqualObjects(theSwitch.backgroundImage.image, self.image);
+}
+
+- (void)testOnBackgroundPictureOffStatus {
+  ETHSwitch *theSwitch = [[ETHSwitch alloc] init];
+  theSwitch.onImage = self.image;
+  theSwitch.on = NO;
+  
+  XCTAssertNotEqualObjects(theSwitch.backgroundImage.image, self.image);
+}
+
+- (void)testOffBackgroundPictureOnStatus {
+  ETHSwitch *theSwitch = [[ETHSwitch alloc] init];
+  theSwitch.offImage = self.image;
+  theSwitch.on = YES;
+  
+  XCTAssertNotEqualObjects(theSwitch.backgroundImage.image, self.image);
 }
 
 - (void)testResetOnColor {
@@ -139,13 +151,13 @@
   XCTAssertEqualObjects(theSwitch.backgroundImage.image, self.image);
 }
 
-- (void)testSwitchOnImageNilOffImageSet {
+- (void)testSwitchOnImageOffOnly {
   ETHSwitch *theSwitch = [[ETHSwitch alloc] init];
   theSwitch.on = YES;
   theSwitch.offImage = self.image;
   theSwitch.onImage = nil;
   
-  XCTAssert(theSwitch.backgroundColor != nil);
+  XCTAssertNil(theSwitch.backgroundColor);
 }
 
 - (void)testSwitchChangeImage {
@@ -185,16 +197,6 @@
   XCTAssertEqualObjects(theSwitch.backgroundImage.image, nil);
 }
 
-- (void)testSwitchRenewOnTintColor {
-  ETHSwitch *theSwitch = [[ETHSwitch alloc] init];
-  theSwitch.on = YES;
-  theSwitch.onImage = self.image;
-  theSwitch.onTintColor = [UIColor redColor];
-  theSwitch.onTintColor = [UIColor blueColor];
-  
-  XCTAssertEqualObjects(theSwitch.backgroundColor, [UIColor clearColor]); // Clear when image
-}
-
 - (void)testSwitchOffTintColorOffSwitch {
   ETHSwitch *theSwitch = [[ETHSwitch alloc] init];
   theSwitch.on = NO;
@@ -227,7 +229,7 @@
   theSwitch.on = YES;
   theSwitch.onTintColor = [UIColor blueColor];
   
-  XCTAssertEqualObjects(theSwitch.backgroundColor, [UIColor blueColor]);  // Is green instead
+  XCTAssertEqualObjects(theSwitch.backgroundColor, [UIColor blueColor]);
 }
 
 - (void)testSwitchExtensiveProcess2 {
@@ -252,15 +254,17 @@
   XCTAssertEqualObjects(theSwitch.backgroundColor, [UIColor blueColor]);
 }
 
-- (void)testOther {
+- (void)testSwitchExtensiveProcess3 {
   ETHSwitch *theSwitch = [[ETHSwitch alloc] init];
+  theSwitch.on = YES;
   theSwitch.onTintColor = [UIColor greenColor];
   theSwitch.onImage = self.image;
   theSwitch.on = NO;
+  theSwitch.onTintColor = nil;
   theSwitch.onImage = nil;
   theSwitch.on = YES;
   
-  XCTAssertEqualObjects(theSwitch.backgroundColor, [UIColor blueColor]);  // Is green instead
+  XCTAssertNotEqualObjects(theSwitch.backgroundColor, nil); // Default ON color
 }
 
 @end

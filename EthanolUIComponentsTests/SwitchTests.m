@@ -14,6 +14,8 @@
 
 @property (nonatomic, retain, readwrite) UIImageView* backgroundImage;
 
+- (void)switchValueChanged:(id)sender;
+
 @end
 
 @interface SwitchTests : XCTestCase
@@ -23,13 +25,11 @@
 @implementation SwitchTests
 
 - (void)testLoadSwitchInView {
-  UIView *view = [[[NSBundle bundleForClass:[self class]] loadNibNamed:@"SwitchTestsView" owner:self options:nil] objectAtIndex:0];
-  UIWindow *window = [[UIWindow alloc] init];
-  UIViewController *viewController = [[UIViewController alloc] init];
-  [viewController.view addSubview:view];
-  window.rootViewController = viewController;
+  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Tests" bundle:[NSBundle bundleForClass:[self class]]];
+  UIViewController *testViewController = [storyboard instantiateViewControllerWithIdentifier:@"TestsViewControllerID"];
+  [testViewController loadView];
   
-  XCTAssertNotNil(view);
+  XCTAssertNotNil(testViewController.view);
 }
 
 - (void)testTurnSwitchOnColorOnSwitch {
@@ -136,6 +136,16 @@
   XCTAssertEqualObjects(theSwitch.backgroundImage.image, image);
 }
 
+- (void)testSwitchOnImageNilOffImageSet {
+  ETHSwitch *theSwitch = [[ETHSwitch alloc] init];
+  UIImage *image = [UIImage imageNamed:@"Switch-Test-Image" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+  theSwitch.on = YES;
+  theSwitch.offImage = image;
+  theSwitch.onImage = nil;
+  
+  XCTAssert(theSwitch.backgroundColor != nil);
+}
+
 - (void)testSwitchChangeImage {
   ETHSwitch *theSwitch = [[ETHSwitch alloc] init];
   UIImage *image = [UIImage imageNamed:@"Switch-Test-Image" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
@@ -194,6 +204,15 @@
   theSwitch.offTintColor = [UIColor blueColor];
   
   XCTAssertEqualObjects(theSwitch.backgroundColor, [UIColor blueColor]);
+}
+
+- (void)testChangeSwitchValue {
+  ETHSwitch *theSwitch = [[ETHSwitch alloc] init];
+  theSwitch.on = NO;
+  theSwitch.offTintColor = [UIColor redColor];
+  [theSwitch switchValueChanged:nil];
+  
+  XCTAssertEqualObjects(theSwitch.backgroundColor, [UIColor redColor]);
 }
 
 - (void)testSwitchExtensiveProcess1 {

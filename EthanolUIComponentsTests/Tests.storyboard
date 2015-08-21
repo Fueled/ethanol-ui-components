@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8173.3" systemVersion="14E26a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="edq-sK-u6B">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8142"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="bU1-dO-vq8">
+            <objects>
+                <viewController storyboardIdentifier="TestsViewControllerID" id="oT9-td-o2y" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Abk-uy-27E"/>
+                        <viewControllerLayoutGuide type="bottom" id="Z26-t1-lbu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="CBB-Hi-1nm">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hch-PM-vhO" customClass="ETHSwitch">
+                                <rect key="frame" x="276" y="134" width="51" height="31"/>
+                            </switch>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hch-PM-vhO" firstAttribute="centerX" secondItem="CBB-Hi-1nm" secondAttribute="centerX" id="Odv-ye-sd2"/>
+                            <constraint firstItem="hch-PM-vhO" firstAttribute="top" secondItem="Abk-uy-27E" secondAttribute="bottom" constant="70" id="aWS-Kq-0zC"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="WqU-hD-6dC"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RMJ-BQ-Hzu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1479" y="474"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="KA2-KS-9J9">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="edq-sK-u6B" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="kJY-0d-1Us">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="oT9-td-o2y" kind="relationship" relationship="rootViewController" id="qm9-9b-pNs"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="34I-je-C0u" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="627" y="474"/>
+        </scene>
+    </scenes>
+</document>

@@ -20,6 +20,10 @@
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hch-PM-vhO" customClass="ETHSwitch">
                                 <rect key="frame" x="276" y="134" width="51" height="31"/>
                             </switch>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eAS-5o-v6y" customClass="ETHPageControl">
+                                <rect key="frame" x="20" y="531" width="560" height="49"/>
+                                <color key="backgroundColor" red="0.95862201793498836" green="0.96358935885044039" blue="0.98750400543212891" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>

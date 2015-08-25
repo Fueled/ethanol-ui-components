@@ -32,7 +32,28 @@
 
 @implementation ETHPageControl
 
-- (void)awakeFromNib {
+- (instancetype)init {
+  if (self = [super init]) {
+    [self setUp];
+  }
+  return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+  if (self = [super initWithCoder:aDecoder]) {
+    [self setUp];
+  }
+  return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame {
+  if (self = [super initWithFrame:frame]) {
+    [self setUp];
+  }
+  return self;
+}
+
+- (void)setUp {
   self.dotsArray = [[NSMutableArray alloc] init];
   self.dotsSpace = kPageControlDotsOriginalSpace;
   self.pageIndicatorTintColor = kDefaultPageTintColor;
@@ -222,10 +243,6 @@
   }
 }
 
-- (CGFloat)middleDotsSectionWidth {
-  return [self middleDotsSectionWidthForNumberOfPages:self.numberOfPages];
-}
-
 - (CGFloat)middleDotsSectionWidthForNumberOfPages:(NSInteger)numberOfPages {
   CGFloat sectionWidth = 0.0f;
   
@@ -250,10 +267,6 @@
   } else {
     return [self leftDotSize].width + self.dotsSpace + [self middleDotsSectionWidthForNumberOfPages:numberOfPages] + self.dotsSpace + [self rightDotSize].width;
   }
-}
-
-- (CGFloat)maxHeight {
-  return [self maxHeightForNumberOfPages:self.numberOfPages];
 }
 
 - (CGFloat)maxHeightForNumberOfPages:(NSInteger)numberOfPages {
@@ -305,6 +318,12 @@
   return [self sizeForNumberOfPages:self.numberOfPages];
 }
 
+- (void)setFrame:(CGRect)frame {
+  [super setFrame:frame];
+  
+  [self updateDots];
+}
+
 #pragma mark - Custom setters
 
 - (void)setNumberOfPages:(NSInteger)numberOfPages {
@@ -323,14 +342,11 @@
 - (void)setCurrentPage:(NSInteger)page {
   if (page < 0) {
     _currentPage = 0;
-  }
-  
-  if (self.numberOfPages - 1 < page) {
+  } else if (self.numberOfPages - 1 < page) {
     _currentPage = self.numberOfPages - 1;
   } else {
     _currentPage = page;
   }
-  
   [self updateDots];
 }
 
@@ -376,6 +392,11 @@
 
 - (void)setRightDotImageInactive:(UIImage *)rightDotImageInactive {
   _rightDotImageInactive = rightDotImageInactive;
+  [self updateDots];
+}
+
+- (void)setHidesForSinglePage:(BOOL)hidesForSinglePage {
+  _hidesForSinglePage = hidesForSinglePage;
   [self updateDots];
 }
 

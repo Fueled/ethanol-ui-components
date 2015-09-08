@@ -95,7 +95,12 @@
 }
 
 - (void)setFormatter:(ETHFormatter *)formatter {
-  if(_formatter != formatter){
+	if(formatter == nil) {
+		_formatter = nil;
+		return;
+	}
+	
+  if(_formatter != formatter) {
     UITextRange * selectedTextRange = [self selectedTextRange];
     NSInteger startCursor = [self offsetFromPosition:[self beginningOfDocument] toPosition:selectedTextRange.start];
     NSInteger endCursor = [self offsetFromPosition:[self beginningOfDocument] toPosition:selectedTextRange.end];

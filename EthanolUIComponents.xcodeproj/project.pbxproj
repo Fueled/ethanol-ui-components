@@ -44,6 +44,8 @@
 		F474514D1B7006F400902BCB /* EthanolValidationFormatting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */; };
 		F48636741B6FC412001A3549 /* ETHPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F48636721B6FC412001A3549 /* ETHPageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F48636751B6FC412001A3549 /* ETHPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48636731B6FC412001A3549 /* ETHPageViewController.m */; };
+		F4E7C8FB1B9F3312000953A4 /* TextFieldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E7C8FA1B9F3312000953A4 /* TextFieldTests.m */; settings = {ASSET_TAGS = (); }; };
+		F4E7C8FC1B9F340C000953A4 /* EthanolValidationFormatting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,7 @@
 		F48636781B6FC93D001A3549 /* EthanolUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EthanolUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F48636791B6FC93D001A3549 /* NSInvocationHelpers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NSInvocationHelpers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EthanolValidationFormatting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4E7C8FA1B9F3312000953A4 /* TextFieldTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +119,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4E7C8FC1B9F340C000953A4 /* EthanolValidationFormatting.framework in Frameworks */,
 				F47358CE1B444842007688EC /* EthanolUIComponents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -171,6 +175,7 @@
 			children = (
 				0C640EB61B8506CC003A157A /* SwitchTests.m */,
 				0C7369951B86745F00AD3DF4 /* PageControlTests.m */,
+				F4E7C8FA1B9F3312000953A4 /* TextFieldTests.m */,
 				0C898C541B879A5D002D7E35 /* Tests.storyboard */,
 				0C42AEBB1B852FD7000F0307 /* Tests.xcassets */,
 				F47358D41B444842007688EC /* Info.plist */,
@@ -393,6 +398,7 @@
 			files = (
 				0C640EB71B8506CC003A157A /* SwitchTests.m in Sources */,
 				0C7369961B86745F00AD3DF4 /* PageControlTests.m in Sources */,
+				F4E7C8FB1B9F3312000953A4 /* TextFieldTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

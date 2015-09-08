@@ -89,16 +89,43 @@
 #pragma mark - Text Formatting
 
 - (void)testTextFieldTextIsFormattedAutomatically {
-	TextFieldTestDelegateValidateWithoutDid * delegate = [[TextFieldTestDelegateValidateWithoutDid alloc] init];
 	ETHTextField * textField = [[ETHTextField alloc] init];
-	textField.delegate = delegate;
+	textField.text = @"411111 11111 111 11";
+	XCTAssertEqualObjects(textField.text, @"411111 11111 111 11");
 	textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
+	XCTAssertEqualObjects(textField.text, @"4111 1111 1111 1111");
 	textField.text = @"411111 11111 111 11";
 	XCTAssertEqualObjects(textField.text, @"4111 1111 1111 1111");
 	textField.formatter = nil;
 	XCTAssertEqualObjects(textField.text, @"4111 1111 1111 1111");
 	textField.text = @"411111 11111 111 11";
 	XCTAssertEqualObjects(textField.text, @"411111 11111 111 11");
+}
+
+#pragma mark - Text Allowed Characters
+
+- (void)testTextFieldAllowedCharacters {
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.text = @"abcdef 123456";
+	XCTAssertEqualObjects(textField.text, @"abcdef 123456");
+	textField.allowedCharacterSet = [NSCharacterSet letterCharacterSet];
+	XCTAssertEqualObjects(textField.text, @"abcdef");
+	textField.text = @"abcdef 123456";
+	XCTAssertEqualObjects(textField.text, @"abcdef");
+	textField.allowedCharacterSet = [NSCharacterSet decimalDigitCharacterSet];
+	XCTAssertEqualObjects(textField.text, @"");
+	textField.text = @"abcdef 123456";
+	XCTAssertEqualObjects(textField.text, @"123456");
+	textField.text = @"abcdef 123456";
+	textField.allowedCharacterSet = [NSCharacterSet decimalDigitCharacterSet];
+	XCTAssertEqualObjects(textField.text, @"123456");
+	textField.allowedCharacterSet = [NSCharacterSet alphanumericCharacterSet];
+	textField.text = @"abcdef 123456";
+	XCTAssertEqualObjects(textField.text, @"abcdef123456");
+	textField.allowedCharacterSet = [NSCharacterSet alphanumericCharacterSet];
+	XCTAssertEqualObjects(textField.text, @"abcdef123456");
+	textField.allowedCharacterSet = nil;
+	XCTAssertEqualObjects(textField.text, @"abcdef123456");
 }
 
 @end

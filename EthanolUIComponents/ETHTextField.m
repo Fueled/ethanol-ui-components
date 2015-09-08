@@ -118,6 +118,14 @@
   }
 }
 
+- (void)setAllowedCharacterSet:(NSCharacterSet *)allowedCharacterSet {
+	if(_allowedCharacterSet != allowedCharacterSet) {
+		_allowedCharacterSet = allowedCharacterSet;
+		
+		self.text = [self.text eth_stringByRemovingCharacters:[_allowedCharacterSet invertedSet]];
+	}
+}
+
 - (BOOL)textFieldTextShouldChange:(ETHExtendableTextField *)textField {
   return [self tryToValidateWithDelegateForReason:ETHTextFieldValidationReasonKeyTapped];
 }

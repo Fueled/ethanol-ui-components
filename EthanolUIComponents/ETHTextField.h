@@ -32,7 +32,6 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
 - (BOOL)textField:(ETHTextField *)textField shouldValidateText:(NSString *)text forReason:(ETHTextFieldValidationReason)reason;
 
 - (void)textField:(ETHTextField *)textField didFormat:(NSString *)text;
-
 - (BOOL)textField:(ETHTextField *)textField didValidateText:(NSString *)text withReason:(ETHTextFieldValidationReason)reason withSuccess:(BOOL)success error:(NSError *)error;
 
 @end

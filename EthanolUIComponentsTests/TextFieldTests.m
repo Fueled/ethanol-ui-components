@@ -13,31 +13,43 @@
 
 @interface TextFieldTestDelegateValidateWithoutDid : NSObject <ETHTextFieldDelegate>
 
-@property (nonatomic, assign) BOOL delegateCalled;
+@property (nonatomic, assign) BOOL shouldShouldReturnYes;
+@property (nonatomic, assign) BOOL shouldDelegateCalled;
 
 @end
 
 @implementation TextFieldTestDelegateValidateWithoutDid
 
+- (BOOL)textField:(ETHTextField *)textField shouldFormat:(NSString *)text {
+	self.shouldDelegateCalled = YES;
+	return self.shouldShouldReturnYes;
+}
+
 - (BOOL)textField:(ETHTextField *)textField shouldValidateText:(NSString *)text forReason:(ETHTextFieldValidationReason)reason {
-	self.delegateCalled = YES;
-	return YES;
+	self.shouldDelegateCalled = YES;
+	return self.shouldShouldReturnYes;
 }
 
 @end
 
-@interface TextFieldTestDelegateWithDid : TextFieldTestDelegateValidateWithoutDid
+@interface TextFieldTestDelegateValidateWithDid : TextFieldTestDelegateValidateWithoutDid
+
+@property (nonatomic, assign) BOOL didDelegateCalled;
 
 @end
 
-@implementation TextFieldTestDelegateWithDid
+@implementation TextFieldTestDelegateValidateWithDid
+
+- (void)textField:(ETHTextField *)textField didFormat:(NSString *)text {
+	self.didDelegateCalled = YES;
+}
 
 - (BOOL)textField:(ETHTextField *)textField didValidateText:(nonnull NSString *)text withReason:(ETHTextFieldValidationReason)reason withSuccess:(BOOL)success error:(nonnull NSError *)error {
+	self.didDelegateCalled = YES;
 	return error != nil;
 }
 
 @end
-
 
 @interface TextFieldTests : XCTestCase
 
@@ -59,31 +71,46 @@
 
 - (void)testTextFieldValidateSilently {
 	TextFieldTestDelegateValidateWithoutDid * delegate = [[TextFieldTestDelegateValidateWithoutDid alloc] init];
+	delegate.shouldShouldReturnYes = YES;
 	ETHTextField * textField = [[ETHTextField alloc] init];
 	textField.delegate = delegate;
 	textField.validator = [[ETHUSAStateValidator alloc] init];
 	[textField validateInputSilently];
-	XCTAssertFalse(delegate.delegateCalled);
+	XCTAssertFalse(delegate.shouldDelegateCalled);
 }
 
-- (void)testTextFieldValidateWithoutDidValidate {
-	TextFieldTestDelegateValidateWithoutDid * delegate = [[TextFieldTestDelegateValidateWithoutDid alloc] init];
+- (void)testTextFieldValidateWithoutDidValidates {
+	TextFieldTestDelegateValidateWithDid * delegate = [[TextFieldTestDelegateValidateWithDid alloc] init];
 	ETHTextField * textField = [[ETHTextField alloc] init];
 	textField.delegate = delegate;
 	textField.validator = [[ETHUSAStateValidator alloc] init];
 	textField.text = @"NY";
 	XCTAssertTrue([textField validateInput]);
-	XCTAssertTrue(delegate.delegateCalled);
+	XCTAssertTrue(delegate.shouldDelegateCalled);
+	XCTAssertFalse(delegate.didDelegateCalled);
+}
+
+- (void)testTextFieldValidateWithoutDidValidate {
+	TextFieldTestDelegateValidateWithoutDid * delegate = [[TextFieldTestDelegateValidateWithoutDid alloc] init];
+	delegate.shouldShouldReturnYes = YES;
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.delegate = delegate;
+	textField.validator = [[ETHUSAStateValidator alloc] init];
+	textField.text = @"NY";
+	XCTAssertTrue([textField validateInput]);
+	XCTAssertTrue(delegate.shouldDelegateCalled);
 }
 
 - (void)testTextFieldValidateWithDidValidate {
-	TextFieldTestDelegateWithDid * delegate = [[TextFieldTestDelegateWithDid alloc] init];
+	TextFieldTestDelegateValidateWithDid * delegate = [[TextFieldTestDelegateValidateWithDid alloc] init];
+	delegate.shouldShouldReturnYes = YES;
 	ETHTextField * textField = [[ETHTextField alloc] init];
 	textField.delegate = delegate;
 	textField.validator = [[ETHUSAStateValidator alloc] init];
 	textField.text = @"NY";
 	XCTAssertFalse([textField validateInput]);
-	XCTAssertTrue(delegate.delegateCalled);
+	XCTAssertTrue(delegate.shouldDelegateCalled);
+	XCTAssertTrue(delegate.didDelegateCalled);
 }
 
 #pragma mark - Text Formatting
@@ -100,6 +127,40 @@
 	XCTAssertEqualObjects(textField.text, @"4111 1111 1111 1111");
 	textField.text = @"411111 11111 111 11";
 	XCTAssertEqualObjects(textField.text, @"411111 11111 111 11");
+}
+
+- (void)testTextFieldTextFormattingDelegateWithoutDid {
+	TextFieldTestDelegateValidateWithoutDid * delegate = [[TextFieldTestDelegateValidateWithoutDid alloc] init];
+	delegate.shouldShouldReturnYes = YES;
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.delegate = delegate;
+	textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
+	textField.text = @"411111 11111 111 11";
+	XCTAssertEqualObjects(textField.text, @"4111 1111 1111 1111");
+	XCTAssertTrue(delegate.shouldDelegateCalled);
+}
+
+- (void)testTextFieldTextFormattingDelegateWithDidShouldReturnNO {
+	TextFieldTestDelegateValidateWithDid * delegate = [[TextFieldTestDelegateValidateWithDid alloc] init];
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.delegate = delegate;
+	textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
+	textField.text = @"411111 11111 111 11";
+	XCTAssertEqualObjects(textField.text, @"411111 11111 111 11");
+	XCTAssertTrue(delegate.shouldDelegateCalled);
+	XCTAssertFalse(delegate.didDelegateCalled);
+}
+
+- (void)testTextFieldTextFormattingDelegateWithDid {
+	TextFieldTestDelegateValidateWithDid * delegate = [[TextFieldTestDelegateValidateWithDid alloc] init];
+	delegate.shouldShouldReturnYes = YES;
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.delegate = delegate;
+	textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
+	textField.text = @"411111 11111 111 11";
+	XCTAssertEqualObjects(textField.text, @"4111 1111 1111 1111");
+	XCTAssertTrue(delegate.shouldDelegateCalled);
+	XCTAssertTrue(delegate.didDelegateCalled);
 }
 
 #pragma mark - Text Allowed Characters

@@ -128,4 +128,28 @@
 	XCTAssertEqualObjects(textField.text, @"abcdef123456");
 }
 
+#pragma mark - Text Maximum Number of Characters
+
+- (void)testMaximumNumberOfCharacters {
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.text = @"abcdef 123456";
+	XCTAssertEqualObjects(textField.text, @"abcdef 123456");
+	textField.maximumLength = 10;
+	XCTAssertEqualObjects(textField.text, @"abcdef 123");
+	textField.text = @"abcdef 123456";
+	XCTAssertEqualObjects(textField.text, @"abcdef 123");
+	textField.maximumLength = 0;
+	XCTAssertEqualObjects(textField.text, @"abcdef 123");
+	textField.text = @"abcdef 123456";
+	XCTAssertEqualObjects(textField.text, @"abcdef 123456");
+	textField.maximumLength = 13;
+	XCTAssertEqualObjects(textField.text, @"abcdef 123456");
+	textField.text = @"abcdef 123456";
+	XCTAssertEqualObjects(textField.text, @"abcdef 123456");
+	textField.maximumLength = 12;
+	XCTAssertEqualObjects(textField.text, @"abcdef 12345");
+	textField.text = @"abcdef 123456";
+	XCTAssertEqualObjects(textField.text, @"abcdef 12345");
+}
+
 @end

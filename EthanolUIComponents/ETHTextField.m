@@ -126,6 +126,14 @@
 	}
 }
 
+- (void)setMaximumLength:(NSUInteger)maximumLength {
+	_maximumLength = maximumLength;
+	
+	if(_maximumLength != 0 && _maximumLength < self.text.length) {
+		self.text = [self.text substringToIndex:maximumLength];
+	}
+}
+
 - (BOOL)textFieldTextShouldChange:(ETHExtendableTextField *)textField {
   return [self tryToValidateWithDelegateForReason:ETHTextFieldValidationReasonKeyTapped];
 }

@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "ETHTextField.h"
+#import "ETHExtendableTextField+Subclass.h"
 
 @import EthanolValidationFormatting;
 
@@ -65,6 +66,36 @@
 	[testViewController loadView];
 	
 	XCTAssertNotNil(testViewController.view);
+}
+
+#pragma mark - User input tests (Faked)
+
+- (void)testUserTestInputWithEverything {
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	NSString * textToBeReplaced = @"should be replaced by \"text\"'s variable content";
+	
+	// Emulate user input
+#define USER_INPUT(textString) \
+	if([textField textField:textField shouldChangeCharactersInRange:NSMakeRange(0, textField.text.length) replacementString:textString]) { \
+		textField.text = textString; \
+	}
+	
+#define TEST_USER_INPUT(textString, resultString) \
+	USER_INPUT(textString); \
+	XCTAssertEqualObjects(textField.text, resultString);
+	
+	textField.text = textToBeReplaced;
+	TEST_USER_INPUT(@"text", @"text");
+	
+	textField.text = textToBeReplaced;
+	
+	textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
+	textField.validator = [ETHSelectorValidator validatorWithSelector:@selector(eth_isValidCreditCardNumber) error:@"unused"];
+	textField.maximumLength = 9;
+	textField.allowedCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"14"];
+	
+	textField.text = textToBeReplaced;
+	TEST_USER_INPUT(@"41 1818 181818 11 81", @"4111 1111 1");
 }
 
 #pragma mark - Text Validation

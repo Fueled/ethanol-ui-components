@@ -17,6 +17,10 @@
 		F414550C1B7BAE53007F63F8 /* ETHNibView.h in Headers */ = {isa = PBXBuildFile; fileRef = F414550A1B7BAE53007F63F8 /* ETHNibView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F414550D1B7BAE53007F63F8 /* ETHNibView.m in Sources */ = {isa = PBXBuildFile; fileRef = F414550B1B7BAE53007F63F8 /* ETHNibView.m */; };
 		F41455101B7BC5CD007F63F8 /* ETHPageViewControllerTitleView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F414550F1B7BC5C5007F63F8 /* ETHPageViewControllerTitleView+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		F457D4B01BA1ECE700F7D1DE /* NibViewTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F457D4AF1BA1ECE700F7D1DE /* NibViewTest.m */; settings = {ASSET_TAGS = (); }; };
+		F457D4B21BA1ED0A00F7D1DE /* NibViewTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = F457D4B11BA1ED0A00F7D1DE /* NibViewTest.xib */; settings = {ASSET_TAGS = (); }; };
+		F457D4B81BA1ED6700F7D1DE /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F457D4B71BA1ED6700F7D1DE /* TestViewController.m */; settings = {ASSET_TAGS = (); }; };
+		F457D4BA1BA1F0E800F7D1DE /* NibViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F457D4B91BA1F0E800F7D1DE /* NibViewTests.m */; settings = {ASSET_TAGS = (); }; };
 		F47358C71B444841007688EC /* EthanolUIComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = F47358C61B444841007688EC /* EthanolUIComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F47358CE1B444842007688EC /* EthanolUIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F47358C31B444841007688EC /* EthanolUIComponents.framework */; };
 		F47358EF1B4448F0007688EC /* ETHExtendableTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = F47358DD1B4448F0007688EC /* ETHExtendableTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -69,6 +73,12 @@
 		F414550A1B7BAE53007F63F8 /* ETHNibView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHNibView.h; sourceTree = "<group>"; };
 		F414550B1B7BAE53007F63F8 /* ETHNibView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHNibView.m; sourceTree = "<group>"; };
 		F414550F1B7BC5C5007F63F8 /* ETHPageViewControllerTitleView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ETHPageViewControllerTitleView+Private.h"; sourceTree = "<group>"; };
+		F457D4AE1BA1ECE700F7D1DE /* NibViewTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NibViewTest.h; sourceTree = "<group>"; };
+		F457D4AF1BA1ECE700F7D1DE /* NibViewTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NibViewTest.m; sourceTree = "<group>"; };
+		F457D4B11BA1ED0A00F7D1DE /* NibViewTest.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NibViewTest.xib; sourceTree = "<group>"; };
+		F457D4B61BA1ED6700F7D1DE /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		F457D4B71BA1ED6700F7D1DE /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		F457D4B91BA1F0E800F7D1DE /* NibViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NibViewTests.m; sourceTree = "<group>"; };
 		F47358C31B444841007688EC /* EthanolUIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EthanolUIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F47358C61B444841007688EC /* EthanolUIComponents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EthanolUIComponents.h; sourceTree = "<group>"; };
 		F47358C81B444841007688EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -127,13 +137,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F414550E1B7BAE5A007F63F8 /* ETHNibView */ = {
+		F414550E1B7BAE5A007F63F8 /* NibView */ = {
 			isa = PBXGroup;
 			children = (
 				F414550A1B7BAE53007F63F8 /* ETHNibView.h */,
 				F414550B1B7BAE53007F63F8 /* ETHNibView.m */,
 			);
-			name = ETHNibView;
+			name = NibView;
 			sourceTree = "<group>";
 		};
 		F47358B91B444841007688EC = {
@@ -164,7 +174,7 @@
 				F47359031B444935007688EC /* RefreshControl */,
 				F47359041B44493B007688EC /* Swift */,
 				F486366E1B6FC3CE001A3549 /* PageViewController */,
-				F414550E1B7BAE5A007F63F8 /* ETHNibView */,
+				F414550E1B7BAE5A007F63F8 /* NibView */,
 				F47358C81B444841007688EC /* Info.plist */,
 			);
 			path = EthanolUIComponents;
@@ -176,7 +186,13 @@
 				0C640EB61B8506CC003A157A /* SwitchTests.m */,
 				0C7369951B86745F00AD3DF4 /* PageControlTests.m */,
 				F4E7C8FA1B9F3312000953A4 /* TextFieldTests.m */,
+				F457D4B91BA1F0E800F7D1DE /* NibViewTests.m */,
+				F457D4B61BA1ED6700F7D1DE /* TestViewController.h */,
+				F457D4B71BA1ED6700F7D1DE /* TestViewController.m */,
 				0C898C541B879A5D002D7E35 /* Tests.storyboard */,
+				F457D4AE1BA1ECE700F7D1DE /* NibViewTest.h */,
+				F457D4AF1BA1ECE700F7D1DE /* NibViewTest.m */,
+				F457D4B11BA1ED0A00F7D1DE /* NibViewTest.xib */,
 				0C42AEBB1B852FD7000F0307 /* Tests.xcassets */,
 				F47358D41B444842007688EC /* Info.plist */,
 			);
@@ -367,6 +383,7 @@
 			files = (
 				0C898C551B879A5D002D7E35 /* Tests.storyboard in Resources */,
 				0C42AEBC1B852FD7000F0307 /* Tests.xcassets in Resources */,
+				F457D4B21BA1ED0A00F7D1DE /* NibViewTest.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,9 +413,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F457D4B01BA1ECE700F7D1DE /* NibViewTest.m in Sources */,
 				0C640EB71B8506CC003A157A /* SwitchTests.m in Sources */,
 				0C7369961B86745F00AD3DF4 /* PageControlTests.m in Sources */,
 				F4E7C8FB1B9F3312000953A4 /* TextFieldTests.m in Sources */,
+				F457D4BA1BA1F0E800F7D1DE /* NibViewTests.m in Sources */,
+				F457D4B81BA1ED6700F7D1DE /* TestViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

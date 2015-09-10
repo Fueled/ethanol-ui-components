@@ -47,6 +47,14 @@
 	return NSStringFromClass([self class]);
 }
 
+- (NSBundle *)nibBundle {
+	return [NSBundle bundleForClass:[self class]];
+}
+
+- (UINib *)nib {
+	return [UINib nibWithNibName:[self nibName] bundle:[self nibBundle]];
+}
+
 - (void)awakeFromNib {
   [super awakeFromNib];
 	
@@ -56,8 +64,9 @@
 
 - (void)createFromNib {
   if(self.contentView == nil) {
-		// IF your code crashes here, you probably forgot to link contentView in IB
-		[[NSBundle bundleForClass:[ETHNibView class]] loadNibNamed:[self nibName] owner:self options:nil];
+		[[self nib] instantiateWithOwner:self options:nil];
+		// IF your code crashes here (Above or below), you probably forgot to link contentView in IB
+		NSAssert(self.contentView != nil, @"contentView is nil. Did you forgot to link it in IB?");
 		if(self.shouldAwakeFromNib) {
 			[self awakeFromNib];
 		}

@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "ETHTextField.h"
 #import "ETHExtendableTextField+Subclass.h"
+#import "TestViewController.h"
 
 @import EthanolValidationFormatting;
 
@@ -60,12 +61,13 @@
 
 #pragma mark - Test Load View
 
-- (void)textTextFieldInView {
+- (void)testTextFieldInView {
 	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Tests" bundle:[NSBundle bundleForClass:[self class]]];
-	UIViewController *testViewController = [storyboard instantiateViewControllerWithIdentifier:@"TestsViewControllerID"];
+	TestViewController *testViewController = [storyboard instantiateViewControllerWithIdentifier:@"TestsViewControllerID"];
 	[testViewController loadView];
 	
 	XCTAssertNotNil(testViewController.view);
+	XCTAssertTrue([testViewController.testTextField isKindOfClass:[ETHTextField class]]);
 }
 
 #pragma mark - User input tests (Faked)

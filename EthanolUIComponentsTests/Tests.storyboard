@@ -3,13 +3,12 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8151.3"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Test View Controller-->
         <scene sceneID="bU1-dO-vq8">
             <objects>
-                <viewController storyboardIdentifier="TestsViewControllerID" id="oT9-td-o2y" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TestsViewControllerID" id="oT9-td-o2y" customClass="TestViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Abk-uy-27E"/>
                         <viewControllerLayoutGuide type="bottom" id="Z26-t1-lbu"/>
@@ -18,35 +17,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hch-PM-vhO" customClass="ETHSwitch">
-                                <rect key="frame" x="276" y="134" width="51" height="31"/>
-                            </switch>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eAS-5o-v6y" customClass="ETHPageControl">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eAS-5o-v6y" customClass="ETHPageControl">
                                 <rect key="frame" x="20" y="531" width="560" height="49"/>
                                 <color key="backgroundColor" red="0.95862201793498836" green="0.96358935885044039" blue="0.98750400543212891" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="std-f6-ngj" customClass="ETHTextField">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="std-f6-ngj" customClass="ETHTextField">
                                 <rect key="frame" x="252" y="352" width="97" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="n6A-6O-pxU"/>
-                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i4E-Qk-AJ2" customClass="NibViewTest">
+                                <rect key="frame" x="180" y="193" width="240" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hch-PM-vhO" customClass="ETHSwitch">
+                                <rect key="frame" x="276" y="134" width="51" height="31"/>
+                            </switch>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="eAS-5o-v6y" firstAttribute="trailing" secondItem="CBB-Hi-1nm" secondAttribute="trailingMargin" id="Mod-uZ-mvN"/>
-                            <constraint firstItem="hch-PM-vhO" firstAttribute="centerX" secondItem="CBB-Hi-1nm" secondAttribute="centerX" id="Odv-ye-sd2"/>
-                            <constraint firstItem="std-f6-ngj" firstAttribute="leading" secondItem="CBB-Hi-1nm" secondAttribute="leadingMargin" constant="10" id="VPf-bt-tBI"/>
-                            <constraint firstItem="eAS-5o-v6y" firstAttribute="leading" secondItem="CBB-Hi-1nm" secondAttribute="leadingMargin" id="Wuy-iD-jW5"/>
-                            <constraint firstItem="hch-PM-vhO" firstAttribute="top" secondItem="Abk-uy-27E" secondAttribute="bottom" constant="70" id="aWS-Kq-0zC"/>
-                            <constraint firstItem="std-f6-ngj" firstAttribute="top" secondItem="hch-PM-vhO" secondAttribute="bottom" constant="20" id="bJN-c8-lKK"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="std-f6-ngj" secondAttribute="trailing" constant="10" id="jTj-jS-t8O"/>
-                            <constraint firstItem="Z26-t1-lbu" firstAttribute="top" secondItem="eAS-5o-v6y" secondAttribute="bottom" constant="20" id="mex-Tp-WWT"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="WqU-hD-6dC"/>
+                    <connections>
+                        <outlet property="testNibView" destination="i4E-Qk-AJ2" id="ku2-Z8-rrX"/>
+                        <outlet property="testPageControl" destination="eAS-5o-v6y" id="bfY-Nr-P6Q"/>
+                        <outlet property="testSwitch" destination="hch-PM-vhO" id="n5V-ce-mYw"/>
+                        <outlet property="testTextField" destination="std-f6-ngj" id="NgG-pI-Q3j"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RMJ-BQ-Hzu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

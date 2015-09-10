@@ -8,15 +8,64 @@
 
 #import <XCTest/XCTest.h>
 #import "ETHTextField.h"
+#import "ETHTextField+Subclass.h"
 #import "ETHExtendableTextField+Subclass.h"
 #import "TestViewController.h"
 
 @import EthanolValidationFormatting;
 
+@interface ETHExtendableTextField (Private)
+
+- (void)textChanged:(id)sender;
+
+@end
+
+@interface TestCustomTextFieldCallDidChange : ETHExtendableTextField
+
+@end
+
+@implementation TestCustomTextFieldCallDidChange
+
+- (void)textFieldTextDidChange:(ETHExtendableTextField *)textField {
+	[self.delegate textFieldTextDidChange:textField];
+}
+
+@end
+
+@interface TestCustomTextFieldDontCallDidChange : ETHExtendableTextField
+
+@end
+
+@implementation TestCustomTextFieldDontCallDidChange
+
+- (void)textFieldTextDidChange:(ETHExtendableTextField *)textField {
+	
+}
+
+@end
+
+@interface TestCustomTextFieldMultipleDelegateCalledOnlyOnce : ETHTextField <ETHTextFieldDelegate>
+
+@end
+
+@implementation TestCustomTextFieldMultipleDelegateCalledOnlyOnce
+
+- (BOOL)textField:(ETHTextField *)textField shouldFormat:(NSString *)text {
+	// The delegate should always be called once
+	if([self.delegate textField:textField shouldFormat:text]) {
+		return [self.delegate textField:textField shouldFormat:text];
+	}
+	
+	return [self.delegate textField:textField shouldFormat:text];
+}
+
+@end
+
 @interface TextFieldTestDelegateValidateWithoutDid : NSObject <ETHTextFieldDelegate>
 
 @property (nonatomic, assign) BOOL shouldShouldReturnYes;
 @property (nonatomic, assign) BOOL shouldDelegateCalled;
+@property (nonatomic, assign) NSInteger shouldDelegateCallAmount;
 
 @end
 
@@ -24,11 +73,13 @@
 
 - (BOOL)textField:(ETHTextField *)textField shouldFormat:(NSString *)text {
 	self.shouldDelegateCalled = YES;
+	++self.shouldDelegateCallAmount;
 	return self.shouldShouldReturnYes;
 }
 
 - (BOOL)textField:(ETHTextField *)textField shouldValidateText:(NSString *)text forReason:(ETHTextFieldValidationReason)reason {
 	self.shouldDelegateCalled = YES;
+	++self.shouldDelegateCallAmount;
 	return self.shouldShouldReturnYes;
 }
 
@@ -49,6 +100,10 @@
 - (BOOL)textField:(ETHTextField *)textField didValidateText:(nonnull NSString *)text withReason:(ETHTextFieldValidationReason)reason withSuccess:(BOOL)success error:(nonnull NSError *)error {
 	self.didDelegateCalled = YES;
 	return error != nil;
+}
+
+- (void)textFieldTextDidChange:(ETHExtendableTextField *)textField {
+	self.didDelegateCalled = YES;
 }
 
 @end
@@ -98,6 +153,45 @@
 	
 	textField.text = textToBeReplaced;
 	TEST_USER_INPUT(@"41 1818 181818 11 81", @"4111 1111 1");
+}
+
+- (void)testTextDidChangeDelegateDidCalled {
+	TextFieldTestDelegateValidateWithDid * delegate = [[TextFieldTestDelegateValidateWithDid alloc] init];
+	TestCustomTextFieldCallDidChange * textField = [[TestCustomTextFieldCallDidChange alloc] init];
+	textField.delegate = delegate;
+	[textField textChanged:nil];
+	XCTAssertTrue(delegate.didDelegateCalled);
+}
+
+- (void)testTextDidChangeDelegateDidNotCalled {
+	TextFieldTestDelegateValidateWithDid * delegate = [[TextFieldTestDelegateValidateWithDid alloc] init];
+	TestCustomTextFieldDontCallDidChange * textField = [[TestCustomTextFieldDontCallDidChange alloc] init];
+	textField.delegate = delegate;
+	[textField textChanged:nil];
+	XCTAssertFalse(delegate.didDelegateCalled);
+}
+
+- (void)testTextFieldMultipleDelegateCallShouldCalledFormatting {
+	TextFieldTestDelegateValidateWithDid * delegate = [[TextFieldTestDelegateValidateWithDid alloc] init];
+	delegate.shouldShouldReturnYes = YES;
+	TestCustomTextFieldMultipleDelegateCalledOnlyOnce * textField = [[TestCustomTextFieldMultipleDelegateCalledOnlyOnce alloc] init];
+	textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
+	textField.delegate = delegate;
+	textField.text = @"4111111111111111";
+	XCTAssertTrue(delegate.shouldDelegateCalled);
+	XCTAssertEqual(delegate.shouldDelegateCallAmount, 1);
+	XCTAssertEqualObjects(textField.text, @"4111 1111 1111 1111");
+}
+
+- (void)testTextFieldMultipleDelegateCallShouldCalledNoFormatting {
+	TextFieldTestDelegateValidateWithDid * delegate = [[TextFieldTestDelegateValidateWithDid alloc] init];
+	TestCustomTextFieldMultipleDelegateCalledOnlyOnce * textField = [[TestCustomTextFieldMultipleDelegateCalledOnlyOnce alloc] init];
+	textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
+	textField.delegate = delegate;
+	textField.text = @"4111111111111111";
+	XCTAssertTrue(delegate.shouldDelegateCalled);
+	XCTAssertEqual(delegate.shouldDelegateCallAmount, 1);
+	XCTAssertEqualObjects(textField.text, @"4111111111111111");
 }
 
 #pragma mark - Text Validation

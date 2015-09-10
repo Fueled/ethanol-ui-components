@@ -10,4 +10,6 @@
 
 @implementation ETHExtendableTextField (Subclass)
 
+@dynamic proxyDelegate;
+
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "ETHTextField.h"
+#import "ETHTextField+Subclass.h"
 #import "ETHExtendableTextField+Subclass.h"
 #import <EthanolValidationFormatting/ETHValidator.h>
 #import <EthanolValidationFormatting/ETHFormatter.h>
@@ -64,15 +65,15 @@
   NSError * error;
   BOOL success = [self doValidate:&error];
   
-  if([self shouldValidateForReason:ETHTextFieldValidationReasonProgramatically] && [self.delegate respondsToSelector:@selector(textField:didValidateText:withReason:withSuccess:error:)]) {
-    return [self.delegate textField:self didValidateText:self.nonNullableText withReason:ETHTextFieldValidationReasonProgramatically withSuccess:success error:error];
+  if([self shouldValidateForReason:ETHTextFieldValidationReasonProgramatically] && [self.proxyDelegate respondsToSelector:@selector(textField:didValidateText:withReason:withSuccess:error:)]) {
+    return [self.proxyDelegate textField:self didValidateText:self.nonNullableText withReason:ETHTextFieldValidationReasonProgramatically withSuccess:success error:error];
   }
   
   return success;
 }
 
 - (BOOL)shouldFormat {
-  return ![self.delegate respondsToSelector:@selector(textField:shouldFormat:)] || ([self.delegate respondsToSelector:@selector(textField:shouldFormat:)] && [self.delegate textField:self shouldFormat:self.nonNullableText]);
+  return ![self.proxyDelegate respondsToSelector:@selector(textField:shouldFormat:)] || ([self.proxyDelegate respondsToSelector:@selector(textField:shouldFormat:)] && [self.proxyDelegate textField:self shouldFormat:self.nonNullableText]);
 }
 
 - (BOOL)shouldValidateForReason:(ETHTextFieldValidationReason)reason {
@@ -91,7 +92,7 @@
       shouldValidate = YES;
       break;
   }
-  return (shouldValidate && ![self.delegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)]) || ([self.delegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)] && [self.delegate textField:self shouldValidateText:self.nonNullableText forReason:reason]);
+  return (shouldValidate && ![self.proxyDelegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)]) || ([self.proxyDelegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)] && [self.proxyDelegate textField:self shouldValidateText:self.nonNullableText forReason:reason]);
 }
 
 - (void)setFormatter:(ETHFormatter *)formatter {
@@ -230,8 +231,8 @@
     }
     
     if(shouldFormat) {
-      if([self.delegate respondsToSelector:@selector(textField:didFormat:)]) {
-        [self.delegate textField:self didFormat:newText];
+      if([self.proxyDelegate respondsToSelector:@selector(textField:didFormat:)]) {
+        [self.proxyDelegate textField:self didFormat:newText];
       }
     }
     

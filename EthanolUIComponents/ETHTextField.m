@@ -92,7 +92,10 @@
       shouldValidate = YES;
       break;
   }
-  return (shouldValidate && ![self.proxyDelegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)]) || ([self.proxyDelegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)] && [self.proxyDelegate textField:self shouldValidateText:self.nonNullableText forReason:reason]);
+	if([self.proxyDelegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)]) {
+		return [self.proxyDelegate textField:self shouldValidateText:self.nonNullableText forReason:reason];
+	}
+  return shouldValidate;
 }
 
 - (void)setFormatter:(ETHFormatter *)formatter {
@@ -140,11 +143,13 @@
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-  if([self.delegate respondsToSelector:@selector(textFieldShouldEndEditing:)]) {
-    return [self.delegate textFieldShouldEndEditing:textField];
-  }
-  
-  return [self tryToValidateWithDelegateForReason:ETHTextFieldValidationReasonLostFocus];
+	BOOL shouldReturn = [self tryToValidateWithDelegateForReason:ETHTextFieldValidationReasonLostFocus];
+	
+	if(shouldReturn && [self.delegate respondsToSelector:@selector(textFieldShouldEndEditing:)] && ![self.delegate textFieldShouldEndEditing:textField]) {
+		return NO;
+	}
+	
+	return shouldReturn;
 }
 
 - (void)setText:(NSString *)text {
@@ -175,13 +180,9 @@
     
     if([self.delegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)] && ![self.delegate textField:self shouldChangeCharactersInRange:range replacementString:string]) {
       return NO;
-    }
-    
-    if(hasDisallowedCharacters && string.length == 0) {
-      return NO;
-    }
+		}
   }
-  
+	
   NSInteger cursorOffset = 0;
   BOOL shouldFormat = self.formatter != nil && [self shouldFormat];
   if(shouldFormat) {
@@ -269,7 +270,8 @@
   if([self.delegate respondsToSelector:@selector(textField:didValidateText:withReason:withSuccess:error:)]) {
     return [self.delegate textField:self didValidateText:self.nonNullableText withReason:reason withSuccess:success error:error];
   }
-  return YES;
+	
+  return success;
 }
 
 - (BOOL)doValidate:(NSError **)error {

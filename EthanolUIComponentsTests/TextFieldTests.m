@@ -77,10 +77,27 @@
 
 @end
 
+@interface TextFieldTestDelegateShouldNotFormat : NSObject <ETHTextFieldDelegate>
+
+@property (nonatomic, assign) BOOL shouldDelegateCalled;
+
+@end
+
+@implementation TextFieldTestDelegateShouldNotFormat
+
+- (BOOL)textField:(ETHTextField *)textField shouldFormat:(NSString *)text {
+	self.shouldDelegateCalled = YES;
+	return NO;
+}
+
+@end
+
 @interface TextFieldTestDelegateValidateWithoutDid : NSObject <ETHTextFieldDelegate>
 
 @property (nonatomic, assign) BOOL shouldShouldReturnYes;
 @property (nonatomic, assign) BOOL shouldDelegateCalled;
+@property (nonatomic, assign) BOOL shouldReturnShouldReturnYes;
+@property (nonatomic, assign) BOOL shouldReturnDelegateCalled;
 @property (nonatomic, assign) NSInteger shouldDelegateCallAmount;
 
 @end
@@ -97,6 +114,16 @@
 	self.shouldDelegateCalled = YES;
 	++self.shouldDelegateCallAmount;
 	return self.shouldShouldReturnYes;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	self.shouldReturnDelegateCalled = YES;
+	return self.shouldReturnShouldReturnYes;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+	self.shouldReturnDelegateCalled = YES;
+	return self.shouldReturnShouldReturnYes;
 }
 
 @end
@@ -120,6 +147,38 @@
 
 - (void)textFieldTextDidChange:(ETHExtendableTextField *)textField {
 	self.didDelegateCalled = YES;
+}
+
+@end
+
+@interface TextFieldTestShouldChangeCharactersInRangeDelegate : NSObject <ETHTextFieldDelegate>
+
+@end
+
+@implementation TextFieldTestShouldChangeCharactersInRangeDelegate
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+	return NO;
+}
+
+- (BOOL)textField:(ETHTextField *)textField shouldFormat:(NSString *)text {
+	return YES;
+}
+
+@end
+
+@interface CustomValidator : ETHValidator
+
+@property (nonatomic, assign) BOOL validateCalled;
+@property (nonatomic, assign) BOOL shouldValidate;
+
+@end
+
+@implementation CustomValidator
+
+- (BOOL)validateObject:(id)object error:(NSError **)error {
+	self.validateCalled = YES;
+	return self.shouldValidate;
 }
 
 @end
@@ -171,6 +230,32 @@
 	TEST_USER_INPUT(@"41 1818 181818 11 81", @"4111 1111 1");
 }
 
+- (void)testTextFieldTextInputPreventTextChange {
+	NSString * textToBeReplaced = @"should be replaced by \"text\"'s variable content";
+	
+	TextFieldTestShouldChangeCharactersInRangeDelegate * delegate = [[TextFieldTestShouldChangeCharactersInRangeDelegate alloc] init];
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.delegate = delegate;
+	textField.text = textToBeReplaced;
+	textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
+	XCTAssertEqualObjects(textField.text, textToBeReplaced);
+	textField.text = @"4111111111111111";
+	XCTAssertEqualObjects(textField.text, @"4111 1111 1111 1111");
+	
+	textField.text = textToBeReplaced;
+	TEST_USER_INPUT(@"4111111111111111", textToBeReplaced);
+}
+
+- (void)testTextFieldTextInputShouldFormatEvenIfDisallowedCharactersEmpty {
+	TextFieldTestDelegateShouldNotFormat * delegate = [[TextFieldTestDelegateShouldNotFormat alloc] init];
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
+	textField.allowedCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@""];
+	textField.delegate = delegate;
+	TEST_USER_INPUT(@"4111111111111111", @"");
+	XCTAssertTrue(delegate.shouldDelegateCalled);
+}
+
 - (void)testTextFieldUserInputShouldChange {
 	NSString * textToBeReplaced = @"should be replaced by \"text\"'s variable content";
 	
@@ -190,6 +275,184 @@
 	textField.text = textToBeReplaced;
 	TEST_USER_INPUT(@"4111111111111111", textToBeReplaced);
 	XCTAssertTrue(textField.shouldCalled);
+}
+
+- (void)testTextFieldReturn {
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	XCTAssertTrue([textField textFieldShouldReturn:textField]);
+	
+	textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
+	textField.validator = [ETHSelectorValidator validatorWithSelector:@selector(eth_isValidCreditCardNumber) error:@"unused"];
+}
+
+- (void)testTextFieldReturnDelegate {
+	TextFieldTestDelegateValidateWithoutDid * delegate = [[TextFieldTestDelegateValidateWithoutDid alloc] init];
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.delegate = delegate;
+	XCTAssertFalse([textField textFieldShouldReturn:textField]);
+	XCTAssertTrue(delegate.shouldReturnDelegateCalled);
+}
+
+- (void)testTextFieldReturnDoValidate {
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.validateOnReturn = YES;
+	CustomValidator * validator = [CustomValidator validator];
+	validator.shouldValidate = NO;
+	textField.validator = validator;
+	XCTAssertFalse([textField textFieldShouldReturn:textField]);
+	XCTAssertTrue(validator.validateCalled);
+}
+
+- (void)testTextFieldReturnDoNotValidate {
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.validateOnReturn = NO;
+	CustomValidator * validator = [CustomValidator validator];
+	validator.shouldValidate = NO;
+	textField.validator = validator;
+	XCTAssertTrue([textField textFieldShouldReturn:textField]);
+	XCTAssertFalse(validator.validateCalled);
+}
+
+- (void)testTextFieldReturnDoValidateWithValidateDelegate {
+	TextFieldTestDelegateValidateWithoutDid * delegate = [[TextFieldTestDelegateValidateWithoutDid alloc] init];
+	delegate.shouldShouldReturnYes = YES;
+	delegate.shouldReturnShouldReturnYes = YES;
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.delegate = delegate;
+	CustomValidator * validator = [CustomValidator validator];
+	validator.shouldValidate = YES;
+	textField.validator = validator;
+	XCTAssertTrue([textField textFieldShouldReturn:textField]);
+	XCTAssertTrue(validator.validateCalled);
+}
+
+- (void)testTextFieldReturnDoValidateWithValidateDelegateAndValidateOnReturnFalse {
+	TextFieldTestDelegateValidateWithoutDid * delegate = [[TextFieldTestDelegateValidateWithoutDid alloc] init];
+	delegate.shouldShouldReturnYes = YES;
+	delegate.shouldReturnShouldReturnYes = YES;
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.validateOnReturn = NO;
+	textField.delegate = delegate;
+	CustomValidator * validator = [CustomValidator validator];
+	validator.shouldValidate = YES;
+	textField.validator = validator;
+	XCTAssertTrue([textField textFieldShouldReturn:textField]);
+	XCTAssertTrue(validator.validateCalled);
+}
+
+- (void)testTextFieldReturnDoValidateWithNoValidateDelegate {
+	TextFieldTestDelegateValidateWithoutDid * delegate = [[TextFieldTestDelegateValidateWithoutDid alloc] init];
+	delegate.shouldShouldReturnYes = YES;
+	delegate.shouldReturnShouldReturnYes = NO;
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.delegate = delegate;
+	CustomValidator * validator = [CustomValidator validator];
+	validator.shouldValidate = YES;
+	textField.validator = validator;
+	XCTAssertFalse([textField textFieldShouldReturn:textField]);
+	XCTAssertTrue(validator.validateCalled);
+}
+
+- (void)testTextFieldReturnDoValidateWithValidateDelegateDid {
+	TextFieldTestDelegateValidateWithDid * delegate = [[TextFieldTestDelegateValidateWithDid alloc] init];
+	delegate.shouldShouldReturnYes = YES;
+	delegate.shouldReturnShouldReturnYes = YES;
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.delegate = delegate;
+	CustomValidator * validator = [CustomValidator validator];
+	validator.shouldValidate = YES;
+	textField.validator = validator;
+	XCTAssertFalse([textField textFieldShouldReturn:textField]);
+	XCTAssertTrue(validator.validateCalled);
+}
+
+- (void)testTextFieldEndEditing {
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	XCTAssertTrue([textField textFieldShouldEndEditing:textField]);
+	
+	textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
+	textField.validator = [ETHSelectorValidator validatorWithSelector:@selector(eth_isValidCreditCardNumber) error:@"unused"];
+}
+
+- (void)testTextFieldEndEditingDelegate {
+	TextFieldTestDelegateValidateWithoutDid * delegate = [[TextFieldTestDelegateValidateWithoutDid alloc] init];
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.delegate = delegate;
+	XCTAssertFalse([textField textFieldShouldEndEditing:textField]);
+	XCTAssertTrue(delegate.shouldReturnDelegateCalled);
+}
+
+- (void)testTextFieldEndEditingDoValidate {
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.validateOnLostFocus = YES;
+	CustomValidator * validator = [CustomValidator validator];
+	validator.shouldValidate = NO;
+	textField.validator = validator;
+	XCTAssertFalse([textField textFieldShouldEndEditing:textField]);
+	XCTAssertTrue(validator.validateCalled);
+}
+
+- (void)testTextFieldEndEditingDoNotValidate {
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.validateOnLostFocus = NO;
+	CustomValidator * validator = [CustomValidator validator];
+	validator.shouldValidate = NO;
+	textField.validator = validator;
+	XCTAssertTrue([textField textFieldShouldEndEditing:textField]);
+	XCTAssertFalse(validator.validateCalled);
+}
+
+- (void)testTextFieldEndEditingDoValidateWithValidateDelegate {
+	TextFieldTestDelegateValidateWithoutDid * delegate = [[TextFieldTestDelegateValidateWithoutDid alloc] init];
+	delegate.shouldShouldReturnYes = YES;
+	delegate.shouldReturnShouldReturnYes = YES;
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.delegate = delegate;
+	CustomValidator * validator = [CustomValidator validator];
+	validator.shouldValidate = YES;
+	textField.validator = validator;
+	XCTAssertTrue([textField textFieldShouldEndEditing:textField]);
+	XCTAssertTrue(validator.validateCalled);
+}
+
+- (void)testTextFieldEndEditingDoValidateWithValidateDelegateAndValidateOnReturnFalse {
+	TextFieldTestDelegateValidateWithoutDid * delegate = [[TextFieldTestDelegateValidateWithoutDid alloc] init];
+	delegate.shouldShouldReturnYes = YES;
+	delegate.shouldReturnShouldReturnYes = YES;
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.validateOnLostFocus = NO;
+	textField.delegate = delegate;
+	CustomValidator * validator = [CustomValidator validator];
+	validator.shouldValidate = YES;
+	textField.validator = validator;
+	XCTAssertTrue([textField textFieldShouldEndEditing:textField]);
+	XCTAssertTrue(validator.validateCalled);
+}
+
+- (void)testTextFieldEndEditingDoValidateWithNoValidateDelegate {
+	TextFieldTestDelegateValidateWithoutDid * delegate = [[TextFieldTestDelegateValidateWithoutDid alloc] init];
+	delegate.shouldShouldReturnYes = YES;
+	delegate.shouldReturnShouldReturnYes = NO;
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.delegate = delegate;
+	CustomValidator * validator = [CustomValidator validator];
+	validator.shouldValidate = YES;
+	textField.validator = validator;
+	XCTAssertFalse([textField textFieldShouldEndEditing:textField]);
+	XCTAssertTrue(validator.validateCalled);
+}
+
+- (void)testTextFieldEndEditingDoValidateWithValidateDelegateDid {
+	TextFieldTestDelegateValidateWithDid * delegate = [[TextFieldTestDelegateValidateWithDid alloc] init];
+	delegate.shouldShouldReturnYes = YES;
+	delegate.shouldReturnShouldReturnYes = YES;
+	ETHTextField * textField = [[ETHTextField alloc] init];
+	textField.delegate = delegate;
+	CustomValidator * validator = [CustomValidator validator];
+	validator.shouldValidate = YES;
+	textField.validator = validator;
+	XCTAssertFalse([textField textFieldShouldEndEditing:textField]);
+	XCTAssertTrue(validator.validateCalled);
 }
 
 - (void)testTextDidChangeDelegateDidCalled {

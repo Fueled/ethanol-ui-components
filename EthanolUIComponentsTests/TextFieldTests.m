@@ -61,6 +61,22 @@
 
 @end
 
+@interface TestCustomTextFieldShouldChange : ETHTextField <ETHTextFieldDelegate>
+
+@property (nonatomic, assign) BOOL shouldShouldReturnYes;
+@property (nonatomic, assign) BOOL shouldCalled;
+
+@end
+
+@implementation TestCustomTextFieldShouldChange
+
+- (BOOL)textFieldTextShouldChange:(ETHExtendableTextField *)textField {
+	self.shouldCalled = YES;
+	return self.shouldShouldReturnYes;
+}
+
+@end
+
 @interface TextFieldTestDelegateValidateWithoutDid : NSObject <ETHTextFieldDelegate>
 
 @property (nonatomic, assign) BOOL shouldShouldReturnYes;
@@ -126,10 +142,6 @@
 }
 
 #pragma mark - User input tests (Faked)
-
-- (void)testUserTestInputWithEverything {
-	ETHTextField * textField = [[ETHTextField alloc] init];
-	NSString * textToBeReplaced = @"should be replaced by \"text\"'s variable content";
 	
 	// Emulate user input
 #define USER_INPUT(textString) \
@@ -140,7 +152,11 @@
 #define TEST_USER_INPUT(textString, resultString) \
 	USER_INPUT(textString); \
 	XCTAssertEqualObjects(textField.text, resultString);
+
+- (void)testUserTestInputWithEverything {
+	NSString * textToBeReplaced = @"should be replaced by \"text\"'s variable content";
 	
+	ETHTextField * textField = [[ETHTextField alloc] init];
 	textField.text = textToBeReplaced;
 	TEST_USER_INPUT(@"text", @"text");
 	
@@ -153,6 +169,27 @@
 	
 	textField.text = textToBeReplaced;
 	TEST_USER_INPUT(@"41 1818 181818 11 81", @"4111 1111 1");
+}
+
+- (void)testTextFieldUserInputShouldChange {
+	NSString * textToBeReplaced = @"should be replaced by \"text\"'s variable content";
+	
+	TestCustomTextFieldShouldChange * textField = [[TestCustomTextFieldShouldChange alloc] init];
+	textField.shouldShouldReturnYes = YES;
+	textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
+	textField.text = textToBeReplaced;
+	TEST_USER_INPUT(@"4111111111111111", @"4111 1111 1111 1111");
+	XCTAssertTrue(textField.shouldCalled);
+}
+
+- (void)testTextFieldUserInputShouldNotChange {
+	NSString * textToBeReplaced = @"should be replaced by \"text\"'s variable content";
+	
+	TestCustomTextFieldShouldChange * textField = [[TestCustomTextFieldShouldChange alloc] init];
+	textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
+	textField.text = textToBeReplaced;
+	TEST_USER_INPUT(@"4111111111111111", textToBeReplaced);
+	XCTAssertTrue(textField.shouldCalled);
 }
 
 - (void)testTextDidChangeDelegateDidCalled {

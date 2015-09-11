@@ -1,5 +1,5 @@
 github "CocoaLumberjack/CocoaLumberjack" "479279f102a8ab23084290697bafa77aac0d1bdf"
 github "stephanecopin/NSInvocation-Helpers" "1.0.1"
-git "git@github.com:Fueled/ethanol-utilities.git" "0.1.7"
-git "git@github.com:Fueled/ethanol-tools.git" "0.1.6"
-git "git@github.com:Fueled/ethanol-validation-formatting.git" "0.2.2"
+github "Fueled/ethanol-utilities" "0.1.7"
+github "Fueled/ethanol-tools" "0.1.6"
+github "Fueled/ethanol-validation-formatting" "0.2.5"

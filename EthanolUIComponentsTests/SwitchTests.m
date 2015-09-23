@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 
 #import "ETHSwitch.h"
+#import "TestViewController.h"
 
 @interface ETHSwitch (PrivateTests)
 
@@ -33,11 +34,12 @@
 }
 
 - (void)testLoadSwitchInView {
-  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Tests" bundle:[NSBundle bundleForClass:[self class]]];
-  UIViewController *testViewController = [storyboard instantiateViewControllerWithIdentifier:@"TestsViewControllerID"];
+	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Tests" bundle:[NSBundle bundleForClass:[self class]]];
+  TestViewController *testViewController = [storyboard instantiateViewControllerWithIdentifier:@"TestsViewControllerID"];
   [testViewController loadView];
-  
-  XCTAssertNotNil(testViewController.view);
+	
+	XCTAssertNotNil(testViewController.testSwitch);
+	XCTAssertTrue([testViewController.testSwitch isKindOfClass:[ETHSwitch class]]);
 }
 
 - (void)testTurnSwitchOnColorOnSwitch {

@@ -1,9 +1,9 @@
 [submodule "Carthage/Checkouts/ethanol-utilities"]
 	path = Carthage/Checkouts/ethanol-utilities
-	url = git@github.com:Fueled/ethanol-utilities.git
+	url = https://github.com/Fueled/ethanol-utilities.git
 [submodule "Carthage/Checkouts/ethanol-tools"]
 	path = Carthage/Checkouts/ethanol-tools
-	url = git@github.com:Fueled/ethanol-tools.git
+	url = https://github.com/Fueled/ethanol-tools.git
 [submodule "Carthage/Checkouts/NSInvocation-Helpers"]
 	path = Carthage/Checkouts/NSInvocation-Helpers
 	url = https://github.com/stephanecopin/NSInvocation-Helpers.git
@@ -12,4 +12,4 @@
 	url = https://github.com/CocoaLumberjack/CocoaLumberjack.git
 [submodule "Carthage/Checkouts/ethanol-validation-formatting"]
 	path = Carthage/Checkouts/ethanol-validation-formatting
-	url = git@github.com:Fueled/ethanol-validation-formatting.git
+	url = https://github.com/Fueled/ethanol-validation-formatting.git

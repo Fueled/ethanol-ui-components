@@ -28,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 
  *  When subclassing a subclass of this class, it is required that you indicate which delegate methods you implemented,
  *  so that people can know if they have to call super or not (This class implement one delegate method, see the note below)
+ *  Please also see the documentation of the property `proxyDelegate` in ETHExtendableTextField+Subclass for information on how
+ *  to create your own delegate methods.
  *
  *  @note This class already implement the following delegate method, and subclasses should call it:
  *  - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string

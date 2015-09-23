@@ -7,6 +7,7 @@
 //
 
 #import "ETHTextField.h"
+#import "ETHTextField+Subclass.h"
 #import "ETHExtendableTextField+Subclass.h"
 #import <EthanolValidationFormatting/ETHValidator.h>
 #import <EthanolValidationFormatting/ETHFormatter.h>
@@ -64,15 +65,15 @@
   NSError * error;
   BOOL success = [self doValidate:&error];
   
-  if([self shouldValidateForReason:ETHTextFieldValidationReasonProgramatically] && [self.delegate respondsToSelector:@selector(textField:didValidateText:withReason:withSuccess:error:)]) {
-    return [self.delegate textField:self didValidateText:self.nonNullableText withReason:ETHTextFieldValidationReasonProgramatically withSuccess:success error:error];
+  if([self shouldValidateForReason:ETHTextFieldValidationReasonProgramatically] && [self.proxyDelegate respondsToSelector:@selector(textField:didValidateText:withReason:withSuccess:error:)]) {
+    return [self.proxyDelegate textField:self didValidateText:self.nonNullableText withReason:ETHTextFieldValidationReasonProgramatically withSuccess:success error:error];
   }
   
   return success;
 }
 
 - (BOOL)shouldFormat {
-  return ![self.delegate respondsToSelector:@selector(textField:shouldFormat:)] || ([self.delegate respondsToSelector:@selector(textField:shouldFormat:)] && [self.delegate textField:self shouldFormat:self.nonNullableText]);
+  return ![self.proxyDelegate respondsToSelector:@selector(textField:shouldFormat:)] || ([self.proxyDelegate respondsToSelector:@selector(textField:shouldFormat:)] && [self.proxyDelegate textField:self shouldFormat:self.nonNullableText]);
 }
 
 - (BOOL)shouldValidateForReason:(ETHTextFieldValidationReason)reason {
@@ -91,11 +92,19 @@
       shouldValidate = YES;
       break;
   }
-  return (shouldValidate && ![self.delegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)]) || ([self.delegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)] && [self.delegate textField:self shouldValidateText:self.nonNullableText forReason:reason]);
+	if([self.proxyDelegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)]) {
+		return [self.proxyDelegate textField:self shouldValidateText:self.nonNullableText forReason:reason];
+	}
+  return shouldValidate;
 }
 
 - (void)setFormatter:(ETHFormatter *)formatter {
-  if(_formatter != formatter){
+	if(formatter == nil) {
+		_formatter = nil;
+		return;
+	}
+	
+  if(_formatter != formatter) {
     UITextRange * selectedTextRange = [self selectedTextRange];
     NSInteger startCursor = [self offsetFromPosition:[self beginningOfDocument] toPosition:selectedTextRange.start];
     NSInteger endCursor = [self offsetFromPosition:[self beginningOfDocument] toPosition:selectedTextRange.end];
@@ -113,16 +122,34 @@
   }
 }
 
+- (void)setAllowedCharacterSet:(NSCharacterSet *)allowedCharacterSet {
+	if(_allowedCharacterSet != allowedCharacterSet) {
+		_allowedCharacterSet = allowedCharacterSet;
+		
+		self.text = [self.text eth_stringByRemovingCharacters:[_allowedCharacterSet invertedSet]];
+	}
+}
+
+- (void)setMaximumLength:(NSUInteger)maximumLength {
+	_maximumLength = maximumLength;
+	
+	if(_maximumLength != 0 && _maximumLength < self.text.length) {
+		self.text = [self.text substringToIndex:maximumLength];
+	}
+}
+
 - (BOOL)textFieldTextShouldChange:(ETHExtendableTextField *)textField {
   return [self tryToValidateWithDelegateForReason:ETHTextFieldValidationReasonKeyTapped];
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-  if([self.delegate respondsToSelector:@selector(textFieldShouldEndEditing:)]) {
-    return [self.delegate textFieldShouldEndEditing:textField];
-  }
-  
-  return [self tryToValidateWithDelegateForReason:ETHTextFieldValidationReasonLostFocus];
+	BOOL shouldReturn = [self tryToValidateWithDelegateForReason:ETHTextFieldValidationReasonLostFocus];
+	
+	if(shouldReturn && [self.delegate respondsToSelector:@selector(textFieldShouldEndEditing:)] && ![self.delegate textFieldShouldEndEditing:textField]) {
+		return NO;
+	}
+	
+	return shouldReturn;
 }
 
 - (void)setText:(NSString *)text {
@@ -153,13 +180,9 @@
     
     if([self.delegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)] && ![self.delegate textField:self shouldChangeCharactersInRange:range replacementString:string]) {
       return NO;
-    }
-    
-    if(hasDisallowedCharacters && string.length == 0) {
-      return NO;
-    }
+		}
   }
-  
+	
   NSInteger cursorOffset = 0;
   BOOL shouldFormat = self.formatter != nil && [self shouldFormat];
   if(shouldFormat) {
@@ -209,8 +232,8 @@
     }
     
     if(shouldFormat) {
-      if([self.delegate respondsToSelector:@selector(textField:didFormat:)]) {
-        [self.delegate textField:self didFormat:newText];
+      if([self.proxyDelegate respondsToSelector:@selector(textField:didFormat:)]) {
+        [self.proxyDelegate textField:self didFormat:newText];
       }
     }
     
@@ -247,7 +270,8 @@
   if([self.delegate respondsToSelector:@selector(textField:didValidateText:withReason:withSuccess:error:)]) {
     return [self.delegate textField:self didValidateText:self.nonNullableText withReason:reason withSuccess:success error:error];
   }
-  return YES;
+	
+  return success;
 }
 
 - (BOOL)doValidate:(NSError **)error {

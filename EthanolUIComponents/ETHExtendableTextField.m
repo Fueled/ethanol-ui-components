@@ -83,10 +83,6 @@
   if([self.proxyDelegate respondsToSelector:@selector(textFieldTextShouldChange:)] && ![self.proxyDelegate textFieldTextShouldChange:self]) {
     return NO;
   }
-  
-  if([self.delegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)]) {
-    return [self.delegate textField:textField shouldChangeCharactersInRange:range replacementString:string];
-  }
 
   return YES;
 }

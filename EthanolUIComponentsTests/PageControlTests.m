@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 
 #import "ETHPageControl.h"
+#import "TestViewController.h"
 
 @interface ETHPageControl (PrivateTests)
 
@@ -48,11 +49,12 @@
 #pragma mark - Test Load View
 
 - (void)testLoadPageControlInView {
-  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Tests" bundle:[NSBundle bundleForClass:[self class]]];
-  UIViewController *testViewController = [storyboard instantiateViewControllerWithIdentifier:@"TestsViewControllerID"];
+	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Tests" bundle:[NSBundle bundleForClass:[self class]]];
+  TestViewController *testViewController = [storyboard instantiateViewControllerWithIdentifier:@"TestsViewControllerID"];
   [testViewController loadView];
-  
-  XCTAssertNotNil(testViewController.view);
+	
+	XCTAssertNotNil(testViewController.testPageControl);
+	XCTAssertTrue([testViewController.testPageControl isKindOfClass:[ETHPageControl class]]);
 }
 
 #pragma mark - Default Dots

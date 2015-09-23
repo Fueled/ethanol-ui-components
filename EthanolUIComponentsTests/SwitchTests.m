@@ -34,12 +34,12 @@
 }
 
 - (void)testLoadSwitchInView {
-	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Tests" bundle:[NSBundle bundleForClass:[self class]]];
+  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Tests" bundle:[NSBundle bundleForClass:[self class]]];
   TestViewController *testViewController = [storyboard instantiateViewControllerWithIdentifier:@"TestsViewControllerID"];
   [testViewController loadView];
-	
-	XCTAssertNotNil(testViewController.testSwitch);
-	XCTAssertTrue([testViewController.testSwitch isKindOfClass:[ETHSwitch class]]);
+  
+  XCTAssertNotNil(testViewController.testSwitch);
+  XCTAssertTrue([testViewController.testSwitch isKindOfClass:[ETHSwitch class]]);
 }
 
 - (void)testTurnSwitchOnColorOnSwitch {

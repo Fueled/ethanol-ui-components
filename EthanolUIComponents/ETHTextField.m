@@ -92,18 +92,18 @@
       shouldValidate = YES;
       break;
   }
-	if([self.proxyDelegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)]) {
-		return [self.proxyDelegate textField:self shouldValidateText:self.nonNullableText forReason:reason];
-	}
+  if([self.proxyDelegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)]) {
+    return [self.proxyDelegate textField:self shouldValidateText:self.nonNullableText forReason:reason];
+  }
   return shouldValidate;
 }
 
 - (void)setFormatter:(ETHFormatter *)formatter {
-	if(formatter == nil) {
-		_formatter = nil;
-		return;
-	}
-	
+  if(formatter == nil) {
+    _formatter = nil;
+    return;
+  }
+  
   if(_formatter != formatter) {
     UITextRange * selectedTextRange = [self selectedTextRange];
     NSInteger startCursor = [self offsetFromPosition:[self beginningOfDocument] toPosition:selectedTextRange.start];
@@ -123,19 +123,19 @@
 }
 
 - (void)setAllowedCharacterSet:(NSCharacterSet *)allowedCharacterSet {
-	if(_allowedCharacterSet != allowedCharacterSet) {
-		_allowedCharacterSet = allowedCharacterSet;
-		
-		self.text = [self.text eth_stringByRemovingCharacters:[_allowedCharacterSet invertedSet]];
-	}
+  if(_allowedCharacterSet != allowedCharacterSet) {
+    _allowedCharacterSet = allowedCharacterSet;
+    
+    self.text = [self.text eth_stringByRemovingCharacters:[_allowedCharacterSet invertedSet]];
+  }
 }
 
 - (void)setMaximumLength:(NSUInteger)maximumLength {
-	_maximumLength = maximumLength;
-	
-	if(_maximumLength != 0 && _maximumLength < self.text.length) {
-		self.text = [self.text substringToIndex:maximumLength];
-	}
+  _maximumLength = maximumLength;
+  
+  if(_maximumLength != 0 && _maximumLength < self.text.length) {
+    self.text = [self.text substringToIndex:maximumLength];
+  }
 }
 
 - (BOOL)textFieldTextShouldChange:(ETHExtendableTextField *)textField {
@@ -143,13 +143,13 @@
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-	BOOL shouldReturn = [self tryToValidateWithDelegateForReason:ETHTextFieldValidationReasonLostFocus];
-	
-	if(shouldReturn && [self.delegate respondsToSelector:@selector(textFieldShouldEndEditing:)] && ![self.delegate textFieldShouldEndEditing:textField]) {
-		return NO;
-	}
-	
-	return shouldReturn;
+  BOOL shouldReturn = [self tryToValidateWithDelegateForReason:ETHTextFieldValidationReasonLostFocus];
+  
+  if(shouldReturn && [self.delegate respondsToSelector:@selector(textFieldShouldEndEditing:)] && ![self.delegate textFieldShouldEndEditing:textField]) {
+    return NO;
+  }
+  
+  return shouldReturn;
 }
 
 - (void)setText:(NSString *)text {
@@ -180,9 +180,9 @@
     
     if([self.delegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)] && ![self.delegate textField:self shouldChangeCharactersInRange:range replacementString:string]) {
       return NO;
-		}
+    }
   }
-	
+  
   NSInteger cursorOffset = 0;
   BOOL shouldFormat = self.formatter != nil && [self shouldFormat];
   if(shouldFormat) {
@@ -270,7 +270,7 @@
   if([self.delegate respondsToSelector:@selector(textField:didValidateText:withReason:withSuccess:error:)]) {
     return [self.delegate textField:self didValidateText:self.nonNullableText withReason:reason withSuccess:success error:error];
   }
-	
+  
   return success;
 }
 

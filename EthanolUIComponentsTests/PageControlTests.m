@@ -36,7 +36,7 @@
 
 - (void)setUp {
   [super setUp];
-
+  
   self.inactiveLeftImage = [UIImage imageNamed:@"Carousel-Middle-Active" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
   self.inactiveMiddleImage = [UIImage imageNamed:@"Carousel-Middle-Active" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
   self.inactiveRightImage = [UIImage imageNamed:@"Carousel-Middle-Active" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
@@ -49,12 +49,12 @@
 #pragma mark - Test Load View
 
 - (void)testLoadPageControlInView {
-	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Tests" bundle:[NSBundle bundleForClass:[self class]]];
+  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Tests" bundle:[NSBundle bundleForClass:[self class]]];
   TestViewController *testViewController = [storyboard instantiateViewControllerWithIdentifier:@"TestsViewControllerID"];
   [testViewController loadView];
-	
-	XCTAssertNotNil(testViewController.testPageControl);
-	XCTAssertTrue([testViewController.testPageControl isKindOfClass:[ETHPageControl class]]);
+  
+  XCTAssertNotNil(testViewController.testPageControl);
+  XCTAssertTrue([testViewController.testPageControl isKindOfClass:[ETHPageControl class]]);
 }
 
 #pragma mark - Default Dots
@@ -94,7 +94,7 @@
 - (void)testPageControlDefaultCurrentPage {
   ETHPageControl *pageControl = [[ETHPageControl alloc] init];
   pageControl.numberOfPages = 5;
-
+  
   XCTAssertEqual(pageControl.currentPage, 0);
 }
 
@@ -238,7 +238,7 @@
   pageControl.numberOfPages = 2;
   pageControl.dotsSpace = 10.0f;
   [pageControl sizeToFit];
-
+  
   XCTAssertEqual(pageControl.frame.size.width, [pageControl.dotsArray[0] frame].size.width + 10.0f + [pageControl.dotsArray[1] frame].size.width);
 }
 
@@ -448,7 +448,7 @@
   
   UIView *dotView = pageControl.dotsArray[2];
   [pageControl didTapDot:dotView.gestureRecognizers[0]];
-
+  
   XCTAssertEqual(pageControl.currentPage, 2);
 }
 

@@ -54,7 +54,6 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
 @property (nonatomic, strong) UIPanGestureRecognizer * panGestureRecognizer;
 @property (nonatomic, strong) CADisplayLink * displayLink;
 @property (nonatomic, strong) UIScrollView * internalScrollView;
-@property (nonatomic, strong) ETHPageViewControllerTitleView * titleView;
 @property (nonatomic, strong, readonly) NSMutableArray<UILabel *> * generatedTitleLabels;
 
 @end
@@ -62,6 +61,7 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
 @implementation ETHPageViewController
 @synthesize cachedPageViewControllers = _cachedPageViewControllers;
 @synthesize generatedTitleLabels = _generatedTitleLabels;
+@synthesize titleView = _titleView;
 
 - (id)init {
   return [self initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
@@ -123,8 +123,6 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
     [self updatePageControlsTintColor];
   }
   
-  self.titleView = [[ETHPageViewControllerTitleView alloc] init];
-  
   NSMutableArray * titleViews = [NSMutableArray array];
   for(UIViewController * viewController in self.cachedPageViewControllers) {
     [titleViews addObject:[self titleViewForViewController:viewController]];
@@ -135,10 +133,7 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
   self.navigationItem.titleView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width - 2.0 * kTitleViewHorizontalMargin, self.navigationController.navigationBar.bounds.size.height);
   [self.navigationItem.titleView layoutIfNeeded];
   
-  [self setViewControllers:@[self.cachedPageViewControllers.firstObject]
-                 direction:UIPageViewControllerNavigationDirectionForward
-                  animated:NO
-                completion:nil];
+  [self updateCurrentPage];
   
   __weak ETHPageViewController * weakSelf = self;
   self.displayLink = [CADisplayLink eth_displayLinkWithBlock:^(CADisplayLink *displayLink) {
@@ -200,10 +195,6 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
   return nil;
 }
 
-- (NSInteger)currentPage {
-  return self.titleView.compactPageControl.currentPage;
-}
-
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
   [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
   
@@ -233,14 +224,22 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
   
 }
 
+- (NSInteger)currentPage {
+  return self.titleView.compactPageControl.currentPage;
+}
+
 - (void)setCurrentPage:(NSInteger)page {
-  [self setViewControllers:@[self.cachedPageViewControllers[page]]
+  self.titleView.compactPageControl.currentPage = page;
+  [self updateCurrentPage];
+}
+
+- (void)updateCurrentPage {
+  [self setViewControllers:@[self.cachedPageViewControllers[self.currentPage]]
                  direction:UIPageViewControllerNavigationDirectionForward
                   animated:NO
                 completion:nil];
   
   self.titleView.currentPosition = [self currentPosition];
-  self.titleView.compactPageControl.currentPage = page;
 }
 
 - (UIViewController *)currentViewController {
@@ -252,6 +251,13 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
     _generatedTitleLabels = [NSMutableArray array];
   }
   return _generatedTitleLabels;
+}
+
+- (ETHPageViewControllerTitleView *)titleView {
+  if(_titleView == nil) {
+    _titleView = [[ETHPageViewControllerTitleView alloc] init];
+  }
+  return _titleView;
 }
 
 #pragma mark - UIPageViewController delegate methods

@@ -133,7 +133,7 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
   self.navigationItem.titleView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width - 2.0 * kTitleViewHorizontalMargin, self.navigationController.navigationBar.bounds.size.height);
   [self.navigationItem.titleView layoutIfNeeded];
   
-  [self updateCurrentPage];
+  [self updateCurrentPageAnimated:NO oldPage:NSNotFound completion:nil];
   
   __weak ETHPageViewController * weakSelf = self;
   self.displayLink = [CADisplayLink eth_displayLinkWithBlock:^(CADisplayLink *displayLink) {
@@ -229,17 +229,42 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
 }
 
 - (void)setCurrentPage:(NSInteger)page {
-  self.titleView.compactPageControl.currentPage = page;
-  [self updateCurrentPage];
+  [self setCurrentPage:page animated:NO];
 }
 
-- (void)updateCurrentPage {
+- (void)setCurrentPage:(NSInteger)page animated:(BOOL)animated {
+  if(page == self.currentPage) {
+    return;
+  }
+  
+  [self willChangeToPage:page];
+  NSInteger oldPage = self.currentPage;
+  self.titleView.compactPageControl.currentPage = page;
+  __weak ETHPageViewController * weakSelf = self;
+  [self updateCurrentPageAnimated:animated oldPage:oldPage completion:^(BOOL finished) {
+    [weakSelf didChangeToPage:page];
+  }];
+}
+
+- (void)updateCurrentPageAnimated:(BOOL)animated oldPage:(NSInteger)oldPage completion:(void (^)(BOOL finished))completion  {
+  UIPageViewControllerNavigationDirection direction = UIPageViewControllerNavigationDirectionForward;
+  if(animated && oldPage != NSNotFound && self.currentPage < oldPage) {
+    direction = UIPageViewControllerNavigationDirectionReverse;
+  }
+  
   [self setViewControllers:@[self.cachedPageViewControllers[self.currentPage]]
-                 direction:UIPageViewControllerNavigationDirectionForward
-                  animated:NO
-                completion:nil];
+                 direction:direction
+                  animated:animated
+                completion:^(BOOL finished) {
+                  if(animated && completion != nil) {
+                    completion(finished);
+                  }
+                }];
   
   self.titleView.currentPosition = [self currentPosition];
+  if(!animated && completion != nil) {
+    completion(true);
+  }
 }
 
 - (UIViewController *)currentViewController {

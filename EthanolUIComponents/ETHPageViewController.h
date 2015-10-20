@@ -21,6 +21,7 @@ typedef UIViewController * __nonnull (^ ETHPageViewControllerFactoryBlock)(void)
 
 @property (nonatomic, strong, readonly) UIViewController * currentViewController;
 @property (nonatomic, assign) NSInteger currentPage;
+- (void)setCurrentPage:(NSInteger)page animated:(BOOL)animated;
 
 - (void)willChangeToPage:(NSInteger)page; // This method can be overriden in subclass.
 - (void)didChangeToPage:(NSInteger)page; // This method can be overriden in subclass.

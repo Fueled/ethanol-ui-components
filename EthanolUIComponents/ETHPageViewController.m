@@ -137,7 +137,9 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
   
   __weak ETHPageViewController * weakSelf = self;
   self.displayLink = [CADisplayLink eth_displayLinkWithBlock:^(CADisplayLink *displayLink) {
-    weakSelf.titleView.currentPosition = [self currentPosition];
+    if(!weakSelf.titleView.hidden) {
+      weakSelf.titleView.currentPosition = [weakSelf currentPosition];
+    }
   }];
   NSRunLoop *runner = [NSRunLoop currentRunLoop];
   [self.displayLink addToRunLoop:runner forMode:NSRunLoopCommonModes];

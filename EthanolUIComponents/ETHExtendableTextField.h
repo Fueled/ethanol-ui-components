@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ETHExtendableTextFieldDelegate <UITextFieldDelegate>
 
 @optional
-- (BOOL)textFieldTextShouldChange:(ETHExtendableTextField *)textField;
+- (BOOL)textFieldTextShouldChange:(ETHExtendableTextField *)textField toText:(NSString *)text;
 - (void)textFieldTextDidChange:(ETHExtendableTextField *)textField;
 
 @end

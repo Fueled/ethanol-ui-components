@@ -96,17 +96,19 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
   [self.displayLink invalidate];
   self.displayLink = nil;
   
-  [self removeObserver:self forKeyPath:@"navigationController" context:NULL];
-  if(self.navigationController.navigationBar != nil) {
-    [self.navigationController.navigationBar removeObserver:self forKeyPath:@"titleTextAttributes" context:NULL];
+  if(self.isViewLoaded) {
+    [self removeObserver:self forKeyPath:@"navigationController" context:NULL];
+    if(self.navigationController.navigationBar != nil) {
+      [self.navigationController.navigationBar removeObserver:self forKeyPath:@"titleTextAttributes" context:NULL];
+      
+      [[NSNotificationCenter defaultCenter] removeObserver:self name:ETHViewTintColorDidChangeNotification object:self.navigationController.navigationBar];
+    }
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:ETHViewTintColorDidChangeNotification object:self.navigationController.navigationBar];
-  }
-  
-  for(UIViewController * viewController in self.cachedPageViewControllers) {
-    [viewController removeObserver:self forKeyPath:@"title" context:NULL];
-    [viewController removeObserver:self forKeyPath:@"navigationItem.title" context:NULL];
-    [viewController removeObserver:self forKeyPath:@"navigationItem.titleView" context:NULL];
+    for(UIViewController * viewController in self.cachedPageViewControllers) {
+      [viewController removeObserver:self forKeyPath:@"title" context:NULL];
+      [viewController removeObserver:self forKeyPath:@"navigationItem.title" context:NULL];
+      [viewController removeObserver:self forKeyPath:@"navigationItem.titleView" context:NULL];
+    }
   }
 }
 

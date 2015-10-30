@@ -58,14 +58,14 @@
 
 - (BOOL)validateInputSilently {
   NSError * error;
-  return [self doValidate:&error];
+  return [self doValidateText:self.nonNullableText error:&error];
 }
 
 - (BOOL)validateInput {
   NSError * error;
-  BOOL success = [self doValidate:&error];
+  BOOL success = [self doValidateText:self.nonNullableText error:&error];
   
-  if([self shouldValidateForReason:ETHTextFieldValidationReasonProgramatically] && [self.proxyDelegate respondsToSelector:@selector(textField:didValidateText:withReason:withSuccess:error:)]) {
+  if([self shouldValidateText:self.nonNullableText forReason:ETHTextFieldValidationReasonProgramatically] && [self.proxyDelegate respondsToSelector:@selector(textField:didValidateText:withReason:withSuccess:error:)]) {
     return [self.proxyDelegate textField:self didValidateText:self.nonNullableText withReason:ETHTextFieldValidationReasonProgramatically withSuccess:success error:error];
   }
   
@@ -76,7 +76,7 @@
   return ![self.proxyDelegate respondsToSelector:@selector(textField:shouldFormat:)] || ([self.proxyDelegate respondsToSelector:@selector(textField:shouldFormat:)] && [self.proxyDelegate textField:self shouldFormat:self.nonNullableText]);
 }
 
-- (BOOL)shouldValidateForReason:(ETHTextFieldValidationReason)reason {
+- (BOOL)shouldValidateText:(NSString *)text forReason:(ETHTextFieldValidationReason)reason {
   BOOL shouldValidate;
   switch (reason) {
     case ETHTextFieldValidationReasonKeyTapped:
@@ -93,7 +93,7 @@
       break;
   }
   if([self.proxyDelegate respondsToSelector:@selector(textField:shouldValidateText:forReason:)]) {
-    return [self.proxyDelegate textField:self shouldValidateText:self.nonNullableText forReason:reason];
+    return [self.proxyDelegate textField:self shouldValidateText:text forReason:reason];
   }
   return shouldValidate;
 }
@@ -138,12 +138,12 @@
   }
 }
 
-- (BOOL)textFieldTextShouldChange:(ETHExtendableTextField *)textField {
-  return [self tryToValidateWithDelegateForReason:ETHTextFieldValidationReasonKeyTapped];
+- (BOOL)textFieldTextShouldChange:(ETHExtendableTextField *)textField toText:(NSString *)text {
+  return [self tryToValidateText:text withDelegateForReason:ETHTextFieldValidationReasonKeyTapped];
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-  BOOL shouldReturn = [self tryToValidateWithDelegateForReason:ETHTextFieldValidationReasonLostFocus];
+  BOOL shouldReturn = [self tryToValidateText:self.nonNullableText withDelegateForReason:ETHTextFieldValidationReasonLostFocus];
   
   if(shouldReturn && [self.delegate respondsToSelector:@selector(textFieldShouldEndEditing:)] && ![self.delegate textFieldShouldEndEditing:textField]) {
     return NO;
@@ -247,7 +247,7 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-  BOOL shouldReturn = [self tryToValidateWithDelegateForReason:ETHTextFieldValidationReasonReturnTapped];
+  BOOL shouldReturn = [self tryToValidateText:self.text withDelegateForReason:ETHTextFieldValidationReasonReturnTapped];
   
   if(shouldReturn && [self.delegate respondsToSelector:@selector(textFieldShouldReturn:)] && ![self.delegate textFieldShouldReturn:textField]) {
     return NO;
@@ -256,30 +256,30 @@
   return shouldReturn;
 }
 
-- (BOOL)tryToValidateWithDelegateForReason:(ETHTextFieldValidationReason)reason {
-  if([self shouldValidateForReason:reason]) {
-    return [self doValidateWithDelegateForReason:reason];
+- (BOOL)tryToValidateText:(NSString *)text withDelegateForReason:(ETHTextFieldValidationReason)reason {
+  if([self shouldValidateText:text forReason:reason]) {
+    return [self doValidateText:text withDelegateForReason:reason];
   }
   return YES;
 }
 
-- (BOOL)doValidateWithDelegateForReason:(ETHTextFieldValidationReason)reason {
+- (BOOL)doValidateText:(NSString *)text withDelegateForReason:(ETHTextFieldValidationReason)reason {
   NSError * error;
-  BOOL success = [self doValidate:&error];
+  BOOL success = [self doValidateText:text error:&error];
   
   if([self.delegate respondsToSelector:@selector(textField:didValidateText:withReason:withSuccess:error:)]) {
-    return [self.delegate textField:self didValidateText:self.nonNullableText withReason:reason withSuccess:success error:error];
+    return [self.delegate textField:self didValidateText:text ?: @"" withReason:reason withSuccess:success error:error];
   }
   
   return success;
 }
 
-- (BOOL)doValidate:(NSError **)error {
+- (BOOL)doValidateText:(NSString *)text error:(NSError **)error {
   if(self.validator == nil) {
     return YES;
   }
   
-  return [self.validator validateObject:self.nonNullableText error:error];
+  return [self.validator validateObject:text ?: @"" error:error];
 }
 
 - (NSString *)nonNullableText {

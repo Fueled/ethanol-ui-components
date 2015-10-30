@@ -80,7 +80,8 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-  if([self.proxyDelegate respondsToSelector:@selector(textFieldTextShouldChange:)] && ![self.proxyDelegate textFieldTextShouldChange:self]) {
+  NSString * expectedText = [self.text stringByReplacingCharactersInRange:range withString:string];
+  if([self.proxyDelegate respondsToSelector:@selector(textFieldTextShouldChange:toText:)] && ![self.proxyDelegate textFieldTextShouldChange:self toText:expectedText]) {
     return NO;
   }
   

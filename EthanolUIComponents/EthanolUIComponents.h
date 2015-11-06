@@ -14,13 +14,13 @@ FOUNDATION_EXPORT double EthanolUIComponentsVersionNumber;
 //! Project version string for EthanolUIComponents.
 FOUNDATION_EXPORT const unsigned char EthanolUIComponentsVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <EthanolUIComponents/PublicHeader.h>
+// In this header, you should import all the public headers of your framework using statements like #import "PublicHeader.h"
 
-#import <EthanolUIComponents/ETHExtendableTextField.h>
-#import <EthanolUIComponents/ETHTextField.h>
-#import <EthanolUIComponents/ETHPageControl.h>
-#import <EthanolUIComponents/ETHRefreshControl.h>
-#import <EthanolUIComponents/ETHSwitch.h>
-#import <EthanolUIComponents/ETHPageViewController.h>
-#import <EthanolUIComponents/ETHPageViewControllerTitleView.h>
-#import <EthanolUIComponents/ETHNibView.h>
+#import "ETHExtendableTextField.h"
+#import "ETHTextField.h"
+#import "ETHPageControl.h"
+#import "ETHRefreshControl.h"
+#import "ETHSwitch.h"
+#import "ETHPageViewController.h"
+#import "ETHPageViewControllerTitleView.h"
+#import "ETHNibView.h"

@@ -72,8 +72,8 @@
   return success;
 }
 
-- (BOOL)shouldFormat {
-  return ![self.proxyDelegate respondsToSelector:@selector(textField:shouldFormat:)] || ([self.proxyDelegate respondsToSelector:@selector(textField:shouldFormat:)] && [self.proxyDelegate textField:self shouldFormat:self.nonNullableText]);
+- (BOOL)shouldFormatText:(NSString *)text {
+  return ![self.proxyDelegate respondsToSelector:@selector(textField:shouldFormat:)] || ([self.proxyDelegate respondsToSelector:@selector(textField:shouldFormat:)] && [self.proxyDelegate textField:self shouldFormat:text]);
 }
 
 - (BOOL)shouldValidateText:(NSString *)text forReason:(ETHTextFieldValidationReason)reason {
@@ -183,8 +183,10 @@
     }
   }
   
+  NSMutableString * expectedText = [self.text mutableCopy];
+  [expectedText replaceCharactersInRange:range withString:string];
   NSInteger cursorOffset = 0;
-  BOOL shouldFormat = self.formatter != nil && [self shouldFormat];
+  BOOL shouldFormat = self.formatter != nil && [self shouldFormatText:expectedText];
   if(shouldFormat) {
     NSInteger cursor = string.length;
     string = [self.formatter unformatString:string preserveCursor:&cursor] ?: string;

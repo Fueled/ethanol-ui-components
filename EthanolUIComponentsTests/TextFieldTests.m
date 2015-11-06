@@ -70,7 +70,7 @@
 
 @implementation TestCustomTextFieldShouldChange
 
-- (BOOL)textFieldTextShouldChange:(ETHExtendableTextField *)textField {
+- (BOOL)textFieldTextShouldChange:(ETHExtendableTextField *)textField toText:(NSString *)text {
   self.shouldCalled = YES;
   return self.shouldShouldReturnYes;
 }
@@ -140,7 +140,7 @@
   self.didDelegateCalled = YES;
 }
 
-- (BOOL)textField:(ETHTextField *)textField didValidateText:(nonnull NSString *)text withReason:(ETHTextFieldValidationReason)reason withSuccess:(BOOL)success error:(nonnull NSError *)error {
+- (BOOL)textField:(ETHTextField *)textField didValidateText:(nonnull NSString *)text withReason:(ETHTextFieldValidationReason)reason withSuccess:(BOOL)success error:(nullable NSError *)error {
   self.didDelegateCalled = YES;
   return error != nil;
 }
@@ -204,13 +204,13 @@
 
 // Emulate user input
 #define USER_INPUT(textString) \
-if([textField textField:textField shouldChangeCharactersInRange:NSMakeRange(0, textField.text.length) replacementString:textString]) { \
-textField.text = textString; \
-}
+  if([textField textField:textField shouldChangeCharactersInRange:NSMakeRange(0, textField.text.length) replacementString:textString]) { \
+    textField.text = textString; \
+  }
 
 #define TEST_USER_INPUT(textString, resultString) \
-USER_INPUT(textString); \
-XCTAssertEqualObjects(textField.text, resultString);
+  USER_INPUT(textString); \
+  XCTAssertEqualObjects(textField.text, resultString);
 
 - (void)testUserTestInputWithEverything {
   NSString * textToBeReplaced = @"should be replaced by \"text\"'s variable content";
@@ -271,6 +271,7 @@ XCTAssertEqualObjects(textField.text, resultString);
   NSString * textToBeReplaced = @"should be replaced by \"text\"'s variable content";
   
   TestCustomTextFieldShouldChange * textField = [[TestCustomTextFieldShouldChange alloc] init];
+  textField.shouldShouldReturnYes = NO;
   textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
   textField.text = textToBeReplaced;
   TEST_USER_INPUT(@"4111111111111111", textToBeReplaced);

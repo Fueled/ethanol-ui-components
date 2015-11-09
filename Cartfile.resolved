@@ -1,5 +1,5 @@
 github "CocoaLumberjack/CocoaLumberjack" "2.2.0"
 github "stephanecopin/NSInvocation-Helpers" "1.0.1"
 github "Fueled/ethanol-utilities" "0.1.9"
-github "Fueled/ethanol-validation-formatting" "0.2.7"
+github "Fueled/ethanol-validation-formatting" "0.2.8"
 github "Fueled/ethanol-tools" "0.1.8"

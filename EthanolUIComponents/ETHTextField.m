@@ -194,6 +194,8 @@
   }
   
   NSMutableString * newText = [self.text mutableCopy];
+  [newText replaceCharactersInRange:range withString:string];
+  
   NSInteger cursor = NSIntegerMin;
   if(shouldFormat) {
     NSInteger rangeLocation = range.location;
@@ -210,7 +212,6 @@
     range.location = rangeLocation;
     range.length = rangeEnd - rangeLocation;
   }
-  [newText replaceCharactersInRange:range withString:string];
   
   BOOL hasReachedLimitOfCharacters = NO;
   if(self.maximumLength != 0 && newText.length > self.maximumLength) {

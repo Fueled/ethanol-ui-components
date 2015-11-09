@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Fueled. All rights reserved.
 //
 
-#import <EthanolUIComponents/ETHRefreshControl.h>
+#import "ETHRefreshControl.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

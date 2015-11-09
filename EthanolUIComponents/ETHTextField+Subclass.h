@@ -6,7 +6,7 @@
 //  Copyright © 2015 Stephane Copin. All rights reserved.
 //
 
-#import <EthanolUIComponents/ETHTextField.h>
+#import "ETHTextField.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

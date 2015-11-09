@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <EthanolUIComponents/ETHExtendableTextField.h>
+#import "ETHExtendableTextField.h"
 
 @class ETHExtendableTextField;
 

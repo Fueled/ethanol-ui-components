@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <EthanolUIComponents/ETHPageViewControllerTitleView.h>
+#import "ETHPageViewControllerTitleView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

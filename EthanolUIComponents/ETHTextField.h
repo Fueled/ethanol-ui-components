@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <EthanolUIComponents/ETHExtendableTextField.h>
+#import "ETHExtendableTextField.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

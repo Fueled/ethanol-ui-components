@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Fueled. All rights reserved.
 //
 
-#import <EthanolUIComponents/ETHExtendableTextField.h>
+#import "ETHExtendableTextField.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

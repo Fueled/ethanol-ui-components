@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <EthanolUIComponents/ETHNibView.h>
+#import "ETHNibView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

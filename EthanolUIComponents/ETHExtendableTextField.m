@@ -89,8 +89,8 @@
 }
 
 - (void)textChanged:(id)sender {
-  if([self respondsToSelector:@selector(textFieldTextDidChange:)]) {
-    [self textFieldTextDidChange:self];
+  if([self.proxyDelegate respondsToSelector:@selector(textFieldTextDidChange:)]) {
+    [self.proxyDelegate textFieldTextDidChange:self];
   }
 }
 

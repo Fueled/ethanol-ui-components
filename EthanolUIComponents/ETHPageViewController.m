@@ -54,6 +54,7 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
 @property (nonatomic, strong) UIPanGestureRecognizer * panGestureRecognizer;
 @property (nonatomic, strong) CADisplayLink * displayLink;
 @property (nonatomic, strong) UIScrollView * internalScrollView;
+@property (nonatomic, strong) UINavigationBar * navigationBar;
 @property (nonatomic, strong, readonly) NSMutableArray<UILabel *> * generatedTitleLabels;
 
 @end
@@ -98,11 +99,10 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
   
   if(self.isViewLoaded) {
     [self removeObserver:self forKeyPath:@"navigationController" context:NULL];
-    if(self.navigationController.navigationBar != nil) {
-      [self.navigationController.navigationBar removeObserver:self forKeyPath:@"titleTextAttributes" context:NULL];
-      
-      [[NSNotificationCenter defaultCenter] removeObserver:self name:ETHViewTintColorDidChangeNotification object:self.navigationController.navigationBar];
-    }
+    
+    [self.navigationBar removeObserver:self forKeyPath:@"titleTextAttributes" context:NULL];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:ETHViewTintColorDidChangeNotification object:self.navigationController.navigationBar];
     
     for(UIViewController * viewController in self.cachedPageViewControllers) {
       [viewController removeObserver:self forKeyPath:@"title" context:NULL];
@@ -117,10 +117,12 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
   [super viewDidLoad];
   
   [self addObserver:self forKeyPath:@"navigationController" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:NULL];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewTintColorDidChangeNotificationHandler:) name:ETHViewTintColorDidChangeNotification object:self.navigationController.navigationBar];
+  
   if(self.navigationController.navigationBar != nil) {
     [self.navigationController.navigationBar addObserver:self forKeyPath:@"titleTextAttributes" options:0 context:NULL];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewTintColorDidChangeNotificationHandler:) name:ETHViewTintColorDidChangeNotification object:self.navigationController.navigationBar];
+    self.navigationBar = self.navigationController.navigationBar;
     
     [self updatePageControlsTintColor];
   }
@@ -154,8 +156,12 @@ static NSString * const ETHViewTintColorDidChangeNotification = @"ETHViewTintCol
   if([keyPath isEqualToString:@"navigationController"]) {
     if(self.navigationController.navigationBar != nil) {
       [self.navigationController.navigationBar addObserver:self forKeyPath:@"titleTextAttributes" options:0 context:NULL];
+      
+      self.navigationBar = self.navigationController.navigationBar;
     } else {
       [self.navigationController.navigationBar removeObserver:self forKeyPath:@"titleTextAttributes" context:NULL];
+      
+      self.navigationBar = nil;
     }
   } else if([keyPath isEqualToString:@"titleTextAttributes"]) {
     for(UILabel * label in self.generatedTitleLabels) {

@@ -184,7 +184,7 @@
   }
   
   NSMutableString * expectedText = [self.text mutableCopy];
-  [expectedText replaceCharactersInRange:range withString:string];
+  [expectedText replaceCharactersInRange:range withString:string ?: @""];
   NSInteger cursorOffset = 0;
   BOOL shouldFormat = self.formatter != nil && [self shouldFormatText:expectedText];
   if(shouldFormat) {
@@ -194,7 +194,7 @@
   }
   
   NSMutableString * newText = [self.text mutableCopy];
-  [newText replaceCharactersInRange:range withString:string];
+  [newText replaceCharactersInRange:range withString:string ?: @""];
   
   NSInteger cursor = NSIntegerMin;
   if(shouldFormat) {

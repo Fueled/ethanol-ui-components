@@ -19,6 +19,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, readonly) id<ETHExtendableTextFieldDelegate> proxyDelegate;
 
+/**
+ *  This method will set the text field text directly, using the standard iOS setter `setText`.
+ *  This method should not be overriden in subclasses.
+ *
+ *  @param text The new text to set the text field.
+ */
+- (void)setTextFieldText:(NSString *)text;
+
 @end
 
 NS_ASSUME_NONNULL_END

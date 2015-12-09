@@ -222,6 +222,11 @@
                     changeInCharacterOffset:string.length == 0 ? ((range.length == 1 && cursor != range.location) ? -1 : 0) : string.length] mutableCopy];
   }
   
+  if ([self.text isEqualToString:newText]) {
+    // If after applying the formatting rules, newText is the same as the oldText, then do nothing
+    return NO;
+  }
+  
   if(callDependentMethods) {
     if([self.proxyDelegate respondsToSelector:@selector(textFieldTextShouldChange:toText:)] && ![self.proxyDelegate textFieldTextShouldChange:self toText:newText]) {
       return NO;

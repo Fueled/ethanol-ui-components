@@ -12,4 +12,8 @@
 
 @dynamic proxyDelegate;
 
+- (void)setTextFieldText:(NSString *)text {
+  [super setText:text];
+}
+
 @end

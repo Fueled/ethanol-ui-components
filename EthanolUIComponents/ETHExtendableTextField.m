@@ -7,6 +7,7 @@
 //
 
 #import "ETHExtendableTextField.h"
+#import "ETHExtendableTextField+Subclass.h"
 #import "ETHExtendableTextFieldDelegateProxy.h"
 #import "ETHExtendableTextFieldSingleCallDelegateForwarder.h"
 
@@ -86,6 +87,12 @@
   }
   
   return YES;
+}
+
+- (void)setText:(NSString *)text {
+  if(![self.proxyDelegate respondsToSelector:@selector(textFieldTextShouldChange:toText:)] || [self.proxyDelegate textFieldTextShouldChange:self toText:text]) {
+    [self setTextFieldText:text];
+  }
 }
 
 - (void)textChanged:(id)sender {

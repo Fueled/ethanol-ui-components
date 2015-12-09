@@ -113,7 +113,7 @@
     
     _formatter = formatter;
     
-    [super setText:[formatter formatObject:text preserveCursor:&startCursor changeInCharacterOffset:0] ?: text];
+    [self setTextFieldText:[formatter formatObject:text preserveCursor:&startCursor changeInCharacterOffset:0] ?: text];
     [formatter formatObject:text preserveCursor:&endCursor changeInCharacterOffset:0];
     
     UITextPosition * startCursorPosition = [self positionFromPosition:[self beginningOfDocument] offset:MAX(0, MIN(((NSInteger)self.text.length), startCursor))];
@@ -154,7 +154,7 @@
 
 - (void)setText:(NSString *)text {
   if([self tryToChangeCharactersInRange:NSMakeRange(0, self.text.length) withString:text callDependentMethods:NO]) {
-    [super setText:text];
+    [self setTextFieldText:text];
   }
 }
 
@@ -174,10 +174,6 @@
   }
   
   if(callDependentMethods) {
-    if(![super textField:self shouldChangeCharactersInRange:range replacementString:string]) {
-      return NO;
-    }
-    
     if([self.delegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)] && ![self.delegate textField:self shouldChangeCharactersInRange:range replacementString:string]) {
       return NO;
     }
@@ -226,8 +222,17 @@
                     changeInCharacterOffset:string.length == 0 ? ((range.length == 1 && cursor != range.location) ? -1 : 0) : string.length] mutableCopy];
   }
   
+  if ([self.text isEqualToString:newText]) {
+    // If after applying the formatting rules, newText is the same as the oldText, then do nothing
+    return NO;
+  }
+  
+  if([self.proxyDelegate respondsToSelector:@selector(textFieldTextShouldChange:toText:)] && ![self.proxyDelegate textFieldTextShouldChange:self toText:newText]) {
+    return NO;
+  }
+  
   if(shouldFormat || hasDisallowedCharacters || hasReachedLimitOfCharacters) {
-    [super setText:newText];
+    [self setTextFieldText:newText];
     
     if(cursor != NSIntegerMin) {
       UITextPosition * cursorPosition = [self positionFromPosition:[self beginningOfDocument] offset:MAX(0, MIN(((NSInteger)self.text.length), cursor))];

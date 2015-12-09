@@ -112,7 +112,6 @@
 
 - (BOOL)textField:(ETHTextField *)textField shouldValidateText:(NSString *)text forReason:(ETHTextFieldValidationReason)reason {
   self.shouldDelegateCalled = YES;
-  ++self.shouldDelegateCallAmount;
   return self.shouldShouldReturnYes;
 }
 
@@ -142,7 +141,7 @@
 
 - (BOOL)textField:(ETHTextField *)textField didValidateText:(nonnull NSString *)text withReason:(ETHTextFieldValidationReason)reason withSuccess:(BOOL)success error:(nullable NSError *)error {
   self.didDelegateCalled = YES;
-  return error != nil;
+  return error == nil;
 }
 
 - (void)textFieldTextDidChange:(ETHExtendableTextField *)textField {
@@ -271,9 +270,10 @@
   NSString * textToBeReplaced = @"should be replaced by \"text\"'s variable content";
   
   TestCustomTextFieldShouldChange * textField = [[TestCustomTextFieldShouldChange alloc] init];
-  textField.shouldShouldReturnYes = NO;
   textField.formatter = [[ETHCreditCardNumberFormatter alloc] init];
+  textField.shouldShouldReturnYes = YES;
   textField.text = textToBeReplaced;
+  textField.shouldShouldReturnYes = NO;
   TEST_USER_INPUT(@"4111111111111111", textToBeReplaced);
   XCTAssertTrue(textField.shouldCalled);
 }
@@ -363,7 +363,7 @@
   CustomValidator * validator = [CustomValidator validator];
   validator.shouldValidate = YES;
   textField.validator = validator;
-  XCTAssertFalse([textField textFieldShouldReturn:textField]);
+  XCTAssertTrue([textField textFieldShouldReturn:textField]);
   XCTAssertTrue(validator.validateCalled);
 }
 
@@ -452,7 +452,7 @@
   CustomValidator * validator = [CustomValidator validator];
   validator.shouldValidate = YES;
   textField.validator = validator;
-  XCTAssertFalse([textField textFieldShouldEndEditing:textField]);
+  XCTAssertTrue([textField textFieldShouldEndEditing:textField]);
   XCTAssertTrue(validator.validateCalled);
 }
 
@@ -469,7 +469,7 @@
   TestCustomTextFieldDontCallDidChange * textField = [[TestCustomTextFieldDontCallDidChange alloc] init];
   textField.delegate = delegate;
   [textField textChanged:nil];
-  XCTAssertFalse(delegate.didDelegateCalled);
+  XCTAssertTrue(delegate.didDelegateCalled); // Delegate are always called regardless of what the text field wants
 }
 
 - (void)testTextFieldMultipleDelegateCallShouldCalledFormatting {
@@ -536,7 +536,7 @@
   textField.delegate = delegate;
   textField.validator = [[ETHUSAStateValidator alloc] init];
   textField.text = @"NY";
-  XCTAssertFalse([textField validateInput]);
+  XCTAssertTrue([textField validateInput]);
   XCTAssertTrue(delegate.shouldDelegateCalled);
   XCTAssertTrue(delegate.didDelegateCalled);
 }

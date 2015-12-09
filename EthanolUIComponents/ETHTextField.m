@@ -113,7 +113,7 @@
     
     _formatter = formatter;
     
-    [super setText:[formatter formatObject:text preserveCursor:&startCursor changeInCharacterOffset:0] ?: text];
+    [self setTextFieldText:[formatter formatObject:text preserveCursor:&startCursor changeInCharacterOffset:0] ?: text];
     [formatter formatObject:text preserveCursor:&endCursor changeInCharacterOffset:0];
     
     UITextPosition * startCursorPosition = [self positionFromPosition:[self beginningOfDocument] offset:MAX(0, MIN(((NSInteger)self.text.length), startCursor))];
@@ -154,7 +154,7 @@
 
 - (void)setText:(NSString *)text {
   if([self tryToChangeCharactersInRange:NSMakeRange(0, self.text.length) withString:text callDependentMethods:NO]) {
-    [super setText:text];
+    [self setTextFieldText:text];
   }
 }
 
@@ -227,14 +227,12 @@
     return NO;
   }
   
-  if(callDependentMethods) {
-    if([self.proxyDelegate respondsToSelector:@selector(textFieldTextShouldChange:toText:)] && ![self.proxyDelegate textFieldTextShouldChange:self toText:newText]) {
-      return NO;
-    }
+  if([self.proxyDelegate respondsToSelector:@selector(textFieldTextShouldChange:toText:)] && ![self.proxyDelegate textFieldTextShouldChange:self toText:newText]) {
+    return NO;
   }
   
   if(shouldFormat || hasDisallowedCharacters || hasReachedLimitOfCharacters) {
-    [super setText:newText];
+    [self setTextFieldText:newText];
     
     if(cursor != NSIntegerMin) {
       UITextPosition * cursorPosition = [self positionFromPosition:[self beginningOfDocument] offset:MAX(0, MIN(((NSInteger)self.text.length), cursor))];

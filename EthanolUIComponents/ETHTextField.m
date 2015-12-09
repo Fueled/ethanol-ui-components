@@ -174,10 +174,6 @@
   }
   
   if(callDependentMethods) {
-    if(![super textField:self shouldChangeCharactersInRange:range replacementString:string]) {
-      return NO;
-    }
-    
     if([self.delegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)] && ![self.delegate textField:self shouldChangeCharactersInRange:range replacementString:string]) {
       return NO;
     }
@@ -224,6 +220,12 @@
     newText = [[self.formatter formatObject:newText
                              preserveCursor:&cursor
                     changeInCharacterOffset:string.length == 0 ? ((range.length == 1 && cursor != range.location) ? -1 : 0) : string.length] mutableCopy];
+  }
+  
+  if(callDependentMethods) {
+    if([self.proxyDelegate respondsToSelector:@selector(textFieldTextShouldChange:toText:)] && ![self.proxyDelegate textFieldTextShouldChange:self toText:newText]) {
+      return NO;
+    }
   }
   
   if(shouldFormat || hasDisallowedCharacters || hasReachedLimitOfCharacters) {

@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @note This class already implement the following delegate method, and subclasses should call it:
  *  - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+ *    The default implementation of that method call the -[textFieldTextShouldChange:toText:] delegate method.
  *
  *  @warning Due to how the class work behind the scene, anything you assign to the delegate property will be replaced by
  *  another object, though it should not impact your code.
@@ -41,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
  *       ETHExtendableTextField * textField = [[ETHExtendableTextField alloc] init];
  *       textField.delegate = delegateObject;
  *       if(textField.delegate == delegateObject) {
- *         // This test will NOT work. Use -[NSObject isEqual:] to test for equality instead
+ *         // This test will NOT work. Use -[NSObject isEqual:] to test for equality instead, if available
  *       }
  */
 @interface ETHExtendableTextField : UITextField

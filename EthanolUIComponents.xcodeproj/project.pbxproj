@@ -17,10 +17,10 @@
 		F414550C1B7BAE53007F63F8 /* ETHNibView.h in Headers */ = {isa = PBXBuildFile; fileRef = F414550A1B7BAE53007F63F8 /* ETHNibView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F414550D1B7BAE53007F63F8 /* ETHNibView.m in Sources */ = {isa = PBXBuildFile; fileRef = F414550B1B7BAE53007F63F8 /* ETHNibView.m */; };
 		F41455101B7BC5CD007F63F8 /* ETHPageViewControllerTitleView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F414550F1B7BC5C5007F63F8 /* ETHPageViewControllerTitleView+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		F457D4B01BA1ECE700F7D1DE /* NibViewTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F457D4AF1BA1ECE700F7D1DE /* NibViewTest.m */; settings = {ASSET_TAGS = (); }; };
-		F457D4B21BA1ED0A00F7D1DE /* NibViewTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = F457D4B11BA1ED0A00F7D1DE /* NibViewTest.xib */; settings = {ASSET_TAGS = (); }; };
-		F457D4B81BA1ED6700F7D1DE /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F457D4B71BA1ED6700F7D1DE /* TestViewController.m */; settings = {ASSET_TAGS = (); }; };
-		F457D4BA1BA1F0E800F7D1DE /* NibViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F457D4B91BA1F0E800F7D1DE /* NibViewTests.m */; settings = {ASSET_TAGS = (); }; };
+		F457D4B01BA1ECE700F7D1DE /* NibViewTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F457D4AF1BA1ECE700F7D1DE /* NibViewTest.m */; };
+		F457D4B21BA1ED0A00F7D1DE /* NibViewTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = F457D4B11BA1ED0A00F7D1DE /* NibViewTest.xib */; };
+		F457D4B81BA1ED6700F7D1DE /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F457D4B71BA1ED6700F7D1DE /* TestViewController.m */; };
+		F457D4BA1BA1F0E800F7D1DE /* NibViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F457D4B91BA1F0E800F7D1DE /* NibViewTests.m */; };
 		F47358C71B444841007688EC /* EthanolUIComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = F47358C61B444841007688EC /* EthanolUIComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F47358CE1B444842007688EC /* EthanolUIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F47358C31B444841007688EC /* EthanolUIComponents.framework */; };
 		F47358EF1B4448F0007688EC /* ETHExtendableTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = F47358DD1B4448F0007688EC /* ETHExtendableTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -49,9 +49,9 @@
 		F48636741B6FC412001A3549 /* ETHPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F48636721B6FC412001A3549 /* ETHPageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F48636751B6FC412001A3549 /* ETHPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48636731B6FC412001A3549 /* ETHPageViewController.m */; };
 		F4D6BA7A1BA233A20038B3FD /* ETHTextField+Subclass.h in Headers */ = {isa = PBXBuildFile; fileRef = F4D6BA781BA233A20038B3FD /* ETHTextField+Subclass.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		F4D6BA7B1BA233A20038B3FD /* ETHTextField+Subclass.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D6BA791BA233A20038B3FD /* ETHTextField+Subclass.m */; settings = {ASSET_TAGS = (); }; };
-		F4E7C8FB1B9F3312000953A4 /* TextFieldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E7C8FA1B9F3312000953A4 /* TextFieldTests.m */; settings = {ASSET_TAGS = (); }; };
-		F4E7C8FC1B9F340C000953A4 /* EthanolValidationFormatting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */; settings = {ASSET_TAGS = (); }; };
+		F4D6BA7B1BA233A20038B3FD /* ETHTextField+Subclass.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D6BA791BA233A20038B3FD /* ETHTextField+Subclass.m */; };
+		F4E7C8FB1B9F3312000953A4 /* TextFieldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E7C8FA1B9F3312000953A4 /* TextFieldTests.m */; };
+		F4E7C8FC1B9F340C000953A4 /* EthanolValidationFormatting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -538,7 +538,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = EthanolUIComponents/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -555,7 +554,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = EthanolUIComponents/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

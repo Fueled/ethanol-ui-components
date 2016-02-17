@@ -54,6 +54,7 @@
 		F4E7C8FC1B9F340C000953A4 /* EthanolValidationFormatting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */; };
 		F4F239A61C7518B400CDFAA5 /* ETHPlaceholderTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F239A41C7518B400CDFAA5 /* ETHPlaceholderTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4F239A71C7518B400CDFAA5 /* ETHPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F239A51C7518B400CDFAA5 /* ETHPlaceholderTextView.m */; };
+		F4F239AA1C75193000CDFAA5 /* PlaceholderTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F239A91C75193000CDFAA5 /* PlaceholderTextViewTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +119,7 @@
 		F4E7C8FA1B9F3312000953A4 /* TextFieldTests.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = TextFieldTests.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		F4F239A41C7518B400CDFAA5 /* ETHPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHPlaceholderTextView.h; sourceTree = "<group>"; };
 		F4F239A51C7518B400CDFAA5 /* ETHPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHPlaceholderTextView.m; sourceTree = "<group>"; };
+		F4F239A91C75193000CDFAA5 /* PlaceholderTextViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderTextViewTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +198,7 @@
 				0C7369951B86745F00AD3DF4 /* PageControlTests.m */,
 				F4E7C8FA1B9F3312000953A4 /* TextFieldTests.m */,
 				F457D4B91BA1F0E800F7D1DE /* NibViewTests.m */,
+				F4F239A91C75193000CDFAA5 /* PlaceholderTextViewTests.m */,
 				F457D4B61BA1ED6700F7D1DE /* TestViewController.h */,
 				F457D4B71BA1ED6700F7D1DE /* TestViewController.m */,
 				0C898C541B879A5D002D7E35 /* Tests.storyboard */,
@@ -440,6 +443,7 @@
 				F457D4B01BA1ECE700F7D1DE /* NibViewTest.m in Sources */,
 				0C640EB71B8506CC003A157A /* SwitchTests.m in Sources */,
 				0C7369961B86745F00AD3DF4 /* PageControlTests.m in Sources */,
+				F4F239AA1C75193000CDFAA5 /* PlaceholderTextViewTests.m in Sources */,
 				F4E7C8FB1B9F3312000953A4 /* TextFieldTests.m in Sources */,
 				F457D4BA1BA1F0E800F7D1DE /* NibViewTests.m in Sources */,
 				F457D4B81BA1ED6700F7D1DE /* TestViewController.m in Sources */,

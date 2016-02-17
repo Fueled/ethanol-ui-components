@@ -11,6 +11,7 @@
 #import "ETHSwitch.h"
 #import "ETHPageControl.h"
 #import "ETHTextField.h"
+#import "ETHPlaceholderTextView.h"
 #import "NibViewTest.h"
 
 @interface TestViewController : UIViewController
@@ -19,5 +20,6 @@
 @property (strong, nonatomic) IBOutlet ETHPageControl *testPageControl;
 @property (strong, nonatomic) IBOutlet ETHTextField *testTextField;
 @property (strong, nonatomic) IBOutlet NibViewTest *testNibView;
+@property (strong, nonatomic) IBOutlet ETHPlaceholderTextView *testPlaceholderTextView;
 
 @end

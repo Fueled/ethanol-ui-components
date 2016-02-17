@@ -52,6 +52,8 @@
 		F4D6BA7B1BA233A20038B3FD /* ETHTextField+Subclass.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D6BA791BA233A20038B3FD /* ETHTextField+Subclass.m */; };
 		F4E7C8FB1B9F3312000953A4 /* TextFieldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E7C8FA1B9F3312000953A4 /* TextFieldTests.m */; };
 		F4E7C8FC1B9F340C000953A4 /* EthanolValidationFormatting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */; };
+		F4F239A61C7518B400CDFAA5 /* ETHPlaceholderTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F239A41C7518B400CDFAA5 /* ETHPlaceholderTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F4F239A71C7518B400CDFAA5 /* ETHPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F239A51C7518B400CDFAA5 /* ETHPlaceholderTextView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +116,8 @@
 		F4D6BA781BA233A20038B3FD /* ETHTextField+Subclass.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "ETHTextField+Subclass.h"; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		F4D6BA791BA233A20038B3FD /* ETHTextField+Subclass.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "ETHTextField+Subclass.m"; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		F4E7C8FA1B9F3312000953A4 /* TextFieldTests.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = TextFieldTests.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		F4F239A41C7518B400CDFAA5 /* ETHPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHPlaceholderTextView.h; sourceTree = "<group>"; };
+		F4F239A51C7518B400CDFAA5 /* ETHPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHPlaceholderTextView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +183,7 @@
 				F47359041B44493B007688EC /* Swift */,
 				F486366E1B6FC3CE001A3549 /* PageViewController */,
 				F414550E1B7BAE5A007F63F8 /* NibView */,
+				F4F239A81C7518CC00CDFAA5 /* PlaceholderTextView */,
 				F47358C81B444841007688EC /* Info.plist */,
 			);
 			path = EthanolUIComponents;
@@ -276,6 +281,15 @@
 			name = PageViewController;
 			sourceTree = "<group>";
 		};
+		F4F239A81C7518CC00CDFAA5 /* PlaceholderTextView */ = {
+			isa = PBXGroup;
+			children = (
+				F4F239A41C7518B400CDFAA5 /* ETHPlaceholderTextView.h */,
+				F4F239A51C7518B400CDFAA5 /* ETHPlaceholderTextView.m */,
+			);
+			name = PlaceholderTextView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -285,6 +299,7 @@
 			files = (
 				F41455101B7BC5CD007F63F8 /* ETHPageViewControllerTitleView+Private.h in Headers */,
 				F47358EF1B4448F0007688EC /* ETHExtendableTextField.h in Headers */,
+				F4F239A61C7518B400CDFAA5 /* ETHPlaceholderTextView.h in Headers */,
 				F47358F71B4448F0007688EC /* ETHPageControl.h in Headers */,
 				F4D6BA7A1BA233A20038B3FD /* ETHTextField+Subclass.h in Headers */,
 				F414550C1B7BAE53007F63F8 /* ETHNibView.h in Headers */,
@@ -410,6 +425,7 @@
 				F48636751B6FC412001A3549 /* ETHPageViewController.m in Sources */,
 				F47359001B4448F0007688EC /* ETHTextField.m in Sources */,
 				F41455071B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m in Sources */,
+				F4F239A71C7518B400CDFAA5 /* ETHPlaceholderTextView.m in Sources */,
 				F47358F21B4448F0007688EC /* ETHExtendableTextField+Subclass.m in Sources */,
 				F47358FC1B4448F0007688EC /* ETHRefreshControl+Subclass.m in Sources */,
 				F4D6BA7B1BA233A20038B3FD /* ETHTextField+Subclass.m in Sources */,

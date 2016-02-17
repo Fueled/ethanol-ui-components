@@ -24,3 +24,4 @@ FOUNDATION_EXPORT const unsigned char EthanolUIComponentsVersionString[];
 #import "ETHPageViewController.h"
 #import "ETHPageViewControllerTitleView.h"
 #import "ETHNibView.h"
+#import "ETHPlaceholderTextView.h"

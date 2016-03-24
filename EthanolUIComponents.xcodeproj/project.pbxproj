@@ -21,6 +21,15 @@
 		F457D4B21BA1ED0A00F7D1DE /* NibViewTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = F457D4B11BA1ED0A00F7D1DE /* NibViewTest.xib */; };
 		F457D4B81BA1ED6700F7D1DE /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F457D4B71BA1ED6700F7D1DE /* TestViewController.m */; };
 		F457D4BA1BA1F0E800F7D1DE /* NibViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F457D4B91BA1F0E800F7D1DE /* NibViewTests.m */; };
+		F46FE8D21CA493940061FF7C /* CocoaLumberjack.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F48636761B6FC93D001A3549 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F46FE8D31CA493950061FF7C /* EthanolTools.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F48636771B6FC93D001A3549 /* EthanolTools.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F46FE8D41CA493950061FF7C /* EthanolUtilities.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F48636781B6FC93D001A3549 /* EthanolUtilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F46FE8D51CA493950061FF7C /* NSInvocationHelpers.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F48636791B6FC93D001A3549 /* NSInvocationHelpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F46FE8D61CA493950061FF7C /* EthanolValidationFormatting.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F46FE8D71CA494750061FF7C /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636761B6FC93D001A3549 /* CocoaLumberjack.framework */; };
+		F46FE8D81CA494750061FF7C /* EthanolTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636771B6FC93D001A3549 /* EthanolTools.framework */; };
+		F46FE8D91CA494750061FF7C /* EthanolUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636781B6FC93D001A3549 /* EthanolUtilities.framework */; };
+		F46FE8DA1CA494750061FF7C /* NSInvocationHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636791B6FC93D001A3549 /* NSInvocationHelpers.framework */; };
 		F47358C71B444841007688EC /* EthanolUIComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = F47358C61B444841007688EC /* EthanolUIComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F47358CE1B444842007688EC /* EthanolUIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F47358C31B444841007688EC /* EthanolUIComponents.framework */; };
 		F47358EF1B4448F0007688EC /* ETHExtendableTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = F47358DD1B4448F0007688EC /* ETHExtendableTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -66,6 +75,23 @@
 			remoteInfo = EthanolUIComponents;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F46FE8D11CA493890061FF7C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F46FE8D21CA493940061FF7C /* CocoaLumberjack.framework in CopyFiles */,
+				F46FE8D31CA493950061FF7C /* EthanolTools.framework in CopyFiles */,
+				F46FE8D41CA493950061FF7C /* EthanolUtilities.framework in CopyFiles */,
+				F46FE8D51CA493950061FF7C /* NSInvocationHelpers.framework in CopyFiles */,
+				F46FE8D61CA493950061FF7C /* EthanolValidationFormatting.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0C42AEBB1B852FD7000F0307 /* Tests.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Tests.xcassets; sourceTree = "<group>"; };
@@ -140,6 +166,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4E7C8FC1B9F340C000953A4 /* EthanolValidationFormatting.framework in Frameworks */,
+				F46FE8D71CA494750061FF7C /* CocoaLumberjack.framework in Frameworks */,
+				F46FE8D81CA494750061FF7C /* EthanolTools.framework in Frameworks */,
+				F46FE8D91CA494750061FF7C /* EthanolUtilities.framework in Frameworks */,
+				F46FE8DA1CA494750061FF7C /* NSInvocationHelpers.framework in Frameworks */,
 				F47358CE1B444842007688EC /* EthanolUIComponents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -347,6 +377,7 @@
 				F47358C91B444842007688EC /* Sources */,
 				F47358CA1B444842007688EC /* Frameworks */,
 				F47358CB1B444842007688EC /* Resources */,
+				F46FE8D11CA493890061FF7C /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -586,6 +617,7 @@
 		F47358DB1B444842007688EC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = EthanolUIComponentsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(CONFIGURATION_BUILD_DIR)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fueled.EthanolUIComponentsTests;
@@ -596,6 +628,7 @@
 		F47358DC1B444842007688EC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = EthanolUIComponentsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(CONFIGURATION_BUILD_DIR)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fueled.EthanolUIComponentsTests;

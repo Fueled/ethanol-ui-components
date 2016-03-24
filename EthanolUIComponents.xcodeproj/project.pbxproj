@@ -212,7 +212,7 @@
 				F47359011B444925007688EC /* TextField */,
 				F47359021B44492C007688EC /* PageControl */,
 				F47359031B444935007688EC /* RefreshControl */,
-				F47359041B44493B007688EC /* Swift */,
+				F47359041B44493B007688EC /* Switch */,
 				F486366E1B6FC3CE001A3549 /* PageViewController */,
 				F414550E1B7BAE5A007F63F8 /* NibView */,
 				F4F239A81C7518CC00CDFAA5 /* PlaceholderTextView */,
@@ -280,13 +280,13 @@
 			name = RefreshControl;
 			sourceTree = "<group>";
 		};
-		F47359041B44493B007688EC /* Swift */ = {
+		F47359041B44493B007688EC /* Switch */ = {
 			isa = PBXGroup;
 			children = (
 				F47358EB1B4448F0007688EC /* ETHSwitch.h */,
 				F47358EC1B4448F0007688EC /* ETHSwitch.m */,
 			);
-			name = Swift;
+			name = Switch;
 			sourceTree = "<group>";
 		};
 		F47359051B444998007688EC /* Dependencies */ = {

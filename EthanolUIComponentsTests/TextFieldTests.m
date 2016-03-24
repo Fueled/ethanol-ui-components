@@ -469,7 +469,7 @@
   TestCustomTextFieldDontCallDidChange * textField = [[TestCustomTextFieldDontCallDidChange alloc] init];
   textField.delegate = delegate;
   [textField textChanged:nil];
-  XCTAssertTrue(delegate.didDelegateCalled); // Delegate are always called regardless of what the text field wants
+  XCTAssertFalse(delegate.didDelegateCalled); // Delegate won't be called if the text field doesn't explicitely call them
 }
 
 - (void)testTextFieldMultipleDelegateCallShouldCalledFormatting {

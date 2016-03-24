@@ -28,7 +28,7 @@
 	XCTAssertFalse(textView.placeholderLabel.hidden);
 	textView.text = @"placeholder should disappear";
 	XCTAssertTrue(textView.placeholderLabel.hidden);
-	textView.text = @"placeholder should appear";
+	textView.text = @"";
 	XCTAssertFalse(textView.placeholderLabel.hidden);
 }
 
@@ -41,7 +41,7 @@
 	XCTAssertFalse(testViewController.testPlaceholderTextView.placeholderLabel.hidden);
 	testViewController.testPlaceholderTextView.text = @"placeholder should disappear";
 	XCTAssertTrue(testViewController.testPlaceholderTextView.placeholderLabel.hidden);
-	testViewController.testPlaceholderTextView.text = @"placeholder should appear";
+	testViewController.testPlaceholderTextView.text = @"";
 	XCTAssertFalse(testViewController.testPlaceholderTextView.placeholderLabel.hidden);
 }
 

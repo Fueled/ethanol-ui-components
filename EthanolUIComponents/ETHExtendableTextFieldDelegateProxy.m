@@ -139,13 +139,6 @@
     NSLock * delegateCallReturnValuesLock = [(ETHExtendableTextFieldSingleCallDelegateForwarder *)(self.textField.delegate) delegateCallReturnValuesLock];
     [delegateCallReturnValuesLock lock];
     NSMutableDictionary * delegateCallReturnValues = [(ETHExtendableTextFieldSingleCallDelegateForwarder *)(self.textField.delegate) delegateCallReturnValues];
-    // Have to check if the method exists in the delegate because maybe only the textField implemented the method
-    if(delegateCallReturnValues[value] == nil && [self.delegate respondsToSelector:invocation.selector]) {
-      [delegateCallReturnValuesLock unlock];
-      // Clone the invocation because we don't want the return value to change
-      [[invocation stc_clone] invokeWithTarget:self.delegate];
-      [delegateCallReturnValuesLock lock];
-    }
     [delegateCallReturnValues removeAllObjects];
     [delegateCallReturnValuesLock unlock];
   } else {

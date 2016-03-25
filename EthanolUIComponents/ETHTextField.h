@@ -54,12 +54,18 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
  */
 @property (nonatomic, strong, nullable) IBOutlet ETHFormatter * formatter;
 /**
- * Set/Get the validator, called whenever the text field the user tap the return key if no delegate is set.
+ * Set/Get the validator, called whenever the text field the user tap the return key if no delegate is set (By default).
  * If a delegate is set, this behavior can be changed by overriding the shouldValidateForReason: with
  * on lost focus or return tapped reasons.
  * In case validator is nil, the behavior is that of a normal UITextField.
+ * Whenever this method is called, the `validateInput` method will be called.
  */
 @property (nonatomic, strong, nullable) IBOutlet ETHValidator * validator;
+
+/**
+ * A property indicating whether the text field's text is validated or not.
+ */
+@property (nonatomic, assign, readonly, getter=isValidated) BOOL validated;
 
 /**
  * Get what the ETHTextField's text will be set to if validation succeeds.
@@ -100,6 +106,13 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
  *  @return The validation result
  */
 - (BOOL)validateInput;
+
+/**
+ *  Can be overidden by subclasses. Only called when the value of `isValidated` changed.
+ *
+ *  @param reason The reason for which the validation state changed.
+ */
+- (void)validationStateDidChangeForReason:(ETHTextFieldValidationReason)reason;
 
 @end
 NS_ASSUME_NONNULL_END

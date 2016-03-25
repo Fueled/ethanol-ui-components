@@ -16,6 +16,7 @@
 @interface ETHTextField ()
 
 @property (nonatomic, copy, readonly, nonnull) NSString * nonNullableText;
+@property (nonatomic, assign, getter=isValidated) BOOL isValidated;
 @property (nonatomic, copy, nullable) NSString * expectedText;
 
 @end
@@ -55,22 +56,41 @@
   _validateOnLostFocus = NO;
   _validateOnReturn = YES;
   _validateOnKeyTapped = NO;
+  _validated = YES;
+}
+
+- (void)setValidated:(BOOL)validated {
+  [self setValidated:validated forReason:ETHTextFieldValidationReasonProgramatically];
+}
+
+- (void)setValidated:(BOOL)validated forReason:(ETHTextFieldValidationReason)reason {
+  if(_validated != validated) {
+    _validated = validated;
+    [self validationStateDidChangeForReason:reason];
+  }
 }
 
 - (BOOL)validateInputSilently {
   NSError * error;
-  return [self doValidateText:self.nonNullableText error:&error];
+  return [self doValidateText:self.nonNullableText updateValidationState:YES error:&error];
 }
 
 - (BOOL)validateInput {
   NSError * error;
-  BOOL success = [self doValidateText:self.nonNullableText error:&error];
+  BOOL success = [self doValidateText:self.nonNullableText updateValidationState:NO error:&error];
+  BOOL returnValue = success;
   
   if([self shouldValidateText:self.nonNullableText forReason:ETHTextFieldValidationReasonProgramatically] && [self.proxyDelegate respondsToSelector:@selector(textField:didValidateText:withReason:withSuccess:error:)]) {
-    return [self.proxyDelegate textField:self didValidateText:self.nonNullableText withReason:ETHTextFieldValidationReasonProgramatically withSuccess:success error:error];
+    returnValue = [self.proxyDelegate textField:self didValidateText:self.nonNullableText withReason:ETHTextFieldValidationReasonProgramatically withSuccess:success error:error];
   }
+
+  [self setValidated:success forReason:ETHTextFieldValidationReasonProgramatically];
   
-  return success;
+  return returnValue;
+}
+
+- (void)validationStateDidChangeForReason:(ETHTextFieldValidationReason)reason {
+
 }
 
 - (BOOL)shouldFormatText:(NSString *)text {
@@ -97,6 +117,11 @@
     return [self.proxyDelegate textField:self shouldValidateText:text forReason:reason];
   }
   return shouldValidate;
+}
+
+- (void)setValidator:(ETHValidator *)validator {
+  _validator = validator;
+  [self validateInput];
 }
 
 - (void)setFormatter:(ETHFormatter *)formatter {
@@ -274,23 +299,32 @@
 
 - (BOOL)doValidateText:(NSString *)text withDelegateForReason:(ETHTextFieldValidationReason)reason {
   NSError * error;
-  BOOL success = [self doValidateText:text error:&error];
-  
+  BOOL success = [self doValidateText:text updateValidationState:NO error:&error];
+  BOOL returnValue = success;
   if([self.delegate respondsToSelector:@selector(textField:didValidateText:withReason:withSuccess:error:)]) {
-    return [self.delegate textField:self didValidateText:text ?: @"" withReason:reason withSuccess:success error:error];
+    returnValue = [self.delegate textField:self didValidateText:text ?: @"" withReason:reason withSuccess:success error:error];
   }
+
+  [self setValidated:success forReason:reason];
   
-  return success;
+  return returnValue;
 }
 
-- (BOOL)doValidateText:(NSString *)text error:(NSError **)error {
+- (BOOL)doValidateText:(NSString *)text updateValidationState:(BOOL)updateValidationState error:(NSError **)error {
   self.expectedText = text;
 
+  BOOL validated;
   if(self.validator == nil) {
-    return YES;
+    validated = YES;
+  } else {
+    validated = [self.validator validateObject:text ?: @"" error:error];
   }
-  
-  return [self.validator validateObject:text ?: @"" error:error];
+
+  if(updateValidationState) {
+    self.validated = validated;
+  }
+
+  return validated;
 }
 
 - (void)setTextFieldText:(NSString *)text {

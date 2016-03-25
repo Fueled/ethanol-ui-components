@@ -168,7 +168,7 @@
 
 @interface CustomValidator : ETHValidator
 
-@property (nonatomic, assign) BOOL validateCalled;
+@property (nonatomic, assign) NSInteger validateCallCount;
 @property (nonatomic, assign) BOOL shouldValidate;
 
 @end
@@ -176,7 +176,7 @@
 @implementation CustomValidator
 
 - (BOOL)validateObject:(id)object error:(NSError **)error {
-  self.validateCalled = YES;
+  ++self.validateCallCount;
   return self.shouldValidate;
 }
 
@@ -301,7 +301,7 @@
   validator.shouldValidate = NO;
   textField.validator = validator;
   XCTAssertFalse([textField textFieldShouldReturn:textField]);
-  XCTAssertTrue(validator.validateCalled);
+  XCTAssertEqual(validator.validateCallCount, 2);
 }
 
 - (void)testTextFieldReturnDoNotValidate {
@@ -311,7 +311,7 @@
   validator.shouldValidate = NO;
   textField.validator = validator;
   XCTAssertTrue([textField textFieldShouldReturn:textField]);
-  XCTAssertFalse(validator.validateCalled);
+  XCTAssertEqual(validator.validateCallCount, 1);
 }
 
 - (void)testTextFieldReturnDoValidateWithValidateDelegate {
@@ -324,7 +324,7 @@
   validator.shouldValidate = YES;
   textField.validator = validator;
   XCTAssertTrue([textField textFieldShouldReturn:textField]);
-  XCTAssertTrue(validator.validateCalled);
+  XCTAssertEqual(validator.validateCallCount, 2);
 }
 
 - (void)testTextFieldReturnDoValidateWithValidateDelegateAndValidateOnReturnFalse {
@@ -338,7 +338,7 @@
   validator.shouldValidate = YES;
   textField.validator = validator;
   XCTAssertTrue([textField textFieldShouldReturn:textField]);
-  XCTAssertTrue(validator.validateCalled);
+  XCTAssertEqual(validator.validateCallCount, 2);
 }
 
 - (void)testTextFieldReturnDoValidateWithNoValidateDelegate {
@@ -351,7 +351,7 @@
   validator.shouldValidate = YES;
   textField.validator = validator;
   XCTAssertFalse([textField textFieldShouldReturn:textField]);
-  XCTAssertTrue(validator.validateCalled);
+  XCTAssertEqual(validator.validateCallCount, 2);
 }
 
 - (void)testTextFieldReturnDoValidateWithValidateDelegateDid {
@@ -364,7 +364,7 @@
   validator.shouldValidate = YES;
   textField.validator = validator;
   XCTAssertTrue([textField textFieldShouldReturn:textField]);
-  XCTAssertTrue(validator.validateCalled);
+  XCTAssertEqual(validator.validateCallCount, 2);
 }
 
 - (void)testTextFieldEndEditing {
@@ -390,7 +390,7 @@
   validator.shouldValidate = NO;
   textField.validator = validator;
   XCTAssertFalse([textField textFieldShouldEndEditing:textField]);
-  XCTAssertTrue(validator.validateCalled);
+  XCTAssertEqual(validator.validateCallCount, 2);
 }
 
 - (void)testTextFieldEndEditingDoNotValidate {
@@ -400,7 +400,7 @@
   validator.shouldValidate = NO;
   textField.validator = validator;
   XCTAssertTrue([textField textFieldShouldEndEditing:textField]);
-  XCTAssertFalse(validator.validateCalled);
+  XCTAssertEqual(validator.validateCallCount, 1);
 }
 
 - (void)testTextFieldEndEditingDoValidateWithValidateDelegate {
@@ -413,7 +413,7 @@
   validator.shouldValidate = YES;
   textField.validator = validator;
   XCTAssertTrue([textField textFieldShouldEndEditing:textField]);
-  XCTAssertTrue(validator.validateCalled);
+  XCTAssertEqual(validator.validateCallCount, 2);
 }
 
 - (void)testTextFieldEndEditingDoValidateWithValidateDelegateAndValidateOnReturnFalse {
@@ -427,7 +427,7 @@
   validator.shouldValidate = YES;
   textField.validator = validator;
   XCTAssertTrue([textField textFieldShouldEndEditing:textField]);
-  XCTAssertTrue(validator.validateCalled);
+  XCTAssertEqual(validator.validateCallCount, 2);
 }
 
 - (void)testTextFieldEndEditingDoValidateWithNoValidateDelegate {
@@ -440,7 +440,7 @@
   validator.shouldValidate = YES;
   textField.validator = validator;
   XCTAssertFalse([textField textFieldShouldEndEditing:textField]);
-  XCTAssertTrue(validator.validateCalled);
+  XCTAssertEqual(validator.validateCallCount, 2);
 }
 
 - (void)testTextFieldEndEditingDoValidateWithValidateDelegateDid {
@@ -453,7 +453,7 @@
   validator.shouldValidate = YES;
   textField.validator = validator;
   XCTAssertTrue([textField textFieldShouldEndEditing:textField]);
-  XCTAssertTrue(validator.validateCalled);
+  XCTAssertEqual(validator.validateCallCount, 2);
 }
 
 - (void)testTextDidChangeDelegateDidCalled {
@@ -501,8 +501,8 @@
   TextFieldTestDelegateValidateWithoutDid * delegate = [[TextFieldTestDelegateValidateWithoutDid alloc] init];
   delegate.shouldShouldReturnYes = YES;
   ETHTextField * textField = [[ETHTextField alloc] init];
-  textField.delegate = delegate;
   textField.validator = [[ETHUSAStateValidator alloc] init];
+  textField.delegate = delegate;
   [textField validateInputSilently];
   XCTAssertFalse(delegate.shouldDelegateCalled);
 }

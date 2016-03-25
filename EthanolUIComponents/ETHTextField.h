@@ -60,6 +60,13 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
  * In case validator is nil, the behavior is that of a normal UITextField.
  */
 @property (nonatomic, strong, nullable) IBOutlet ETHValidator * validator;
+
+/**
+ * Get what the ETHTextField's text will be set to if validation succeeds.
+ * If no validation is in progress, then it is equivalent to using the `text` property.
+ */
+@property (nonatomic, copy, readonly, nullable) NSString * expectedText;
+
 @property (nonatomic, weak, nullable) IBOutlet id<ETHTextFieldDelegate> delegate;
 
 /**

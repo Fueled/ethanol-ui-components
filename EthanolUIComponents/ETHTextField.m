@@ -15,7 +15,8 @@
 
 @interface ETHTextField ()
 
-@property (nonatomic, copy, nonnull, readonly) NSString * nonNullableText;
+@property (nonatomic, copy, readonly, nonnull) NSString * nonNullableText;
+@property (nonatomic, copy, nullable) NSString * expectedText;
 
 @end
 
@@ -167,7 +168,7 @@
   if(self.allowedCharacterSet != nil) {
     NSUInteger originalLength = string.length;
     string = [string eth_stringByRemovingCharacters:[self.allowedCharacterSet invertedSet]];
-    
+
     if(string.length != originalLength) {
       hasDisallowedCharacters = YES;
     }
@@ -283,11 +284,18 @@
 }
 
 - (BOOL)doValidateText:(NSString *)text error:(NSError **)error {
+  self.expectedText = text;
+
   if(self.validator == nil) {
     return YES;
   }
   
   return [self.validator validateObject:text ?: @"" error:error];
+}
+
+- (void)setTextFieldText:(NSString *)text {
+  [super setTextFieldText:text];
+  self.expectedText = text;
 }
 
 - (NSString *)nonNullableText {

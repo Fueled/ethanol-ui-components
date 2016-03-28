@@ -46,7 +46,7 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
  *  - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
  *  - (BOOL)textFieldShouldReturn:(UITextField *)textField;
  */
-@interface ETHTextField : ETHExtendableTextField
+@interface ETHTextField : ETHExtendableTextField <ETHTextFieldDelegate>
 
 /**
  *  Set/Get the formatter, used whenever text is entered in the text field.

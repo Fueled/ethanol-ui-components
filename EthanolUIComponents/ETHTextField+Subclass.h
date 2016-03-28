@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ETHTextField (Subclass) <ETHTextFieldDelegate>
+@interface ETHTextField (Subclass)
 
 @property (nonatomic, strong, readonly) id<ETHTextFieldDelegate> proxyDelegate;
 

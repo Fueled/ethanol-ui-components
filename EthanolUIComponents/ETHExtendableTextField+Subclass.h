@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ETHExtendableTextField (Subclass) <ETHExtendableTextFieldDelegate>
+@interface ETHExtendableTextField (Subclass)
 
 /**
  *  The proxyDelegate property should be used to call *custom* delegate. For example,

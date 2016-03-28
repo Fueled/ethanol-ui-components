@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
  *         // This test will NOT work. Use -[NSObject isEqual:] to test for equality instead, if available
  *       }
  */
-@interface ETHExtendableTextField : UITextField
+@interface ETHExtendableTextField : UITextField <ETHExtendableTextFieldDelegate>
 
 @property (nonatomic, weak, nullable) id<ETHExtendableTextFieldDelegate> delegate;
 

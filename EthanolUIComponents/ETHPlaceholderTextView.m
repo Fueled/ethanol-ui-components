@@ -54,6 +54,8 @@
 	self.placeholderInsets = kDefaultPlaceholderInset;
 
 	UILabel *placeholderLabel = [[UILabel alloc] init];
+	placeholderLabel.font = self.font;
+
 	[self updatePlaceholderFrame];
 	[self addSubview:placeholderLabel];
 	self.placeholderLabel = placeholderLabel;
@@ -91,6 +93,12 @@
 - (void)updatePlaceholderFrame {
 	self.placeholderLabel.frame = UIEdgeInsetsInsetRect(self.bounds, self.placeholderInsets);
 	[self.placeholderLabel sizeToFit];
+}
+
+- (void)setFont:(UIFont *)font {
+	[super setFont:font];
+
+	self.placeholderLabel.font = font;
 }
 
 - (NSString *)placeholder {

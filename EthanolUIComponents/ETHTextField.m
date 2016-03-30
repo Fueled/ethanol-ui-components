@@ -7,8 +7,6 @@
 //
 
 #import "ETHTextField.h"
-#import "ETHTextField+Subclass.h"
-#import "ETHExtendableTextField+Subclass.h"
 #import <EthanolValidationFormatting/ETHValidator.h>
 #import <EthanolValidationFormatting/ETHFormatter.h>
 #import <EthanolUtilities/NSString+EthanolUtils.h>

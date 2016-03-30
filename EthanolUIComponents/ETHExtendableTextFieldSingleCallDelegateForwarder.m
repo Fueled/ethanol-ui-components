@@ -11,7 +11,7 @@
 
 @interface ETHExtendableTextField (ProxyDelegate)
 
-@property (nonatomic, strong, readonly) ETHExtendableTextFieldDelegateProxy * proxyDelegate;
+@property (nonatomic, strong, readonly) ETHExtendableTextFieldDelegateProxy * proxyDelegateImplementation;
 
 @end
 
@@ -99,9 +99,9 @@
 - (void)forwardInvocation:(NSInvocation *)invocation {
   if([self respondsToSelector:invocation.selector]) {
     BOOL inProgress = NO;
-    [self.textField.proxyDelegate.delegateCallInProgressDictionaryLock lock];
-    NSDictionary * delegateCallInProgressDictionary = [self.textField.proxyDelegate.delegateCallInProgressDictionary copy];
-    [self.textField.proxyDelegate.delegateCallInProgressDictionaryLock unlock];
+    [self.textField.proxyDelegateImplementation.delegateCallInProgressDictionaryLock lock];
+    NSDictionary * delegateCallInProgressDictionary = [self.textField.proxyDelegateImplementation.delegateCallInProgressDictionary copy];
+    [self.textField.proxyDelegateImplementation.delegateCallInProgressDictionaryLock unlock];
     for(NSValue * value in delegateCallInProgressDictionary) {
       if((SEL)[value pointerValue] == invocation.selector) {
         inProgress = YES;

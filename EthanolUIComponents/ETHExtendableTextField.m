@@ -7,19 +7,18 @@
 //
 
 #import "ETHExtendableTextField.h"
-#import "ETHExtendableTextField+Subclass.h"
 #import "ETHExtendableTextFieldDelegateProxy.h"
 #import "ETHExtendableTextFieldSingleCallDelegateForwarder.h"
 
 @interface ETHExtendableTextField () <ETHExtendableTextFieldDelegate>
 
-@property (nonatomic, strong, readonly) ETHExtendableTextFieldDelegateProxy * proxyDelegate;
+@property (nonatomic, strong, readonly) ETHExtendableTextFieldDelegateProxy * proxyDelegateImplementation;
 @property (nonatomic, strong, readonly) ETHExtendableTextFieldSingleCallDelegateForwarder * singleCallForwarderDelegate;
 
 @end
 
 @implementation ETHExtendableTextField
-@synthesize proxyDelegate = _proxyDelegate;
+@synthesize proxyDelegateImplementation = _proxyDelegateImplementation;
 @synthesize singleCallForwarderDelegate = _singleCallForwarderDelegate;
 
 - (instancetype)init {
@@ -58,17 +57,21 @@
 
 - (void)setDelegate:(id<UITextFieldDelegate>)delegate {
   self.singleCallForwarderDelegate.delegate = delegate;
-  self.proxyDelegate.delegate = delegate;
+  self.proxyDelegateImplementation.delegate = delegate;
 }
 
-- (ETHExtendableTextFieldDelegateProxy *)proxyDelegate {
-  if(_proxyDelegate == nil) {
-    _proxyDelegate = [[ETHExtendableTextFieldDelegateProxy alloc] init];
-    _proxyDelegate.textField = self;
-    _proxyDelegate.delegate = self.delegate;
+- (id<ETHExtendableTextFieldDelegate>)proxyDelegate {
+  return self.proxyDelegateImplementation;
+}
+
+- (ETHExtendableTextFieldDelegateProxy *)proxyDelegateImplementation {
+  if(_proxyDelegateImplementation == nil) {
+    _proxyDelegateImplementation = [[ETHExtendableTextFieldDelegateProxy alloc] init];
+    _proxyDelegateImplementation.textField = self;
+    _proxyDelegateImplementation.delegate = self.delegate;
   }
   
-  return _proxyDelegate;
+  return _proxyDelegateImplementation;
 }
 
 - (ETHExtendableTextFieldSingleCallDelegateForwarder *)singleCallForwarderDelegate {
@@ -99,6 +102,10 @@
   if([self.proxyDelegate respondsToSelector:@selector(textFieldTextDidChange:)]) {
     [self.proxyDelegate textFieldTextDidChange:self];
   }
+}
+
+- (void)setTextFieldText:(NSString *)text {
+  [super setText:text];
 }
 
 @end

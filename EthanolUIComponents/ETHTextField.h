@@ -75,6 +75,8 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
 
 @property (nonatomic, weak, nullable) IBOutlet id<ETHTextFieldDelegate> delegate;
 
+@property (nonatomic, strong, readonly) id<ETHTextFieldDelegate> proxyDelegate;
+
 /**
  *  Get/Set the current allowed character set (i.e. characters that the user can type).
  *  Setting this property while there is a text will remove the characters that should not be displayed.

@@ -19,4 +19,7 @@
    <FileRef
       location = "group:Carthage/Checkouts/NSInvocation-Helpers/NSInvocationHelpers.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Carthage/Checkouts/ethanol-validation-formatting/Carthage/Checkouts/libPhoneNumber-iOS/libPhoneNumber.xcodeproj">
+   </FileRef>
 </Workspace>

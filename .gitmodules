@@ -13,3 +13,6 @@
 [submodule "Carthage/Checkouts/ethanol-validation-formatting"]
 	path = Carthage/Checkouts/ethanol-validation-formatting
 	url = ssh://git@github.com/Fueled/ethanol-validation-formatting.git
+[submodule "Carthage/Checkouts/libPhoneNumber-iOS"]
+	path = Carthage/Checkouts/libPhoneNumber-iOS
+	url = ssh://git@github.com/iziz/libPhoneNumber-iOS.git

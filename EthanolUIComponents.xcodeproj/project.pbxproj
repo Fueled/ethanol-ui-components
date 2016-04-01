@@ -11,6 +11,7 @@
 		0C640EB71B8506CC003A157A /* SwitchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C640EB61B8506CC003A157A /* SwitchTests.m */; };
 		0C7369961B86745F00AD3DF4 /* PageControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7369951B86745F00AD3DF4 /* PageControlTests.m */; };
 		0C898C551B879A5D002D7E35 /* Tests.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C898C541B879A5D002D7E35 /* Tests.storyboard */; };
+		0CCD98E31CAF0A1800064436 /* libPhoneNumber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CCD98E21CAF0A1800064436 /* libPhoneNumber.framework */; };
 		F41455061B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h in Headers */ = {isa = PBXBuildFile; fileRef = F41455041B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F41455071B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F41455051B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m */; };
 		F41455091B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F41455081B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib */; };
@@ -94,6 +95,7 @@
 		0C640EB61B8506CC003A157A /* SwitchTests.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SwitchTests.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		0C7369951B86745F00AD3DF4 /* PageControlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = PageControlTests.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		0C898C541B879A5D002D7E35 /* Tests.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tests.storyboard; sourceTree = "<group>"; };
+		0CCD98E21CAF0A1800064436 /* libPhoneNumber.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libPhoneNumber.framework; path = libPhoneNumber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F41455041B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = ETHPageViewControllerTitleView.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		F41455051B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = ETHPageViewControllerTitleView.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		F41455081B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ETHPageViewControllerTitleView.xib; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CCD98E31CAF0A1800064436 /* libPhoneNumber.framework in Frameworks */,
 				F47451491B7006F400902BCB /* CocoaLumberjack.framework in Frameworks */,
 				F474514A1B7006F400902BCB /* EthanolTools.framework in Frameworks */,
 				F474514B1B7006F400902BCB /* EthanolUtilities.framework in Frameworks */,
@@ -280,6 +283,7 @@
 		F47359051B444998007688EC /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				0CCD98E21CAF0A1800064436 /* libPhoneNumber.framework */,
 				F48636761B6FC93D001A3549 /* CocoaLumberjack.framework */,
 				F48636771B6FC93D001A3549 /* EthanolTools.framework */,
 				F48636781B6FC93D001A3549 /* EthanolUtilities.framework */,

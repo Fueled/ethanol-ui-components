@@ -21,6 +21,7 @@
 
 @implementation ETHTextField
 @dynamic delegate;
+@dynamic proxyDelegate;
 
 + (void)initialize {
   [super initialize];

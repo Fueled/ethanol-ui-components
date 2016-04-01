@@ -62,10 +62,8 @@
 }
 
 - (void)setValidated:(BOOL)validated forReason:(ETHTextFieldValidationReason)reason {
-  if(_validated != validated) {
-    _validated = validated;
-    [self validationStateDidChangeForReason:reason];
-  }
+  _validated = validated;
+  [self validationStateDidChangeForReason:reason];
 }
 
 - (BOOL)validateInputSilently {

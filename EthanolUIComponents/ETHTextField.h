@@ -111,6 +111,7 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
 
 /**
  *  Can be overidden by subclasses. Only called when the value of `isValidated` changed.
+ *  This method will be called everytime a validation occurs.
  *
  *  @param reason The reason for which the validation state changed.
  */

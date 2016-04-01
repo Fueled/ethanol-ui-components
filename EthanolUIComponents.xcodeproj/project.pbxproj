@@ -10,6 +10,7 @@
 		0C42AEBC1B852FD7000F0307 /* Tests.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C42AEBB1B852FD7000F0307 /* Tests.xcassets */; };
 		0C640EB71B8506CC003A157A /* SwitchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C640EB61B8506CC003A157A /* SwitchTests.m */; };
 		0C7369961B86745F00AD3DF4 /* PageControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7369951B86745F00AD3DF4 /* PageControlTests.m */; };
+		0C8035981CAF24270099196D /* EthanolValidationFormatting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C8035971CAF24270099196D /* EthanolValidationFormatting.framework */; };
 		0C898C551B879A5D002D7E35 /* Tests.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C898C541B879A5D002D7E35 /* Tests.storyboard */; };
 		F41455061B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h in Headers */ = {isa = PBXBuildFile; fileRef = F41455041B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F41455071B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F41455051B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m */; };
@@ -25,7 +26,6 @@
 		F46FE8D31CA493950061FF7C /* EthanolTools.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F48636771B6FC93D001A3549 /* EthanolTools.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F46FE8D41CA493950061FF7C /* EthanolUtilities.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F48636781B6FC93D001A3549 /* EthanolUtilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F46FE8D51CA493950061FF7C /* NSInvocationHelpers.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F48636791B6FC93D001A3549 /* NSInvocationHelpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F46FE8D61CA493950061FF7C /* EthanolValidationFormatting.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F46FE8D71CA494750061FF7C /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636761B6FC93D001A3549 /* CocoaLumberjack.framework */; };
 		F46FE8D81CA494750061FF7C /* EthanolTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636771B6FC93D001A3549 /* EthanolTools.framework */; };
 		F46FE8D91CA494750061FF7C /* EthanolUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636781B6FC93D001A3549 /* EthanolUtilities.framework */; };
@@ -52,11 +52,9 @@
 		F474514A1B7006F400902BCB /* EthanolTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636771B6FC93D001A3549 /* EthanolTools.framework */; };
 		F474514B1B7006F400902BCB /* EthanolUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636781B6FC93D001A3549 /* EthanolUtilities.framework */; };
 		F474514C1B7006F400902BCB /* NSInvocationHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636791B6FC93D001A3549 /* NSInvocationHelpers.framework */; };
-		F474514D1B7006F400902BCB /* EthanolValidationFormatting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */; };
 		F48636741B6FC412001A3549 /* ETHPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F48636721B6FC412001A3549 /* ETHPageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F48636751B6FC412001A3549 /* ETHPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48636731B6FC412001A3549 /* ETHPageViewController.m */; };
 		F4E7C8FB1B9F3312000953A4 /* TextFieldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E7C8FA1B9F3312000953A4 /* TextFieldTests.m */; };
-		F4E7C8FC1B9F340C000953A4 /* EthanolValidationFormatting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */; };
 		F4F239A61C7518B400CDFAA5 /* ETHPlaceholderTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F239A41C7518B400CDFAA5 /* ETHPlaceholderTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4F239A71C7518B400CDFAA5 /* ETHPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F239A51C7518B400CDFAA5 /* ETHPlaceholderTextView.m */; };
 		F4F239AA1C75193000CDFAA5 /* PlaceholderTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F239A91C75193000CDFAA5 /* PlaceholderTextViewTests.m */; };
@@ -83,7 +81,6 @@
 				F46FE8D31CA493950061FF7C /* EthanolTools.framework in CopyFiles */,
 				F46FE8D41CA493950061FF7C /* EthanolUtilities.framework in CopyFiles */,
 				F46FE8D51CA493950061FF7C /* NSInvocationHelpers.framework in CopyFiles */,
-				F46FE8D61CA493950061FF7C /* EthanolValidationFormatting.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +90,7 @@
 		0C42AEBB1B852FD7000F0307 /* Tests.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Tests.xcassets; sourceTree = "<group>"; };
 		0C640EB61B8506CC003A157A /* SwitchTests.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SwitchTests.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		0C7369951B86745F00AD3DF4 /* PageControlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = PageControlTests.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		0C8035971CAF24270099196D /* EthanolValidationFormatting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EthanolValidationFormatting.framework; path = EthanolValidationFormatting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C898C541B879A5D002D7E35 /* Tests.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tests.storyboard; sourceTree = "<group>"; };
 		F41455041B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = ETHPageViewControllerTitleView.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		F41455051B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = ETHPageViewControllerTitleView.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
@@ -133,7 +131,6 @@
 		F48636771B6FC93D001A3549 /* EthanolTools.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EthanolTools.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F48636781B6FC93D001A3549 /* EthanolUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EthanolUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F48636791B6FC93D001A3549 /* NSInvocationHelpers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NSInvocationHelpers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EthanolValidationFormatting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4E7C8FA1B9F3312000953A4 /* TextFieldTests.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = TextFieldTests.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		F4F239A41C7518B400CDFAA5 /* ETHPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHPlaceholderTextView.h; sourceTree = "<group>"; };
 		F4F239A51C7518B400CDFAA5 /* ETHPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHPlaceholderTextView.m; sourceTree = "<group>"; };
@@ -145,11 +142,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C8035981CAF24270099196D /* EthanolValidationFormatting.framework in Frameworks */,
 				F47451491B7006F400902BCB /* CocoaLumberjack.framework in Frameworks */,
 				F474514A1B7006F400902BCB /* EthanolTools.framework in Frameworks */,
 				F474514B1B7006F400902BCB /* EthanolUtilities.framework in Frameworks */,
 				F474514C1B7006F400902BCB /* NSInvocationHelpers.framework in Frameworks */,
-				F474514D1B7006F400902BCB /* EthanolValidationFormatting.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,7 +154,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4E7C8FC1B9F340C000953A4 /* EthanolValidationFormatting.framework in Frameworks */,
 				F46FE8D71CA494750061FF7C /* CocoaLumberjack.framework in Frameworks */,
 				F46FE8D81CA494750061FF7C /* EthanolTools.framework in Frameworks */,
 				F46FE8D91CA494750061FF7C /* EthanolUtilities.framework in Frameworks */,
@@ -280,11 +276,11 @@
 		F47359051B444998007688EC /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				0C8035971CAF24270099196D /* EthanolValidationFormatting.framework */,
 				F48636761B6FC93D001A3549 /* CocoaLumberjack.framework */,
 				F48636771B6FC93D001A3549 /* EthanolTools.framework */,
 				F48636781B6FC93D001A3549 /* EthanolUtilities.framework */,
 				F48636791B6FC93D001A3549 /* NSInvocationHelpers.framework */,
-				F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */,
 			);
 			name = Dependencies;
 			sourceTree = "<group>";

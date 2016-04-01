@@ -1,4 +1,4 @@
 github "stephanecopin/NSInvocation-Helpers" ~> 1.0
-github "Fueled/ethanol-validation-formatting" ~> 0.2
+github "Fueled/ethanol-validation-formatting" "compound-validator"
 github "Fueled/ethanol-tools" ~> 0.1
 github "Fueled/ethanol-utilities" ~> 0.1

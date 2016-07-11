@@ -26,14 +26,16 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+IB_DESIGNABLE
+
 @interface ETHPlaceholderTextView : UITextView
 
 @property (nonatomic, assign) UIEdgeInsets placeholderInsets;
 
-- (NSString *)placeholder;
-- (void)setPlaceholder:(NSString *)placeholder;
-
-- (NSAttributedString *)attributedPlaceholder;
-- (void)setAttributedPlaceholder:(NSAttributedString *)attributedPlaceholder;
+@property (nonatomic, strong) IBInspectable NSString *placeholder;
+@property (nonatomic, strong) IBInspectable NSAttributedString *attributedPlaceholder;
 
 @end
+
+NS_ASSUME_NONNULL_END

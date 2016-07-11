@@ -3,7 +3,25 @@
 //  Ethanol
 //
 //  Created by Bastien Falcou on 1/9/15.
-//  Copyright (c) 2015 Fueled. All rights reserved.
+//  Copyright (c) 2015 Fueled Digital Media, LLC.
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 //
 
 #import "ETHPageControl.h"
@@ -23,11 +41,38 @@
  */
 @property (nonatomic, assign) CGSize sizeForDotSection;
 
+/**
+ *  Array of dots sorted from left to right
+ */
+@property (nonatomic, strong) NSMutableArray *dotsArray;
+
 @end
 
 @implementation ETHPageControl
 
-- (void)awakeFromNib {
+- (instancetype)init {
+  if (self = [super init]) {
+    [self setUp];
+  }
+  return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+  if (self = [super initWithCoder:aDecoder]) {
+    [self setUp];
+  }
+  return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame {
+  if (self = [super initWithFrame:frame]) {
+    [self setUp];
+  }
+  return self;
+}
+
+- (void)setUp {
+  self.dotsArray = [[NSMutableArray alloc] init];
   self.dotsSpace = kPageControlDotsOriginalSpace;
   self.pageIndicatorTintColor = kDefaultPageTintColor;
   self.currentPageIndicatorTintColor = kDefaultCurrentPageTintColor;
@@ -51,9 +96,10 @@
   }
   
   // Remove previous subviews.
-  for (UIView *subView in self.subviews) {
+  for (UIView *subView in self.dotsArray) {
     [subView removeFromSuperview];
   }
+  [self.dotsArray removeAllObjects];
   
   [self updateSizeForDotSection];
   for (NSInteger i = 0; i < [self numberOfDotsToDisplay]; i++) {
@@ -110,15 +156,20 @@
         }
       }
       [self addSubview:view];
+      [self.dotsArray addObject:view];
+      [self setupGestureRecognizerForView:view];
     } else {
       UIView *view = [[UIView alloc] initWithFrame:CGRectMake([self xOriginForDotAtIndex:i], (self.frame.size.height - kDefaultPageControlSize.height) / 2.0f, kPageControlDotsOriginalWidth, kPageControlDotsOriginalHeight)];
       view.backgroundColor = i == self.currentPage ? self.currentPageIndicatorTintColor : self.pageIndicatorTintColor;
       view.layer.cornerRadius = MIN(view.bounds.size.width, view.bounds.size.height) / 2.0f;
       view.layer.masksToBounds = YES;
-
+      
       [self addSubview:view];
+      [self.dotsArray addObject:view];
+      [self setupGestureRecognizerForView:view];
     }
   }
+  [self invalidateIntrinsicContentSize];
 }
 
 - (void)updateSizeForDotSection {
@@ -133,6 +184,18 @@
   return CGSizeMake([self totalWidthForNumberOfPages:pageCount], [self maxHeightForNumberOfPages:pageCount]);
 }
 
+- (void)didTapDot:(id)sender {
+  if (![sender isKindOfClass:[UITapGestureRecognizer class]]) {
+    return;
+  }
+  
+  NSInteger dotIndex = [self.dotsArray indexOfObject:[(UITapGestureRecognizer *)sender view]];
+  if (dotIndex != self.currentPage) {
+    self.currentPage = dotIndex;
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
+  }
+}
+
 #pragma mark - Helper Methods
 
 - (NSInteger)numberOfDotsToDisplay {
@@ -141,6 +204,11 @@
   }
   
   return self.numberOfPages;
+}
+
+- (void)setupGestureRecognizerForView:(UIView *)view {
+  UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapDot:)];
+  [view addGestureRecognizer:tapGestureRecognizer];
 }
 
 #pragma mark - Calculate Sizes
@@ -193,10 +261,6 @@
   }
 }
 
-- (CGFloat)middleDotsSectionWidth {
-  return [self middleDotsSectionWidthForNumberOfPages:self.numberOfPages];
-}
-
 - (CGFloat)middleDotsSectionWidthForNumberOfPages:(NSInteger)numberOfPages {
   CGFloat sectionWidth = 0.0f;
   
@@ -221,10 +285,6 @@
   } else {
     return [self leftDotSize].width + self.dotsSpace + [self middleDotsSectionWidthForNumberOfPages:numberOfPages] + self.dotsSpace + [self rightDotSize].width;
   }
-}
-                    
-- (CGFloat)maxHeight {
-  return [self maxHeightForNumberOfPages:self.numberOfPages];
 }
 
 - (CGFloat)maxHeightForNumberOfPages:(NSInteger)numberOfPages {
@@ -266,6 +326,22 @@
   return sectionWidth;
 }
 
+#pragma mark - UIView overriden methods
+
+- (void)sizeToFit {
+  self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, [self sizeForNumberOfPages:self.numberOfPages].width, [self sizeForNumberOfPages:self.numberOfPages].height);
+}
+
+- (CGSize)intrinsicContentSize {
+  return [self sizeForNumberOfPages:self.numberOfPages];
+}
+
+- (void)setFrame:(CGRect)frame {
+  [super setFrame:frame];
+  
+  [self updateDots];
+}
+
 #pragma mark - Custom setters
 
 - (void)setNumberOfPages:(NSInteger)numberOfPages {
@@ -284,14 +360,11 @@
 - (void)setCurrentPage:(NSInteger)page {
   if (page < 0) {
     _currentPage = 0;
-  }
-  
-  if (self.numberOfPages - 1 < page) {
+  } else if (self.numberOfPages - 1 < page) {
     _currentPage = self.numberOfPages - 1;
   } else {
     _currentPage = page;
   }
-  
   [self updateDots];
 }
 
@@ -337,6 +410,11 @@
 
 - (void)setRightDotImageInactive:(UIImage *)rightDotImageInactive {
   _rightDotImageInactive = rightDotImageInactive;
+  [self updateDots];
+}
+
+- (void)setHidesForSinglePage:(BOOL)hidesForSinglePage {
+  _hidesForSinglePage = hidesForSinglePage;
   [self updateDots];
 }
 

@@ -3,11 +3,29 @@
 //  Ethanol
 //
 //  Created by Stephane Copin on 3/7/14.
-//  Copyright (c) 2014 Fueled. All rights reserved.
+//  Copyright (c) 2015 Fueled Digital Media, LLC.
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 //
 
 #import <UIKit/UIKit.h>
-#import <EthanolUIComponents/ETHExtendableTextField.h>
+#import "ETHExtendableTextField.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,8 +50,7 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
 - (BOOL)textField:(ETHTextField *)textField shouldValidateText:(NSString *)text forReason:(ETHTextFieldValidationReason)reason;
 
 - (void)textField:(ETHTextField *)textField didFormat:(NSString *)text;
-
-- (BOOL)textField:(ETHTextField *)textField didValidateText:(NSString *)text withReason:(ETHTextFieldValidationReason)reason withSuccess:(BOOL)success error:(NSError *)error;
+- (BOOL)textField:(ETHTextField *)textField didValidateText:(NSString *)text withReason:(ETHTextFieldValidationReason)reason withSuccess:(BOOL)success error:(nullable NSError *)error;
 
 @end
 
@@ -47,7 +64,7 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
  *  - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
  *  - (BOOL)textFieldShouldReturn:(UITextField *)textField;
  */
-@interface ETHTextField : ETHExtendableTextField
+@interface ETHTextField : ETHExtendableTextField <ETHTextFieldDelegate>
 
 /**
  *  Set/Get the formatter, used whenever text is entered in the text field.
@@ -55,13 +72,28 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
  */
 @property (nonatomic, strong, nullable) IBOutlet ETHFormatter * formatter;
 /**
- * Set/Get the validator, called whenever the text field the user tap the return key if no delegate is set.
+ * Set/Get the validator, called whenever the text field the user tap the return key if no delegate is set (By default).
  * If a delegate is set, this behavior can be changed by overriding the shouldValidateForReason: with
  * on lost focus or return tapped reasons.
  * In case validator is nil, the behavior is that of a normal UITextField.
+ * Whenever this method is called, the `validateInput` method will be called.
  */
 @property (nonatomic, strong, nullable) IBOutlet ETHValidator * validator;
+
+/**
+ * A property indicating whether the text field's text is validated or not.
+ */
+@property (nonatomic, assign, readonly, getter=isValidated) BOOL validated;
+
+/**
+ * Get what the ETHTextField's text will be set to if validation succeeds.
+ * If no validation is in progress, then it is equivalent to using the `text` property.
+ */
+@property (nonatomic, copy, readonly, nullable) NSString * expectedText;
+
 @property (nonatomic, weak, nullable) IBOutlet id<ETHTextFieldDelegate> delegate;
+
+@property (nonatomic, strong, readonly) id<ETHTextFieldDelegate> proxyDelegate;
 
 /**
  *  Get/Set the current allowed character set (i.e. characters that the user can type).
@@ -94,6 +126,14 @@ typedef void (^ ETHValidationSuccessBlock)(ETHTextFieldValidationReason validati
  *  @return The validation result
  */
 - (BOOL)validateInput;
+
+/**
+ *  Can be overidden by subclasses. Only called when the value of `isValidated` changed.
+ *  This method will be called everytime a validation occurs.
+ *
+ *  @param reason The reason for which the validation state changed.
+ */
+- (void)validationStateDidChangeForReason:(ETHTextFieldValidationReason)reason;
 
 @end
 NS_ASSUME_NONNULL_END

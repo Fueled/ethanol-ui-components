@@ -12,6 +12,7 @@
 		0C7369961B86745F00AD3DF4 /* PageControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7369951B86745F00AD3DF4 /* PageControlTests.m */; };
 		0C82959C1CAED2010078E0C3 /* libPhoneNumber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C82959B1CAED2000078E0C3 /* libPhoneNumber.framework */; };
 		0C898C551B879A5D002D7E35 /* Tests.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C898C541B879A5D002D7E35 /* Tests.storyboard */; };
+		779418901DAD8DDA00BC7BF5 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 7794188F1DAD8DDA00BC7BF5 /* Cartfile */; };
 		F41455061B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h in Headers */ = {isa = PBXBuildFile; fileRef = F41455041B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F41455071B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F41455051B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m */; };
 		F41455091B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F41455081B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib */; };
@@ -96,6 +97,7 @@
 		0C7369951B86745F00AD3DF4 /* PageControlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = PageControlTests.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		0C82959B1CAED2000078E0C3 /* libPhoneNumber.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libPhoneNumber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C898C541B879A5D002D7E35 /* Tests.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tests.storyboard; sourceTree = "<group>"; };
+		7794188F1DAD8DDA00BC7BF5 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = SOURCE_ROOT; };
 		F41455041B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = ETHPageViewControllerTitleView.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		F41455051B7BA82C007F63F8 /* ETHPageViewControllerTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = ETHPageViewControllerTitleView.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		F41455081B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ETHPageViewControllerTitleView.xib; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				F486366E1B6FC3CE001A3549 /* PageViewController */,
 				F414550E1B7BAE5A007F63F8 /* NibView */,
 				F4F239A81C7518CC00CDFAA5 /* PlaceholderTextView */,
+				7794188F1DAD8DDA00BC7BF5 /* Cartfile */,
 				F47358C81B444841007688EC /* Info.plist */,
 			);
 			path = EthanolUIComponents;
@@ -422,6 +425,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				779418901DAD8DDA00BC7BF5 /* Cartfile in Resources */,
 				F41455091B7BA846007F63F8 /* ETHPageViewControllerTitleView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -592,7 +596,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fueled.EthanolUIComponents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -611,7 +615,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fueled.EthanolUIComponents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -624,7 +628,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(CONFIGURATION_BUILD_DIR)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fueled.EthanolUIComponentsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -637,7 +641,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(CONFIGURATION_BUILD_DIR)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fueled.EthanolUIComponentsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

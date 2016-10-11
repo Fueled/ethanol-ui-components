@@ -77,6 +77,8 @@
 }
 
 - (void)awakeFromNib {
+  [super awakeFromNib];
+
   self.tintColorSaved = self.tintColor;
   self.onTintColorSaved = self.onTintColor;
   self.backgroundColorSaved = self.backgroundColor;

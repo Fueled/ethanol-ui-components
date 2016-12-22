@@ -10,7 +10,7 @@
 		0C42AEBC1B852FD7000F0307 /* Tests.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C42AEBB1B852FD7000F0307 /* Tests.xcassets */; };
 		0C640EB71B8506CC003A157A /* SwitchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C640EB61B8506CC003A157A /* SwitchTests.m */; };
 		0C7369961B86745F00AD3DF4 /* PageControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7369951B86745F00AD3DF4 /* PageControlTests.m */; };
-		0C82959C1CAED2010078E0C3 /* libPhoneNumber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C82959B1CAED2000078E0C3 /* libPhoneNumber.framework */; };
+		0C82959C1CAED2010078E0C3 /* libPhoneNumberiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C82959B1CAED2000078E0C3 /* libPhoneNumberiOS.framework */; };
 		0C898C551B879A5D002D7E35 /* Tests.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C898C541B879A5D002D7E35 /* Tests.storyboard */; };
 		779418901DAD8DDA00BC7BF5 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 7794188F1DAD8DDA00BC7BF5 /* Cartfile */; };
 		F41455061B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h in Headers */ = {isa = PBXBuildFile; fileRef = F41455041B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -95,7 +95,7 @@
 		0C42AEBB1B852FD7000F0307 /* Tests.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Tests.xcassets; sourceTree = "<group>"; };
 		0C640EB61B8506CC003A157A /* SwitchTests.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SwitchTests.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		0C7369951B86745F00AD3DF4 /* PageControlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = PageControlTests.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
-		0C82959B1CAED2000078E0C3 /* libPhoneNumber.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libPhoneNumber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0C82959B1CAED2000078E0C3 /* libPhoneNumberiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libPhoneNumberiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C898C541B879A5D002D7E35 /* Tests.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tests.storyboard; sourceTree = "<group>"; };
 		7794188F1DAD8DDA00BC7BF5 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = SOURCE_ROOT; };
 		F41455041B7BA82C007F63F8 /* ETHPageViewControllerTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = ETHPageViewControllerTitleView.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
@@ -149,7 +149,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C82959C1CAED2010078E0C3 /* libPhoneNumber.framework in Frameworks */,
+				0C82959C1CAED2010078E0C3 /* libPhoneNumberiOS.framework in Frameworks */,
 				F47451491B7006F400902BCB /* CocoaLumberjack.framework in Frameworks */,
 				F474514A1B7006F400902BCB /* EthanolTools.framework in Frameworks */,
 				F474514B1B7006F400902BCB /* EthanolUtilities.framework in Frameworks */,
@@ -291,7 +291,7 @@
 				F48636781B6FC93D001A3549 /* EthanolUtilities.framework */,
 				F48636791B6FC93D001A3549 /* NSInvocationHelpers.framework */,
 				F48636841B6FDC55001A3549 /* EthanolValidationFormatting.framework */,
-				0C82959B1CAED2000078E0C3 /* libPhoneNumber.framework */,
+				0C82959B1CAED2000078E0C3 /* libPhoneNumberiOS.framework */,
 			);
 			name = Dependencies;
 			sourceTree = "<group>";
